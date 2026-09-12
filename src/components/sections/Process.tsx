@@ -21,12 +21,12 @@ export const Process: React.FC = () => {
   return (
     <section
       id="process"
-      className="py-20 lg:py-28 bg-canvas border-t border-border-subtle/80 relative"
+      className="py-12 sm:py-16 lg:py-28 bg-canvas border-t border-border-subtle/80 relative"
       aria-labelledby="process-heading"
     >
       <Container size="standard">
         {/* Section Intro Header */}
-        <div className="max-w-3xl mb-14 lg:mb-20">
+        <div className="max-w-3xl mb-10 sm:mb-14 lg:mb-20">
           <span className="font-body text-eyebrow font-semibold text-action-primary uppercase tracking-wider block mb-3">
             {process.eyebrow}
           </span>
@@ -135,7 +135,7 @@ export const Process: React.FC = () => {
 
         {/* Reassurance Note */}
         {process.reassuranceText && (
-          <div className="mt-14 lg:mt-20 pt-8 border-t border-border-subtle/80 text-center">
+          <div className="mt-10 sm:mt-14 lg:mt-20 pt-8 border-t border-border-subtle/80 text-center">
             <p className="font-body text-body-regular text-content-secondary max-w-reading mx-auto italic">
               "{process.reassuranceText}"
             </p>

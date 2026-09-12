@@ -111,6 +111,20 @@
 - [x] **Full-Page Refinement & Production Readiness Audit** *(Completed 2026-09-12)*
   - Holistic evaluation of application health, heading hierarchy, visual rhythm, cross-section balance, accessibility compliance, interaction integrity, content authenticity, and production readiness.
   - Audit Verdict: `READY FOR REFINEMENT`. Zero P0 blockers, zero P1 code blockers, 3 P2 refinement items (CTA harmony, mobile padding, SEO tags), 2 P3 polish items.
+- [x] **P2.1 CTA Phrasing Harmony** *(Completed 2026-09-12)*
+  - Standardized Footer CTA to canonical "Book a Consultation"; preserved situational discovery CTAs.
+- [x] **P2.2 Selective Mobile Vertical Spacing Optimization** *(Completed 2026-09-12)*
+  - Optimized mobile padding across 8 sections, eliminating 448px of dead padding while preserving 100% of desktop whitespace, portrait aspect ratios, and >=48px touch targets.
+- [x] **P2.3 Production SEO & Social Sharing Metadata** *(Completed 2026-09-12)*
+  - Implemented safe metadata in `index.html` (title, meta description, theme-color, SVG favicon, mask-icon, Open Graph tags, Twitter Card tags).
+  - Created domain-agnostic `public/robots.txt`.
+  - Removed placeholder domain from `siteContent.ts`.
+  - Intentionally deferred domain-dependent fields (canonical, `og:url`, `og:image`, sitemap, JSON-LD) until production domain is confirmed.
+- [x] **P3 Polish & Refinement QA** *(Completed 2026-09-12)*
+  - Audited visual polish opportunities; confirmed Footer legal plain styling is appropriate (rejected artificial badges).
+  - Confirmed informational card hover restraint (no decorative motion on static cards).
+  - Corrected unverified `og:locale` from `index.html`.
+  - Verified responsive height, build, and accessibility integrity across all 6 viewports.
 
 ---
 

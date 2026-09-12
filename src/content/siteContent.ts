@@ -9,10 +9,11 @@ import { SiteContent } from '../types/content';
  */
 export const siteContent: SiteContent = {
   meta: {
-    title: 'Bindhu — Health Insurance Consultant | Clear Guidance & Personal Support',
-    description: 'Personalized health insurance consulting. Unbiased guidance, plain-language policy reviews, and dedicated client advocacy.',
+    title: 'Bindhu | Health Insurance Consultant',
+    description:
+      'Clear, thoughtful guidance for understanding health insurance options, questions, and next steps.',
     author: 'Bindhu',
-    siteUrl: 'https://example.com', // To be updated with production domain
+    siteUrl: '', // Production domain pending confirmation
   },
 
   client: {
@@ -465,7 +466,7 @@ export const siteContent: SiteContent = {
       'Privacy, terms, and accessibility information will be added when final site details are confirmed.',
     copyright: `© ${new Date().getFullYear()} Bindhu. All rights reserved.`,
     contactNote: 'Consultation details will be added here once confirmed.',
-    contactCtaLabel: 'Schedule Consultation',
+    contactCtaLabel: 'Book a Consultation',
     contactCtaHref: '#contact',
     navigationLinks: [
       { label: 'About', href: '#about' },

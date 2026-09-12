@@ -41,7 +41,7 @@ export const TrustValue: React.FC = () => {
     <section
       id="trust"
       aria-labelledby="trust-heading"
-      className="bg-canvas-alt py-16 sm:py-20 lg:py-24 border-t border-b border-border-subtle/70"
+      className="bg-canvas-alt py-12 sm:py-16 lg:py-24 border-t border-b border-border-subtle/70"
     >
       <Container size="standard">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">

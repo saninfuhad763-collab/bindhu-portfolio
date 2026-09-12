@@ -27,13 +27,13 @@ export const FAQ: React.FC = () => {
   return (
     <section
       id="faq"
-      className="py-16 lg:py-24 bg-canvas-alt border-t border-border-subtle/80 relative"
+      className="py-12 sm:py-16 lg:py-24 bg-canvas-alt border-t border-border-subtle/80 relative"
       aria-labelledby="faq-heading"
     >
       <Container size="standard">
         <div className="max-w-3xl mx-auto">
           {/* Section Header */}
-          <div className="text-center mb-12">
+          <div className="text-center mb-8 sm:mb-12">
             <span className="font-body text-eyebrow font-semibold text-action-primary uppercase tracking-wider block mb-3">
               {faq.eyebrow}
             </span>

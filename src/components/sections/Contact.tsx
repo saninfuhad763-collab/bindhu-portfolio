@@ -24,11 +24,11 @@ export const Contact: React.FC = () => {
   return (
     <section
       id="contact"
-      className="py-16 lg:py-24 bg-canvas border-t border-border-subtle/80 relative"
+      className="py-12 sm:py-16 lg:py-24 bg-canvas border-t border-border-subtle/80 relative"
       aria-labelledby="contact-heading"
     >
       <Container size="standard">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-16 items-start">
           {/* Left Column: Editorial Positioning & Expectations */}
           <div className="lg:col-span-7">
             {/* Eyebrow */}

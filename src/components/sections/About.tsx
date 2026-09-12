@@ -22,10 +22,10 @@ export const About: React.FC = () => {
     <section
       id="about"
       aria-labelledby="about-heading"
-      className="bg-canvas py-16 sm:py-20 lg:py-28 overflow-hidden border-b border-border-subtle/70"
+      className="bg-canvas py-12 sm:py-16 lg:py-28 overflow-hidden border-b border-border-subtle/70"
     >
       <Container size="standard">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-16 items-start">
           {/* Left Column: 4:5 Portrait Composition (Stacks second on mobile for natural narrative intro) */}
           <div className="order-2 lg:order-1 lg:col-span-5 flex flex-col items-center lg:items-start lg:sticky lg:top-28">
             <div className="w-full max-w-[360px] sm:max-w-[400px] lg:max-w-none">

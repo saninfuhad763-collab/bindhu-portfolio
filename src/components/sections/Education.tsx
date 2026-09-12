@@ -28,11 +28,11 @@ export const Education: React.FC = () => {
   return (
     <section
       id="education"
-      className="py-20 lg:py-28 bg-canvas-alt border-t border-border-subtle/80 relative"
+      className="py-12 sm:py-16 lg:py-28 bg-canvas-alt border-t border-border-subtle/80 relative"
       aria-labelledby="education-heading"
     >
       <Container size="standard">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16 items-start">
           {/* Left Column: Editorial Introduction (Sticky on desktop) */}
           <div className="lg:col-span-5 lg:sticky lg:top-28">
             <span className="font-body text-eyebrow font-semibold text-action-primary uppercase tracking-wider block mb-3">

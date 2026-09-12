@@ -52,12 +52,12 @@ export const Services: React.FC = () => {
   return (
     <section
       id="services"
-      className="py-20 lg:py-28 bg-canvas-alt border-t border-border-subtle/80 relative"
+      className="py-12 sm:py-16 lg:py-28 bg-canvas-alt border-t border-border-subtle/80 relative"
       aria-labelledby="services-heading"
     >
       <Container size="standard">
         {/* Section Intro Header */}
-        <div className="max-w-3xl mb-12 lg:mb-16">
+        <div className="max-w-3xl mb-8 sm:mb-12 lg:mb-16">
           <span className="font-body text-eyebrow font-semibold text-action-primary uppercase tracking-wider block mb-3">
             {services.eyebrow}
           </span>

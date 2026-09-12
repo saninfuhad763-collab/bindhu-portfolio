@@ -27,7 +27,7 @@ export const SocialProof: React.FC = () => {
   return (
     <section
       id="stories"
-      className="py-16 lg:py-24 bg-canvas border-t border-border-subtle/80 relative"
+      className="py-12 sm:py-16 lg:py-24 bg-canvas border-t border-border-subtle/80 relative"
       aria-labelledby="stories-heading"
     >
       <Container size="standard">

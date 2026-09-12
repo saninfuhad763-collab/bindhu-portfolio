@@ -1,0 +1,8 @@
+# Robots.txt for Bindhu Portfolio
+# Production domain and sitemap URL pending production domain confirmation
+
+User-agent: *
+Allow: /
+
+# Sitemap directive pending confirmed production domain:
+# Sitemap: https://<CONFIRMED_DOMAIN>/sitemap.xml
