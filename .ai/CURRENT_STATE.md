@@ -1,8 +1,9 @@
 # Current State — Bindhu Portfolio
 
 ## 1. Snapshot Summary
-- **Current Phase:** Performance Validation Completed (Checkpoint Commit & Push)
-- **Project State:** React 18 + Vite 6 + TypeScript + Tailwind CSS application; design system tokens and foundational primitives active; centralized content store; full production page sequence completed: Global Header, Hero Section, Trust & Value Anchor, About Bindhu, Advisory Services, Consultation Process, Insurance Education, Verified Social Proof Framework, FAQ, Consultation & Contact, and Global Footer. Single H1 on page, 8 semantic section H2s, zero heading level skips, zero duplicate IDs, alternating paper rhythm, semantic `<footer>` with `<nav aria-label="Footer Navigation">`, all 6 page anchors verified (`#about`, `#services`, `#process`, `#education`, `#faq`, `#contact`). Mobile drawer modal focus containment and skip link programmatic focus verified.
+- **Current Phase:** Demo Asset Integration Completed (Awaiting Authentic Client Photography & Data)
+- **Project State:** Demo imagery integrated for development preview; authentic client photography pending. (React 18 + Vite 6 + TypeScript + Tailwind CSS application; full production page sequence completed with Warm Editorial styling; temporary demo portraits integrated into Hero and About slots with `imageStatus: 'demo'` and context-safe alt text; real client photography and data remain pending before public launch; zero fake testimonials or fake social proof).
+- **Executive Performance & Visual State:** Local preview clean, zero CLS (0.00), responsive 4:5 image ratio preserved across all 6 viewports (1440px to 320px). Build passing cleanly (`tsc -b && vite build` in ~9.5s, 0 errors, 0 warnings).
 - **Executive Performance Verdict:** **`PERFORMANCE AUDIT PASSED WITH P2 IMPROVEMENTS`**
   - *Status:* Performance validated in local production preview; final real-user production validation remains pending deployment and final client assets.
   - *Verified Now:*
@@ -153,11 +154,11 @@
 ---
 
 ## 6. Git Status
-- **Repository State:** On branch `main` tracking `origin/main`.
+- **Repository State:** On branch `main` tracking `origin/main` (at commit `8e3f6de`).
 - **GitHub Remote:** `https://github.com/saninfuhad763-collab/bindhu-portfolio.git`
-- **Working Tree:** Performance checkpoint commit prepared (`perf: harden runtime and image loading`).
+- **Working Tree:** Demo asset integration completed (`demo-bindhu-portrait.webp` and `demo-bindhu-about.webp` active with `imageStatus: 'demo'`); uncommitted per instructions.
 
 ---
 
 ## 7. Next Recommended Step
-Client Content & Asset Onboarding
+Await verified client information and authentic assets before replacing demo content.

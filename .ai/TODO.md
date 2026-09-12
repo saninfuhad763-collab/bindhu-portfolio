@@ -151,8 +151,12 @@
 
 ## Future / Client Onboarding
 
-- [ ] **Client Data Ingestion**
-  - Ingest authentic personal details, licensing info, carrier associations, awards, and headshots from Bindhu.
-  - Replace placeholder content in the centralized data store with verified client information.
+- [x] **Client Content & Asset Intake Specification & Questionnaire** *(Completed 2026-09-12)*
+  - Created comprehensive intake specification across 12 information categories.
+  - Finalized client-facing questionnaire saved in `.ai/CLIENT_QUESTIONNAIRE.md`.
+  - Established data safety guardrails (prohibiting PHI, credentials, government IDs) and 1-to-1 code mapping.
+- [ ] **Client Data Ingestion & Placeholder Replacement**
+  - Await completed client questionnaire and approved assets.
+  - Ingest authentic details into centralized `src/content/siteContent.ts`.
 - [ ] **Production Deployment & Domain Setup**
   - Configure production deployment pipeline and custom domain.

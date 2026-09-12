@@ -36,7 +36,7 @@ export interface HeroContent {
   reassuranceNote: string;
   imageAlt: string;
   imageSource: string | null;
-  imageStatus: 'pending' | 'verified';
+  imageStatus: 'pending' | 'demo' | 'verified';
   imagePlaceholderLabel: string;
 }
 
@@ -71,7 +71,7 @@ export interface AboutContent {
   };
   imageSource: string | null;
   imageAlt: string;
-  imageStatus: 'pending' | 'verified';
+  imageStatus: 'pending' | 'demo' | 'verified';
   imagePlaceholderLabel: string;
   caption?: string;
   verifiedBio?: string | null;
