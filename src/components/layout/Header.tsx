@@ -29,11 +29,37 @@ export const Header: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Keyboard accessibility: Close mobile menu on Escape
+  // Keyboard accessibility: Close mobile menu on Escape and trap focus inside drawer
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isMobileMenuOpen) {
+      if (!isMobileMenuOpen) return;
+
+      if (e.key === 'Escape') {
         setIsMobileMenuOpen(false);
+        return;
+      }
+
+      if (e.key === 'Tab') {
+        const trigger = document.querySelector<HTMLElement>('header button[aria-controls="mobile-navigation-menu"]');
+        const drawer = document.getElementById('mobile-navigation-menu');
+        if (!drawer || !trigger) return;
+
+        const focusables = [
+          trigger,
+          ...Array.from(drawer.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')),
+        ];
+        if (focusables.length === 0) return;
+
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
       }
     };
 

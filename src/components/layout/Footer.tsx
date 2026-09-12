@@ -83,7 +83,7 @@ export const Footer: React.FC = () => {
 
               <a
                 href={footer.contactCtaHref}
-                className="inline-flex items-center gap-1.5 font-body text-sm font-semibold text-action-primary hover:text-emerald-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring rounded py-1"
+                className="inline-flex items-center gap-1.5 font-body text-sm font-semibold text-action-primary hover:text-emerald-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring rounded py-1 min-h-[44px] sm:min-h-0"
               >
                 <span>{footer.contactCtaLabel}</span>
                 <ArrowUpRight className="w-4 h-4" aria-hidden="true" />

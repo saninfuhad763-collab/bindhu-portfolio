@@ -132,8 +132,12 @@
 
 - [ ] **Micro-Interactions & Animation**
   - Gentle scroll-triggered reveals and button hover states maintaining a calm aesthetic.
-- [ ] **Accessibility (a11y) Audit**
-  - Verify WCAG 2.1 AA contrast compliance, keyboard focus rings, semantic HTML structure, and screen-reader compatibility.
+- [x] **Deep Accessibility (a11y) Audit — Full Page** *(Completed 2026-09-12)*
+  - Verified WCAG 2.1 AA contrast compliance across 18 pairs (all text >= 4.5:1, focus ring 7.03:1).
+  - Verified keyboard focus rings (`focus-visible:ring-focus-ring`) and skip-link programmatic target focusability (`tabIndex={-1}`).
+  - Verified mobile drawer modal focus containment and Escape dismiss lifecycle.
+  - Verified WAI-ARIA tabs pattern (ArrowDown/Up, Home/End, active panel association) on desktop and accessible accordion on mobile.
+  - Verified single H1, 8 H2s, zero skips, zero duplicate IDs, zero empty accessible names, and aria-hidden on decorative SVGs.
 - [ ] **Cross-Device & Responsive Verification**
   - Verify fluid layouts across mobile (375px+), tablet (768px+), laptop (1024px+), and wide screens (1440px+).
 - [ ] **Performance & SEO**

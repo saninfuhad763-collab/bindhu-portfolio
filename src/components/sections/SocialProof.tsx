@@ -109,8 +109,11 @@ export const SocialProof: React.FC = () => {
               <div className="pt-5 border-t border-border-subtle/80 space-y-3">
                 {socialProof.availabilityNotice.commitments.map((commitment, idx) => (
                   <div key={idx} className="flex items-start gap-3">
-                    <span className="mt-0.5 w-4 h-4 rounded-full bg-action-primary/10 text-action-primary flex items-center justify-center flex-shrink-0">
-                      <Check className="w-2.5 h-2.5" />
+                    <span
+                      className="mt-0.5 w-4 h-4 rounded-full bg-action-primary/10 text-action-primary flex items-center justify-center flex-shrink-0"
+                      aria-hidden="true"
+                    >
+                      <Check className="w-2.5 h-2.5" aria-hidden="true" />
                     </span>
                     <span className="font-body text-xs sm:text-body-small text-content-secondary leading-normal">
                       {commitment}
