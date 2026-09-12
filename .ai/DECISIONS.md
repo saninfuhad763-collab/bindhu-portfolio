@@ -135,3 +135,15 @@ This document records established architectural, design, operational, and organi
 - **Date:** 2026-09-12
 - **Decision:** Omit hardcoded regional or U.S.-specific healthcare constructs (Medicare A/B/D, HMO/PPO, OOPM, US subsidies) from production copy until the client's operating jurisdiction is confirmed.
 - **Implementation:** Education topics and policy concepts are structured as neutral placeholders (`[Coverage Concepts — Pending Client Market Confirmation]`) within the centralized `SiteContent` store.
+
+---
+
+## Decision 012 — Global Header & Navigation Architecture
+- **Status:** Implemented
+- **Date:** 2026-09-12
+- **Decision:**
+  - **Brand Representation:** Restrained typographic brand treatment combining `Lora` 600 bold for "Bindhu" and `Plus Jakarta Sans` 500 tracking-wider uppercase for "HEALTH INSURANCE CONSULTANT", avoiding premature logo asset requirements.
+  - **Navigation Structure:** 5 primary anchor targets (About, Services, How It Works, Guidance, FAQ) plus primary action button ("Book a Consultation" -> `#contact`).
+  - **Scroll Stabilization:** Sticky header (`z-40`) with progressive background opacity (`bg-canvas/90` to `bg-canvas/95`), subtle backdrop blur (`backdrop-blur-md`), and hairline bottom border (`border-border-subtle`) triggered when scroll exceeds 20px. Replaces the jarring height resizing and theatrical animation from the reference site.
+  - **Mobile Drawer:** Full-fidelity Warm Ivory panel with 48px touch targets, Lucide Menu/Close toggle, background scroll lock (`overflow: hidden`), and keyboard dismiss listener (Escape key).
+  - **Accessibility Compliance:** WCAG 2.1 AA bypass link ("Skip to main content"), accessible `aria-expanded` and `aria-controls` bindings, 48px minimum touch targets, and visible focus rings (`:focus-visible`).

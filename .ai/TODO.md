@@ -35,29 +35,61 @@
 
 ---
 
-## High Priority (Next Milestone: Phase 4 Section Composition — Header + Hero)
+## High Priority (Active Milestone: Core Section Composition)
 
-- [ ] **Global Header & Navigation Bar**
-  - Responsive desktop nav + accessible mobile drawer navigation.
-  - Brand identity, phone link placeholder, and "Request a Review" CTA.
-- [ ] **Global Layout Structure**
-  - Implement accessible Header / Navigation bar with clear CTA and mobile drawer.
-  - Implement comprehensive Footer with disclaimers, credentials placeholder, and navigation links.
-- [ ] **Hero Section Implementation**
-  - High-impact value proposition tailored for health insurance consultation.
-  - Primary conversion action (e.g., "Schedule a Free Policy Review").
-  - Subtle trust badges / reassurance cues.
-- [ ] **Services / Specializations Section**
-  - Individual, family, and group/corporate health insurance advisory cards.
-  - Clear, jargon-free benefit explanations.
-- [ ] **About / Philosophy Section**
-  - Independent consultant advantage (advocating for the client, not the insurance company).
-  - Human, approachable introduction (placeholder-driven).
-- [ ] **Process / How It Works Section**
-  - Step-by-step client consultation journey (Assessment → Comparison → Recommendation → Ongoing Support).
-- [ ] **FAQ Section**
-  - Interactive accordion addressing common health insurance consumer anxieties and questions.
-- [ ] **Contact / Consultation Booking CTA Section**
+- [x] **Global Header & Navigation Bar (Phase 4A)** *(Completed 2026-09-12)*
+  - Responsive desktop nav (About, Services, How It Works, Guidance, FAQ) + accessible mobile drawer navigation.
+  - Typographic brand identity (Lora + Plus Jakarta Sans).
+  - Primary conversion action ("Book a Consultation" -> `#contact`).
+  - Subtle scroll stabilization with backdrop blur and hairline border.
+  - WCAG 2.1 AA "Skip to main content" bypass link, 48px touch targets, Escape key dismiss.
+- [x] **Hero Section Implementation (Phase 4B)** *(Completed 2026-09-12)*
+  - Reassuring, human value proposition: "Clear guidance for protecting what matters most."
+  - Single semantic H1 page title in Lora bold serif.
+  - Dual conversion CTAs ("Book a Consultation" -> `#contact`, "Explore Guidance" -> `#education`).
+  - 4:5 aspect ratio portrait placeholder container with tactile offset paper layer.
+  - Responsive 7:5 asymmetric desktop layout transitioning to clean single-column mobile flow.
+- [x] **Trust & Value Anchor Section (Phase 5)** *(Completed 2026-09-12)*
+  - Eyebrow: "Why The Experience Feels Different"
+  - Headline: "Clarity first. Confidence follows."
+  - 4 non-factual value pillars: Clear Guidance, Personalized Support, Straightforward Process, Plain-Language Explanations.
+  - Asymmetric desktop layout (Left: Section Heading & Intro; Right: 2x2 Pillar Grid).
+  - Soft Linen background (`bg-canvas-alt`) providing natural visual transition from Hero.
+- [x] **About Bindhu Section (Phase 6)** *(Completed 2026-09-12)*
+  - Asymmetric editorial composition (Left: 4:5 portrait frame with offset paper mat; Right: Narrative & Philosophy).
+  - Warm Ivory base canvas (`#FBFBF9`), creating alternating paper rhythm from Trust's Soft Linen.
+  - 3 Core Approach statements: "Listen first", "Explain clearly", "Guide thoughtfully" (pure editorial typography, zero card boxes).
+  - Secondary text CTA pointing toward `#services` (`Explore advisory areas →`).
+  - Zero fabricated credentials, years of experience, or claims.
+- [x] **Advisory Services Section (Phase 7)** *(Completed 2026-09-12)*
+  - Progressive-disclosure editorial navigator: Desktop 5:7 split (interactive index 01-04 on left, rich selected detail card on right); Mobile accessible accordion with min 56px touch target buttons.
+  - Alternating paper rhythm: Soft Linen canvas (`bg-canvas-alt`, `#F4F3EE`) with hairline borders and Eucalyptus active accents.
+  - 4 neutral advisory areas: Individual Coverage Planning, Family Coverage Guidance, Life-Stage & Transition Planning, Specialized & Supplementary Guidance.
+  - Strict content safety: Zero unverified product/carrier claims, neutral scope notices `[ Advisory scope pending client confirmation ]`.
+- [x] **Process / How It Works Section (Phase 8)** *(Completed 2026-09-12)*
+  - Guided editorial timeline/journey: Desktop 4-step horizontal distribution with subtle hairline connector; Mobile clean vertical timeline with left-anchored markers.
+  - Return to Warm Ivory canvas (`bg-canvas`, `#FBFBF9`), maintaining the paper rhythm.
+  - 4 neutral, safe steps: 01 Start with your situation, 02 Clarify what matters, 03 Explore the possibilities, 04 Decide what comes next.
+  - Positioning reassurance note below timeline.
+  - Zero unverified operational, regulatory, fee, or outcome claims.
+- [x] **Insurance Education / Client Guidance Section (Phase 9)** *(Completed 2026-09-12)*
+  - Market-neutral educational topics demystifying complex concepts (reinforcing "Clarity before commitment").
+  - Desktop 5:7 two-column layout with sticky narrative intro and hairline question index with inline disclosure.
+  - Mobile accessible accordion (<1024px) with >=48px touch targets and responsive card padding.
+  - Soft Linen canvas (`bg-canvas-alt`, `#F4F3EE`), maintaining paper rhythm (Ivory → Linen → Ivory → Linen → Ivory → Linen).
+  - 100% safe, neutral educational questions held with `status: 'pending'` and zero market-specific insurance terms.
+  - Verified clean build and DevTools QA across 6 viewports with zero overflow.
+- [x] **Pre-Audit GitHub Checkpoint — Commit & Push Preparation** *(Completed 2026-09-12)*
+  - Inspect repository status, verify `.gitignore`, clean build, and safety compliance.
+  - Create milestone commit covering Header through Insurance Education sections.
+  - Prepare for remote push when URL is provided.
+- [ ] **Major Composition Audit — Header Through Insurance Education**
+  - Holistic visual QA, vertical rhythm, typography scale, paper rhythm, and cross-section harmony review.
+- [ ] **Client Stories & Testimonials (Phase 10)**
+  - Clearly labeled placeholder testimonials preserving authenticity boundaries.
+- [ ] **Frequently Asked Questions (Phase 11)**
+  - Interactive accordion addressing consumer anxieties and consultation expectations.
+- [ ] **Consultation Booking & Inquiry Form (Phase 12)**
   - Low-friction inquiry form and appointment booking call-to-action.
 
 ---

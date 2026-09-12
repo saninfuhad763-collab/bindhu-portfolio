@@ -1,4 +1,11 @@
 import React from 'react';
+import { Header } from './components/layout/Header';
+import { Hero } from './components/sections/Hero';
+import { TrustValue } from './components/sections/TrustValue';
+import { About } from './components/sections/About';
+import { Services } from './components/sections/Services';
+import { Process } from './components/sections/Process';
+import { Education } from './components/sections/Education';
 import { Container } from './components/layout/Container';
 import { SectionHeading } from './components/ui/SectionHeading';
 import { Button } from './components/ui/Button';
@@ -6,25 +13,55 @@ import { Stack } from './components/ui/Stack';
 import { siteContent } from './content/siteContent';
 
 /**
- * Foundation Verification App
- * Demonstrates and validates the design system foundation, tokens, typography,
- * and primitives without prematurely implementing full portfolio sections.
+ * Main Application Shell with Header, Hero, TrustValue, About, Services, Process & Education
  */
 export const App: React.FC = () => {
   return (
-    <div className="min-h-screen bg-canvas py-16 px-4">
-      <Container size="standard">
-        <Stack direction="col" gap="10" align="start">
-          {/* Foundation Status & Header */}
-          <header className="border-b border-border-subtle pb-8 w-full">
-            <SectionHeading
-              eyebrow="Phase 3 Foundation Active"
-              eyebrowVariant="default"
-              title={`${siteContent.client.name} — ${siteContent.client.professionalTitle}`}
-              titleAs="h1"
-              description="Design system tokens, typography pairing (Lora + Plus Jakarta Sans), and foundational UI primitives have been successfully initialized."
-            />
-          </header>
+    <div className="min-h-screen bg-canvas text-content-primary flex flex-col" id="top">
+      {/* Skip to Content Link for WCAG 2.1 AA Compliance */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-brand-primary focus:text-white focus:rounded focus:ring-2 focus:ring-focus-ring focus:shadow-md font-body text-sm font-medium"
+      >
+        Skip to main content
+      </a>
+
+      {/* Production Global Header */}
+      <Header />
+
+      {/* Main Content Area */}
+      <main id="main-content" className="flex-1">
+        {/* Production Hero Section */}
+        <Hero />
+
+        {/* Production Trust & Value Anchor Section */}
+        <TrustValue />
+
+        {/* Production About Bindhu Section */}
+        <About />
+
+        {/* Production Advisory Services Section */}
+        <Services />
+
+        {/* Production Consultation Process Section */}
+        <Process />
+
+        {/* Production Insurance Education Section */}
+        <Education />
+
+        {/* Foundation & Primitives Verification Block (To be replaced by subsequent sections) */}
+        <div className="py-16 px-4 border-t border-border-subtle/80 bg-canvas-alt/30">
+          <Container size="standard">
+            <Stack direction="col" gap="10" align="start">
+              <div className="border-b border-border-subtle pb-8 w-full">
+                <SectionHeading
+                  eyebrow="Phase 3 Foundation Active"
+                  eyebrowVariant="default"
+                  title={`${siteContent.client.name} — ${siteContent.client.professionalTitle}`}
+                  titleAs="h2"
+                  description="Design system tokens, typography pairing (Lora + Plus Jakarta Sans), and foundational UI primitives have been successfully initialized."
+                />
+              </div>
 
           {/* Design System Primitives Verification */}
           <section className="space-y-6 w-full" aria-labelledby="primitives-heading">
@@ -76,7 +113,7 @@ export const App: React.FC = () => {
                   Jurisdiction-specific concepts held as neutral placeholders.
                 </p>
                 <p className="mt-1 font-body text-small-meta text-content-muted">
-                  {siteContent.education[0]?.topicTitle}
+                  {siteContent.education.topics[0]?.question}
                 </p>
               </div>
             </div>
@@ -90,6 +127,8 @@ export const App: React.FC = () => {
           </footer>
         </Stack>
       </Container>
+      </div>
+      </main>
     </div>
   );
 };

@@ -34,47 +34,107 @@ export interface HeroContent {
     href: string;
   };
   reassuranceNote: string;
+  imageAlt: string;
+  imageSource: string | null;
+  imageStatus: 'pending' | 'verified';
+  imagePlaceholderLabel: string;
 }
 
 export interface TrustPillar {
   id: string;
   title: string;
   description: string;
-  iconName: 'shield' | 'search' | 'clock' | 'heartHandshake';
+  iconName: 'compass' | 'userRound' | 'route' | 'messageCircle';
+}
+
+export interface TrustValueContent {
+  eyebrow: string;
+  headline: string;
+  description: string;
+  pillars: TrustPillar[];
+}
+
+export interface AboutPhilosophy {
+  id: string;
+  title: string;
+  description: string;
 }
 
 export interface AboutContent {
   eyebrow: string;
   headline: string;
   paragraphs: string[];
-  principles: Array<{
-    title: string;
-    description: string;
-  }>;
+  philosophy: AboutPhilosophy[];
+  cta: {
+    label: string;
+    href: string;
+  };
+  imageSource: string | null;
+  imageAlt: string;
+  imageStatus: 'pending' | 'verified';
+  imagePlaceholderLabel: string;
+  caption?: string;
+  verifiedBio?: string | null;
+  credentialsPlaceholder?: string;
 }
 
 export interface ServiceItem {
   id: string;
+  number: string;
+  shortLabel: string;
   category: string;
   title: string;
   description: string;
   audience: string;
   advisoryScope: string[];
+  expectedOutcome: string;
+  verificationStatus: string;
+  verificationNotice?: string;
+}
+
+export interface ServicesContent {
+  eyebrow: string;
+  headline: string;
+  description: string;
+  items: ServiceItem[];
+  cta: {
+    label: string;
+    href: string;
+  };
 }
 
 export interface ProcessStep {
-  stepNumber: string;
+  id: string;
+  number: string;
+  shortLabel: string;
   title: string;
   description: string;
-  deliverable: string;
+  outcome: string;
 }
 
-export interface EducationalTopic {
+export interface ProcessContent {
+  eyebrow: string;
+  headline: string;
+  description: string;
+  reassuranceText: string;
+  steps: ProcessStep[];
+}
+
+export interface EducationTopic {
   id: string;
-  topicTitle: string;
+  number: string;
+  question: string;
   summary: string;
-  keyTakeaway: string;
-  isPlaceholderMarketTopic: boolean;
+  answer: string;
+  status: 'pending' | 'verified';
+  statusLabel: string;
+}
+
+export interface EducationContent {
+  eyebrow: string;
+  headline: string;
+  description: string;
+  topics: EducationTopic[];
 }
 
 export interface TestimonialItem {
@@ -116,15 +176,30 @@ export interface FooterContent {
   }>;
 }
 
+export interface NavItem {
+  label: string;
+  href: string;
+}
+
+export interface HeaderContent {
+  brandName: string;
+  brandDescriptor: string;
+  navItems: NavItem[];
+  ctaLabel: string;
+  ctaHref: string;
+}
+
 export interface SiteContent {
   meta: MetaContent;
   client: ClientProfile;
+  header: HeaderContent;
   hero: HeroContent;
-  trustPillars: TrustPillar[];
+  trustValue: TrustValueContent;
+  trustPillars?: TrustPillar[];
   about: AboutContent;
-  services: ServiceItem[];
-  process: ProcessStep[];
-  education: EducationalTopic[];
+  services: ServicesContent;
+  process: ProcessContent;
+  education: EducationContent;
   testimonials: TestimonialItem[];
   faqs: FAQItem[];
   contact: ContactContent;

@@ -26,173 +26,314 @@ export const siteContent: SiteContent = {
     carrierNoticePlaceholder: 'Carrier details to be listed upon market verification.',
   },
 
+  header: {
+    brandName: 'Bindhu',
+    brandDescriptor: 'Health Insurance Consultant',
+    navItems: [
+      { label: 'About', href: '#about' },
+      { label: 'Services', href: '#services' },
+      { label: 'How It Works', href: '#process' },
+      { label: 'Guidance', href: '#education' },
+      { label: 'FAQ', href: '#faq' },
+    ],
+    ctaLabel: 'Book a Consultation',
+    ctaHref: '#contact',
+  },
+
   hero: {
-    eyebrow: 'Personal Health Insurance Advisory',
-    headline: "Navigating Health Coverage Doesn't Have to Be Overwhelming.",
+    eyebrow: 'Health Insurance Guidance',
+    headline: 'Clear guidance for protecting what matters most.',
     subheadline:
-      'Clear guidance, personalized plan evaluations, and dedicated advocacy to help you protect what matters most—without confusion or pressure.',
+      'Understand your options, ask the right questions, and move forward with greater confidence.',
     primaryCta: {
-      label: 'Request a Policy Review',
+      label: 'Book a Consultation',
       href: '#contact',
     },
     secondaryCta: {
-      label: 'Explore Advisory Areas',
-      href: '#services',
+      label: 'Explore Guidance',
+      href: '#education',
     },
-    reassuranceNote: 'Confidential consultations focused entirely on your specific needs.',
+    reassuranceNote: 'A clearer way to begin the conversation about your coverage.',
+    imageAlt: 'Portrait area reserved for Bindhu, Health Insurance Consultant',
+    imageSource: null,
+    imageStatus: 'pending',
+    imagePlaceholderLabel: '[ Authentic Client Photography Pending ]',
   },
 
-  trustPillars: [
-    {
-      id: 'pillar-1',
-      title: 'Clear Guidance',
-      description: 'Translating complex policy wording and coverage details into plain, understandable language.',
-      iconName: 'shield',
-    },
-    {
-      id: 'pillar-2',
-      title: 'Objective Comparisons',
-      description: 'Reviewing plan options thoroughly to identify solutions that align with your health and financial priorities.',
-      iconName: 'search',
-    },
-    {
-      id: 'pillar-3',
-      title: 'Personalized Attention',
-      description: 'Taking the time to understand your individual, family, or business circumstances before recommending a path.',
-      iconName: 'heartHandshake',
-    },
-    {
-      id: 'pillar-4',
-      title: 'Ongoing Support',
-      description: 'Available to assist with questions, coverage adjustments, and annual reviews as your needs evolve.',
-      iconName: 'clock',
-    },
-  ],
+  trustValue: {
+    eyebrow: 'Why The Experience Feels Different',
+    headline: 'Clarity first. Confidence follows.',
+    description:
+      'Good guidance starts by making complicated decisions easier to understand, one step at a time.',
+    pillars: [
+      {
+        id: 'pillar-guidance',
+        title: 'Clear Guidance',
+        description:
+          'Complex policy structures, deductibles, and benefits translated into plain, understandable terms before you make decisions.',
+        iconName: 'compass',
+      },
+      {
+        id: 'pillar-support',
+        title: 'Personalized Support',
+        description:
+          'A consultation designed around your individual situation, health priorities, and budget—never a one-size-fits-all sales pitch.',
+        iconName: 'userRound',
+      },
+      {
+        id: 'pillar-process',
+        title: 'Straightforward Process',
+        description:
+          'Knowing exactly what happens next at each stage, from initial questions to plan comparison, with zero pressure or rush.',
+        iconName: 'route',
+      },
+      {
+        id: 'pillar-explanations',
+        title: 'Plain-Language Explanations',
+        description:
+          'Clear, open dialogue that demystifies industry acronyms and fine print, helping you choose coverage with genuine peace of mind.',
+        iconName: 'messageCircle',
+      },
+    ],
+  },
 
   about: {
     eyebrow: 'About Bindhu',
-    headline: 'Dedicated to Bringing Clarity and Calm to Health Insurance Decisions.',
+    headline: 'A calmer way to navigate complicated decisions.',
     paragraphs: [
-      'Choosing health coverage is one of the most important decisions an individual or family can make, yet the process is frequently complicated by dense terminology, confusing tiers, and uncertainty.',
-      'My consulting approach centers on human connection, active listening, and thorough analysis. Rather than rushing into a plan, we examine your priorities, explain your options clearly, and ensure you feel completely confident in your coverage.',
+      'Health coverage is one of the most essential protections you put in place for yourself or your family, yet the process often feels rushed, overwhelming, and laden with technical terms that make clear choices difficult.',
+      'My consulting approach begins with listening rather than selling. We take the time to understand your circumstances, examine your priorities, and translate complex policy details into plain language so you can compare options with clarity.',
+      'The goal is never to steer you toward a particular plan, but to create the space, context, and patient guidance you need to make decisions with genuine confidence.',
     ],
-    principles: [
+    philosophy: [
       {
-        title: 'Client-First Focus',
-        description: 'Focusing exclusively on what serves your personal health and financial security best.',
+        id: 'listen-first',
+        title: 'Listen first',
+        description:
+          'Start with your personal situation, healthcare priorities, and questions—never an assumed recommendation.',
       },
       {
-        title: 'Complete Transparency',
-        description: 'Plain explanations of plan limitations, out-of-pocket considerations, and policy structures.',
+        id: 'explain-clearly',
+        title: 'Explain clearly',
+        description:
+          'Demystify unfamiliar terms, coverage limits, and out-of-pocket costs in clear, plain language.',
       },
       {
-        title: 'Patient Demystification',
-        description: 'Taking the time to answer every question thoroughly so you never feel rushed.',
+        id: 'guide-thoughtfully',
+        title: 'Guide thoughtfully',
+        description:
+          'Create an unhurried environment where you feel fully informed and in control of every decision.',
+      },
+    ],
+    cta: {
+      label: 'Explore advisory areas',
+      href: '#services',
+    },
+    imageSource: null,
+    imageAlt: 'Portrait placeholder for Bindhu, Health Insurance Consultant',
+    imageStatus: 'pending',
+    imagePlaceholderLabel: '[ Authentic Client Photography Pending ]',
+    caption: 'Guidance rooted in patience, clarity, and genuine respect for your decisions.',
+    verifiedBio: null,
+    credentialsPlaceholder: 'Credentials to be listed upon client verification.',
+  },
+
+  services: {
+    eyebrow: 'Advisory Services',
+    headline: 'Guidance built around your situation.',
+    description:
+      'Coverage considerations vary widely depending on personal circumstances and priorities. Explore how a structured, consultative conversation helps clarify questions and guide thoughtful decisions.',
+    cta: {
+      label: 'Explore your situation',
+      href: '#contact',
+    },
+    items: [
+      {
+        id: 'service-personal',
+        number: '01',
+        shortLabel: 'Personal Coverage',
+        category: 'Personal Guidance',
+        title: 'Personal Coverage Guidance',
+        description:
+          'A structured place to understand the questions and priorities involved in reviewing personal coverage options and finding a balanced path forward.',
+        audience:
+          'Individuals exploring, reviewing, or adjusting their personal coverage needs.',
+        advisoryScope: [
+          'Reviewing your current situation and healthcare priorities',
+          'Identifying the questions you want answered before deciding',
+          'Evaluating core protection considerations against budget preferences',
+          '[Detailed service scope — pending client confirmation]',
+        ],
+        expectedOutcome:
+          'A clearer understanding of what to consider next with zero pressure or confusing jargon.',
+        verificationStatus: 'Pending client confirmation',
+        verificationNotice: '[ Detailed service scope — pending client confirmation ]',
+      },
+      {
+        id: 'service-family',
+        number: '02',
+        shortLabel: 'Family Coverage',
+        category: 'Household Guidance',
+        title: 'Family Coverage Guidance',
+        description:
+          'A thoughtful, organized process to examine shared and individual priorities across household members, helping families plan with clarity.',
+        audience:
+          'Families and households seeking to coordinate coverage considerations together.',
+        advisoryScope: [
+          'Mapping household coverage priorities across family members',
+          'Examining shared versus individual protection considerations',
+          'Structuring questions around routine and unexpected care planning',
+          '[Detailed service scope — pending client confirmation]',
+        ],
+        expectedOutcome:
+          'A structured overview of family priorities to help guide coordinated household decisions.',
+        verificationStatus: 'Pending client confirmation',
+        verificationNotice: '[ Detailed service scope — pending client confirmation ]',
+      },
+      {
+        id: 'service-transition',
+        number: '03',
+        shortLabel: 'Transition Guidance',
+        category: 'Transition Guidance',
+        title: 'Life-Stage & Transition Guidance',
+        description:
+          'Patient, step-by-step guidance when personal circumstances change—such as career transitions, relocations, or approaching new life milestones.',
+        audience:
+          'Individuals experiencing career changes, relocations, or new life stages.',
+        advisoryScope: [
+          'Understanding key decision timeframes during transitions',
+          'Reviewing continuity considerations when circumstances change',
+          'Organizing essential questions and checklists before making changes',
+          '[Detailed service scope — pending client confirmation]',
+        ],
+        expectedOutcome:
+          'Confidence and clarity on transition timelines and considerations without feeling rushed.',
+        verificationStatus: 'Pending client confirmation',
+        verificationNotice: '[ Detailed service scope — pending client confirmation ]',
+      },
+      {
+        id: 'service-specialized',
+        number: '04',
+        shortLabel: 'Specialized Guidance',
+        category: 'Specialized Guidance',
+        title: 'Specialized Coverage Guidance',
+        description:
+          'A dedicated discussion to evaluate distinct situations, supplemental considerations, or specific protection questions that require individual attention.',
+        audience:
+          'Individuals with specific coverage questions or exploring supplemental options.',
+        advisoryScope: [
+          'Identifying specific areas where additional guidance is helpful',
+          'Clarifying the role of supplemental protection options',
+          'Weighing personal risk preferences against cost considerations',
+          '[Detailed service scope — pending client confirmation]',
+        ],
+        expectedOutcome:
+          'A well-rounded perspective on specialized options tailored to your distinct priorities.',
+        verificationStatus: 'Pending client confirmation',
+        verificationNotice: '[ Detailed service scope — pending client confirmation ]',
       },
     ],
   },
 
-  services: [
-    {
-      id: 'service-individual',
-      category: 'Personal Advisory',
-      title: 'Individual & Family Coverage Planning',
-      description: 'Helping individuals and households navigate available coverage options to balance monthly premiums with comprehensive protection.',
-      audience: 'Families, self-employed professionals, and individuals seeking dependable coverage.',
-      advisoryScope: [
-        'Evaluating network coverage and provider access',
-        'Balancing deductibles with expected healthcare usage',
-        'Reviewing prescription and wellness benefits',
-      ],
-    },
-    {
-      id: 'service-transition',
-      category: 'Life Stage Transitions',
-      title: 'Senior & Retirement Coverage Transitions',
-      description: 'Providing structured, patient guidance for individuals approaching retirement or transitioning between coverage systems.',
-      audience: 'Individuals preparing for retirement or evaluating supplemental protection.',
-      advisoryScope: [
-        'Step-by-step transition timelines and enrollment rules',
-        'Evaluating supplemental coverage needs',
-        'Preventing coverage gaps and avoidable administrative delays',
-      ],
-    },
-    {
-      id: 'service-business',
-      category: 'Organization Solutions',
-      title: 'Small Business & Team Health Solutions',
-      description: 'Assisting small employers and teams in structuring attractive, sustainable health benefits for their staff.',
-      audience: 'Small business owners, startups, and growing teams.',
-      advisoryScope: [
-        'Budget-conscious group benefit structuring',
-        'Employee onboarding and educational guidance',
-        'Annual renewal evaluations and market reviews',
-      ],
-    },
-    {
-      id: 'service-supplemental',
-      category: 'Extended Protection',
-      title: 'Supplemental & Ancillary Health Benefits',
-      description: 'Reviewing specialized coverage areas such as dental, vision, disability, and critical illness protection.',
-      audience: 'Anyone looking to bridge specific coverage gaps.',
-      advisoryScope: [
-        'Identifying vulnerabilities in primary health coverage',
-        'Targeted supplemental protection analysis',
-        'Cost-effective benefit additions',
-      ],
-    },
-  ],
+  process: {
+    eyebrow: 'How It Works',
+    headline: 'A simple path toward greater clarity.',
+    description:
+      'A thoughtful conversation can start with your questions and end with a clearer understanding of what to consider next.',
+    reassuranceText:
+      'Questions are welcome, even when you’re still figuring out where to start.',
+    steps: [
+      {
+        id: 'step-start',
+        number: '01',
+        shortLabel: 'START',
+        title: 'Start with your situation',
+        description:
+          'Begin with the questions, priorities, and circumstances you want to understand more clearly.',
+        outcome: 'A shared starting point.',
+      },
+      {
+        id: 'step-clarify',
+        number: '02',
+        shortLabel: 'CLARIFY',
+        title: 'Clarify what matters',
+        description:
+          'Identify the decisions, priorities, and information that deserve the most attention.',
+        outcome: 'A clearer set of questions.',
+      },
+      {
+        id: 'step-explore',
+        number: '03',
+        shortLabel: 'EXPLORE',
+        title: 'Explore the possibilities',
+        description:
+          'Review the considerations and available directions that are relevant to your situation.',
+        outcome: 'A better understanding of your options.',
+      },
+      {
+        id: 'step-decide',
+        number: '04',
+        shortLabel: 'NEXT STEP',
+        title: 'Decide what comes next',
+        description:
+          'Leave the conversation with a clearer sense of the next step that makes sense for you.',
+        outcome: 'A clearer direction forward.',
+      },
+    ],
+  },
 
-  process: [
-    {
-      stepNumber: '01',
-      title: 'Discovery & Needs Assessment',
-      description: 'We discuss your current situation, health priorities, preferred doctors, and budget parameters in a low-pressure conversation.',
-      deliverable: 'Clear summary of your coverage requirements.',
-    },
-    {
-      stepNumber: '02',
-      title: 'Market Analysis & Comparison',
-      description: 'I conduct an objective review of available plans in your market, filtering for network compatibility and overall value.',
-      deliverable: 'Side-by-side comparison of top matching options.',
-    },
-    {
-      stepNumber: '03',
-      title: 'Plain-Language Review',
-      description: 'Together, we review the strengths and trade-offs of each option so you understand exactly what is covered and how costs work.',
-      deliverable: 'Informed selection with zero confusion.',
-    },
-    {
-      stepNumber: '04',
-      title: 'Enrollment & Year-Round Support',
-      description: 'Assistance with enrollment paperwork, followed by ongoing availability for questions, claim questions, and life changes.',
-      deliverable: 'Dedicated ongoing advisory relationship.',
-    },
-  ],
-
-  education: [
-    {
-      id: 'edu-1',
-      topicTitle: '[Coverage Concepts — Pending Client Market Confirmation]',
-      summary: 'Understanding the relationship between deductibles, premiums, and out-of-pocket maximums.',
-      keyTakeaway: 'A lower premium is not always the most economical choice if routine medical care is required.',
-      isPlaceholderMarketTopic: true,
-    },
-    {
-      id: 'edu-2',
-      topicTitle: '[Network Structures — Pending Client Market Confirmation]',
-      summary: 'How provider networks function, in-network vs. out-of-network considerations, and referral mechanisms.',
-      keyTakeaway: 'Verifying hospital and physician participation before enrolling protects against surprise costs.',
-      isPlaceholderMarketTopic: true,
-    },
-    {
-      id: 'edu-3',
-      topicTitle: '[Enrollment Timelines — Pending Client Market Confirmation]',
-      summary: 'Understanding qualifying life events, standard enrollment windows, and transition periods.',
-      keyTakeaway: 'Knowing your timeline prevents coverage lapses and potential late-enrollment penalties.',
-      isPlaceholderMarketTopic: true,
-    },
-  ],
+  education: {
+    eyebrow: 'Insurance Guidance',
+    headline: 'Understand the questions before making a decision.',
+    description:
+      'A clearer conversation starts with knowing what to ask, what to compare, and which details deserve your attention.',
+    topics: [
+      {
+        id: 'edu-1',
+        number: '01',
+        question: 'What should I understand before choosing coverage?',
+        summary:
+          'Key priorities and foundational questions to consider before evaluating specific options.',
+        answer:
+          '[Verified educational guidance pending client market confirmation.]',
+        status: 'pending',
+        statusLabel: 'Pending client confirmation',
+      },
+      {
+        id: 'edu-2',
+        number: '02',
+        question: 'How should I compare different coverage options?',
+        summary:
+          'A thoughtful, structured way to weigh trade-offs and understand what each direction provides.',
+        answer:
+          '[Verified comparison guidance pending client market confirmation.]',
+        status: 'pending',
+        statusLabel: 'Pending client confirmation',
+      },
+      {
+        id: 'edu-3',
+        number: '03',
+        question: 'What costs and trade-offs should I consider?',
+        summary:
+          'Balancing predictable ongoing commitments with potential out-of-pocket considerations.',
+        answer:
+          '[Verified cost guidance pending client market confirmation.]',
+        status: 'pending',
+        statusLabel: 'Pending client confirmation',
+      },
+      {
+        id: 'edu-4',
+        number: '04',
+        question: 'What questions should I ask before making a change?',
+        summary:
+          'Essential considerations to clarify before transitioning between coverage arrangements.',
+        answer:
+          '[Verified decision guidance pending client market confirmation.]',
+        status: 'pending',
+        statusLabel: 'Pending client confirmation',
+      },
+    ],
+  },
 
   testimonials: [
     {
