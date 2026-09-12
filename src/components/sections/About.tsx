@@ -48,6 +48,7 @@ export const About: React.FC = () => {
                       alt={about.imageAlt}
                       className="w-full h-full object-cover"
                       loading="lazy"
+                      decoding="async"
                     />
                   ) : (
                     /* Intentional Editorial Portrait Placeholder */

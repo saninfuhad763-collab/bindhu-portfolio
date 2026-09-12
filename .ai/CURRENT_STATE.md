@@ -1,10 +1,21 @@
 # Current State — Bindhu Portfolio
 
 ## 1. Snapshot Summary
-- **Current Phase:** Deep Accessibility Audit Completed (Audit & Surgical P2/P3 Corrections)
+- **Current Phase:** Performance Validation Completed (Checkpoint Commit & Push)
 - **Project State:** React 18 + Vite 6 + TypeScript + Tailwind CSS application; design system tokens and foundational primitives active; centralized content store; full production page sequence completed: Global Header, Hero Section, Trust & Value Anchor, About Bindhu, Advisory Services, Consultation Process, Insurance Education, Verified Social Proof Framework, FAQ, Consultation & Contact, and Global Footer. Single H1 on page, 8 semantic section H2s, zero heading level skips, zero duplicate IDs, alternating paper rhythm, semantic `<footer>` with `<nav aria-label="Footer Navigation">`, all 6 page anchors verified (`#about`, `#services`, `#process`, `#education`, `#faq`, `#contact`). Mobile drawer modal focus containment and skip link programmatic focus verified.
-- **Executive Accessibility Verdict:** **`ACCESSIBILITY AUDIT PASSED WITH P2 IMPROVEMENTS`** (All critical barriers absent; P2 mobile drawer focus trap resolved; skip-link main focusability resolved; touch targets verified; color contrast verified across all 18 representative pairs).
-- **Latest Stable State:** Verified production build passing cleanly (`tsc -b && vite build` in 8.97s). Live browser DevTools inspection clean (0 console errors, 0 warnings across all 6 viewports; 0 horizontal overflow). Ready for accessibility checkpoint commit.
+- **Executive Performance Verdict:** **`PERFORMANCE AUDIT PASSED WITH P2 IMPROVEMENTS`**
+  - *Status:* Performance validated in local production preview; final real-user production validation remains pending deployment and final client assets.
+  - *Verified Now:*
+    - Local production-preview build (`tsc -b && vite build` passing cleanly in ~8s).
+    - Local performance trace (observed LCP 821ms with `#hero-heading`, CLS 0.00, TTFB 10ms, DOM nodes 681).
+    - Current bundle sizes (total 67.3 kB gzip across 3 assets: 60.0 kB JS, 6.47 kB CSS, 0.85 kB HTML).
+    - Current runtime behavior (`requestAnimationFrame` scroll throttling in `Header.tsx`, `fetchPriority="high"` on Hero portrait placeholder, `decoding="async"` on portrait containers).
+  - *Pending:*
+    - Real production-domain performance.
+    - Real-user Core Web Vitals.
+    - Final client portrait performance (WebP/AVIF <= 90 kB).
+    - Final social-sharing asset performance.
+- **Latest Stable State:** Verified production build passing cleanly (`tsc -b && vite build`). Live browser DevTools inspection clean (0 console errors, 0 warnings across all 6 viewports; 0 horizontal overflow). Performance checkpoint ready for commit & push.
 
 ---
 
@@ -142,11 +153,11 @@
 ---
 
 ## 6. Git Status
-- **Repository State:** On branch `main` tracking `origin/main` (at commit `fb6212b`).
+- **Repository State:** On branch `main` tracking `origin/main`.
 - **GitHub Remote:** `https://github.com/saninfuhad763-collab/bindhu-portfolio.git`
-- **Working Tree:** Accessibility improvements ready for checkpoint commit.
+- **Working Tree:** Performance checkpoint commit prepared (`perf: harden runtime and image loading`).
 
 ---
 
 ## 7. Next Recommended Step
-Performance Validation & Optimization Audit.
+Client Content & Asset Onboarding

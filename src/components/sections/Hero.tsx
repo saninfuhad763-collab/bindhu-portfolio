@@ -100,6 +100,8 @@ export const Hero: React.FC = () => {
                     alt={hero.imageAlt}
                     className="w-full h-full object-cover"
                     loading="eager"
+                    fetchPriority="high"
+                    decoding="async"
                   />
                 ) : (
                   /* Intentional, High-Fidelity Editorial Placeholder */

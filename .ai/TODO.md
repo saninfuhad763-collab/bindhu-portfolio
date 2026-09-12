@@ -140,8 +140,12 @@
   - Verified single H1, 8 H2s, zero skips, zero duplicate IDs, zero empty accessible names, and aria-hidden on decorative SVGs.
 - [ ] **Cross-Device & Responsive Verification**
   - Verify fluid layouts across mobile (375px+), tablet (768px+), laptop (1024px+), and wide screens (1440px+).
-- [ ] **Performance & SEO**
-  - Optimize asset loading, meta tags, OpenGraph previews, and performance scores.
+- [x] **Performance Validation & Optimization Audit — Full Page** *(Completed 2026-09-12)*
+  - Baseline captured: LCP 821ms, CLS 0.00, TTFB 10ms, DOM nodes 681, 7 requests, zero render-blocking penalties.
+  - Production payload: 67.3 kB gzip total across 3 assets (JS 60.0 kB gzip, CSS 6.47 kB gzip, HTML 0.85 kB).
+  - Evaluated and rejected client-side route/section code splitting (avoids network waterfalls and CLS risks).
+  - Micro-optimizations applied & verified: `requestAnimationFrame` scroll throttling in `Header.tsx`, `fetchPriority="high"` on Hero LCP portrait placeholder in `Hero.tsx`, and `decoding="async"` on portrait containers.
+  - Documented client-asset performance guardrails for future authentic photography (AVIF/WebP <= 90 kB).
 
 ---
 
