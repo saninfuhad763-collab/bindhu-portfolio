@@ -6,6 +6,7 @@ import { About } from './components/sections/About';
 import { Services } from './components/sections/Services';
 import { Process } from './components/sections/Process';
 import { Education } from './components/sections/Education';
+import { SocialProof } from './components/sections/SocialProof';
 import { Container } from './components/layout/Container';
 import { SectionHeading } from './components/ui/SectionHeading';
 import { Button } from './components/ui/Button';
@@ -13,7 +14,7 @@ import { Stack } from './components/ui/Stack';
 import { siteContent } from './content/siteContent';
 
 /**
- * Main Application Shell with Header, Hero, TrustValue, About, Services, Process & Education
+ * Main Application Shell with Header, Hero, TrustValue, About, Services, Process, Education & SocialProof
  */
 export const App: React.FC = () => {
   return (
@@ -48,6 +49,9 @@ export const App: React.FC = () => {
 
         {/* Production Insurance Education Section */}
         <Education />
+
+        {/* Production Verified Social Proof Framework Section */}
+        <SocialProof />
 
         {/* Foundation & Primitives Verification Block (To be replaced by subsequent sections) */}
         <div className="py-16 px-4 border-t border-border-subtle/80 bg-canvas-alt/30">

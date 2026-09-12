@@ -137,12 +137,30 @@ export interface EducationContent {
   topics: EducationTopic[];
 }
 
-export interface TestimonialItem {
+export interface ClientStory {
   id: string;
-  clientInitials: string;
-  caseDescription: string;
-  feedbackText: string;
-  isPlaceholderStory: boolean;
+  status: 'pending' | 'verified';
+  clientName?: string;
+  clientContext?: string;
+  situation?: string;
+  quote?: string;
+  outcome?: string;
+  date?: string;
+  approvedForPublication: boolean;
+}
+
+export interface SocialProofContent {
+  eyebrow: string;
+  headline: string;
+  description: string;
+  supportingLine?: string;
+  availabilityNotice: {
+    badge: string;
+    title: string;
+    description: string;
+    commitments: string[];
+  };
+  stories: ClientStory[];
 }
 
 export interface FAQItem {
@@ -200,7 +218,7 @@ export interface SiteContent {
   services: ServicesContent;
   process: ProcessContent;
   education: EducationContent;
-  testimonials: TestimonialItem[];
+  socialProof: SocialProofContent;
   faqs: FAQItem[];
   contact: ContactContent;
   footer: FooterContent;

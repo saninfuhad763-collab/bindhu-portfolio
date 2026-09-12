@@ -335,32 +335,26 @@ export const siteContent: SiteContent = {
     ],
   },
 
-  testimonials: [
-    {
-      id: 'test-1',
-      clientInitials: 'M. & R. S.',
-      caseDescription: 'Family Coverage Planning [Placeholder Scenario]',
-      feedbackText:
-        '"Working through our family options with Bindhu completely removed the stress from the process. Every question was answered clearly and patiently."',
-      isPlaceholderStory: true,
+  socialProof: {
+    eyebrow: 'Client Stories',
+    headline: 'Real experiences belong here.',
+    description:
+      'Authentic client perspectives will be shared here once they are available and approved for publication.',
+    supportingLine:
+      'Trust is built from real conversations, real decisions, and real experiences.',
+    availabilityNotice: {
+      badge: 'Reserved Editorial Space',
+      title: 'Real client experiences will appear here.',
+      description:
+        'Client privacy and trust come first. Stories will appear only after direct consultation feedback has been verified and authorized for publication.',
+      commitments: [
+        'No fabricated testimonials or placeholder quotes',
+        'Direct client permission required prior to publication',
+        'Full respect for personal healthcare confidentiality',
+      ],
     },
-    {
-      id: 'test-2',
-      clientInitials: 'D. K.',
-      caseDescription: 'Self-Employed Consultant [Placeholder Scenario]',
-      feedbackText:
-        '"As an independent worker, finding health insurance was intimidating. Bindhu helped me find a plan that fit my exact health needs and monthly budget."',
-      isPlaceholderStory: true,
-    },
-    {
-      id: 'test-3',
-      clientInitials: 'E. L.',
-      caseDescription: 'Retirement Coverage Transition [Placeholder Scenario]',
-      feedbackText:
-        '"The transition into retirement coverage has so many moving parts. Having an expert guide us step-by-step gave us total peace of mind."',
-      isPlaceholderStory: true,
-    },
-  ],
+    stories: [],
+  },
 
   faqs: [
     {
