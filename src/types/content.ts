@@ -165,29 +165,69 @@ export interface SocialProofContent {
 
 export interface FAQItem {
   id: string;
+  number: string;
   question: string;
   answer: string;
+  status: 'pending' | 'verified';
+}
+
+export interface FAQContent {
+  eyebrow: string;
+  headline: string;
+  description: string;
+  items: FAQItem[];
+}
+
+export interface ContactExpectation {
+  id: string;
+  title: string;
+  description: string;
+}
+
+export interface ContactFormConfig {
+  nameLabel: string;
+  emailLabel: string;
+  inquiryLabel: string;
+  notesLabel?: string;
+  submitButtonLabel: string;
+}
+
+export interface DirectContactConfig {
+  phone?: string;
+  email?: string;
+  bookingUrl?: string;
+  preferredContactMethod?: string;
+}
+
+export interface ContactPlaceholderConfig {
+  badge: string;
+  title: string;
+  description: string;
+  guidanceTitle: string;
+  guidanceItems: string[];
 }
 
 export interface ContactContent {
   eyebrow: string;
   headline: string;
   description: string;
+  expectations: ContactExpectation[];
+  mode: 'placeholder' | 'direct' | 'form';
+  placeholderState: ContactPlaceholderConfig;
+  form?: ContactFormConfig;
+  directContact?: DirectContactConfig;
   privacyNotice: string;
-  fields: {
-    nameLabel: string;
-    contactMethodLabel: string;
-    coverageInterestLabel: string;
-    coverageOptions: string[];
-    notesLabel: string;
-    submitButtonLabel: string;
-  };
 }
 
 export interface FooterContent {
+  positioning: string;
   disclaimer: string;
   regulatoryNote: string;
+  legalNotice: string;
   copyright: string;
+  contactNote: string;
+  contactCtaLabel: string;
+  contactCtaHref: string;
   navigationLinks: Array<{
     label: string;
     href: string;
@@ -219,7 +259,8 @@ export interface SiteContent {
   process: ProcessContent;
   education: EducationContent;
   socialProof: SocialProofContent;
-  faqs: FAQItem[];
+  faq: FAQContent;
+  faqs?: FAQItem[];
   contact: ContactContent;
   footer: FooterContent;
 }

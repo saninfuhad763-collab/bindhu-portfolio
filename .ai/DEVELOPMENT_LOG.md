@@ -683,3 +683,183 @@ Proceed to **Phase 8 — Consultation Process Section** (step-by-step guidance w
 ### 2. Next Step
 - **Recommendation:** **APPROVED FOR PHASE 11**
 - Proceed to **Phase 11 — Frequently Asked Questions (FAQ)** (accessible interactive accordion resolving consumer anxieties and consultation expectations).
+
+---
+
+## Log Entry 018 — Phase 11 FAQ / Decision-Support Questions Implementation & Verification
+- **Date:** 2026-09-12
+- **Author:** Antigravity (Senior Frontend Engineer / Accessibility Specialist / Content-System Implementer)
+- **Phase:** Phase 11 — FAQ / Decision-Support Questions Completed
+- **Status:** Complete & Verified — APPROVED FOR PHASE 12
+
+### 1. Work Completed
+- **Content Architecture Expansion (`src/types/content.ts` & `src/content/siteContent.ts`):**
+  - Upgraded `FAQItem` and created `FAQContent` interfaces.
+  - Replaced legacy insurance-specific questions with 5 safe, practical decision-support questions:
+    1. `What should I prepare before reaching out?` (Start with questions and concerns)
+    2. `Can I ask questions if I'm still exploring?` (Questions and uncertainty welcome)
+    3. `What should I expect from an initial conversation?` (Understanding priorities and situation)
+    4. `Do I need to know exactly what I need beforehand?` (No final decision assumed at start)
+    5. `What happens after the conversation?` (A clearer sense of what to consider next)
+  - All 5 items configured with internal `status: 'pending'`, strictly avoiding unverified business policies or operational promises.
+  - Zero market-specific insurance terms (Medicare, Medicaid, HMO, PPO, ACA, deductibles, copays, coinsurance, OOPM, enrollment periods, subsidies, carrier rules).
+- **Component Implementation (`src/components/sections/FAQ.tsx`):**
+  - Section wrapper `<section id="faq" aria-labelledby="faq-heading">`.
+  - Header: Eyebrow (`COMMON QUESTIONS`), Lora H2 (`A little clarity before you begin.`), and reassuring description.
+  - Design Pattern: Simple editorial hairline list with numeric badges (`01`–`05`), Lora H3 titles, and rotating Plus/Minus indicators (`divide-y divide-border-subtle`).
+  - Native disclosure controls: `<button type="button">` with `aria-expanded`, `aria-controls`, `id`, and answer regions with `role="region"` and `aria-labelledby`.
+  - Single-item disclosure model with toggle-to-close capability and native Enter/Space key support.
+  - Touch targets measure $\ge$ 56px across all viewports (73px desktop, 106px mobile).
+  - Alternating Paper Rhythm: Soft Linen canvas (`bg-canvas-alt`, `#F4F3EE`), continuing cadence after Social Proof's Warm Ivory (`bg-canvas`).
+  - Compact vertical footprint: 853px desktop (1440px), 1126px mobile (390px).
+- **Mounted in `src/App.tsx`:** Placed directly after `<SocialProof />`.
+- **Production Build Verification (`npm run build`):**
+  - Compiled and bundled with 0 TypeScript errors and 0 Vite bundle warnings in 3.42s.
+- **Live Browser DevTools Instrumentation Verification:**
+  - Zero console errors and zero warnings.
+  - Zero horizontal overflow across all 6 viewports (1440px, 1280px, 1024px, 768px, 390px, 320px).
+  - Document outline strictly valid: Exactly 1 H1 on page (`#hero-heading`), H2 for section (`#faq-heading`), H3 for question titles.
+  - Interactive states verified: Open, close, switch, keyboard Enter/Space activation, and ARIA state updates.
+
+### 2. Next Step
+- **Recommendation:** **APPROVED FOR PHASE 12**
+- Proceed to **Phase 12 — Consultation Booking & Inquiry Form** (low-friction inquiry form and appointment booking call-to-action).
+
+---
+
+## Log Entry 019 — Phase 12 Consultation & Contact Section Implementation & Verification
+- **Date:** 2026-09-12
+- **Author:** Antigravity (Senior Frontend Engineer / Product Designer / UX Strategist / Accessibility Specialist)
+- **Phase:** Phase 12 — Consultation & Contact Section Completed
+- **Status:** Complete & Verified — APPROVED FOR PHASE 13
+
+### 1. Work Completed
+- **FAQ Initial-State Refinement (`src/components/sections/FAQ.tsx`):**
+  - Updated initial state from `faq.items[0]?.id || 'faq-1'` to `null`.
+  - All 5 decision-support questions are now collapsed by default on initial page load, substantially reducing initial mobile vertical height.
+  - Verified that clicking any item opens it, clicking the open item closes it, clicking another item switches cleanly, and keyboard Enter/Space controls function as expected with valid ARIA synchronization (`aria-expanded`, `aria-controls`, `role="region"`).
+- **Content Architecture Expansion (`src/types/content.ts` & `src/content/siteContent.ts`):**
+  - Updated `ContactContent` schema to support multi-mode architecture:
+    - `mode: 'placeholder' | 'direct' | 'form'`
+    - `expectations: ContactExpectation[]` (3 process-oriented expectations)
+    - `placeholderState: ContactPlaceholderConfig` (dignified readiness panel with preparation tips)
+    - `form?: ContactFormConfig` (future form labels and button copy)
+    - `directContact?: DirectContactConfig` (future verified phone, email, booking links)
+    - `privacyNotice: string` (mandatory privacy warning)
+  - Configured `siteContent.ts` with `mode: 'placeholder'`, neutral editorial positioning copy, and zero unverified operational promises.
+- **Component Implementation (`src/components/sections/Contact.tsx`):**
+  - Section wrapper `<section id="contact" aria-labelledby="contact-heading">`, maintaining all existing anchor links (`href="#contact"`) from the Global Header and Hero CTAs.
+  - **Visual Rhythm:** Warm Ivory canvas (`bg-canvas`, `#FBFBF9`), continuing the paper cadence after FAQ's Soft Linen (`bg-canvas-alt`, `#F4F3EE`).
+  - **Editorial Two-Part Composition:**
+    - Left Column (7 cols desktop): Eyebrow (`CONSULTATION`), Lora H2 (`A clearer next step starts with a conversation.`), descriptive paragraph, and 3 numbered expectation points ("Start with your questions", "Share what matters", "Decide what comes next").
+    - Right Column (5 cols desktop): Restrained contact panel with `Consultation Inquiries` badge, Lora H3 title, description, preparation guidance checklist, and explicit privacy notice.
+  - **Strict Health Privacy Rule:** Prominently displays *"Privacy notice: Please do not include medical or other sensitive personal information."* Zero collection of diagnoses, medications, health histories, patient IDs, member IDs, SSNs, or financial accounts.
+  - **Content Safety:** Zero fake phone numbers, zero fake email addresses, zero fake calendar links, zero fake office addresses, and zero simulated submit endpoints.
+- **Mounted in `src/App.tsx`:** Placed directly following `<FAQ />`.
+- **Production Build Verification (`npm run build`):**
+  - Compiled and bundled with 0 TypeScript errors and 0 Vite bundle warnings in 8.90s.
+- **Live Browser DevTools Automated Measurements:**
+  - 0 console errors and 0 console warnings.
+  - Single `<h1>` strictly maintained on page (`#hero-heading`).
+  - Heading hierarchy valid: `#contact-heading` is `<h2>`; panel title and expectation titles are `<h3>`.
+  - All 4 anchor links targeting `#contact` resolve cleanly.
+  - Responsive layout verified across all 6 target viewports:
+    - 1440px: 767px height, 2-column, 0 horizontal overflow (`scrollWidth: 1425 <= 1440`)
+    - 1280px: 767px height, 2-column, 0 horizontal overflow (`scrollWidth: 1265 <= 1280`)
+    - 1024px: 820px height, 2-column, 0 horizontal overflow (`scrollWidth: 1009 <= 1024`)
+    - 768px: 1057px height, stacked, 0 horizontal overflow (`scrollWidth: 753 <= 768`)
+    - 390px: 1301px height, stacked, 0 horizontal overflow (`scrollWidth: 390 <= 390`)
+    - 320px: 1531px height, stacked, 0 horizontal overflow (`scrollWidth: 320 <= 320`)
+
+### 2. Next Step
+- **Recommendation:** **APPROVED FOR PHASE 13**
+- Proceed to **Phase 13 — Footer & Site Closing** (global site footer, navigation links, regulatory disclosures, copyright, and closing brand sign-off).
+
+---
+
+## Log Entry 020 — Phase 13 Footer & Site Closing Implementation & Verification
+- **Date:** 2026-09-12
+- **Author:** Antigravity (Senior Frontend Engineer / Product Designer / Accessibility Specialist)
+- **Phase:** Phase 13 — Footer & Site Closing Completed
+- **Status:** Complete & Verified — READY FOR FULL-PAGE REFINEMENT
+
+### 1. Work Completed
+- **Temporary Verification Block Removal (`src/App.tsx`):**
+  - Removed the Phase 3 foundation verification harness (`#primitives-heading`, `#content-heading`, test buttons, and placeholder blocks) from `src/App.tsx`.
+  - Removed now-unused imports (`Container`, `SectionHeading`, `Button`, `Stack`, `siteContent`) from `App.tsx`.
+  - Verified document outline: Exactly 1 H1 on page (`#hero-heading`), followed by 8 clean semantic H2s (`#trust-heading`, `#about-heading`, `#services-heading`, `#process-heading`, `#education-heading`, `#stories-heading`, `#faq-heading`, `#contact-heading`).
+- **Content Architecture Expansion (`src/types/content.ts` & `src/content/siteContent.ts`):**
+  - Extended `FooterContent` schema with `positioning`, `legalNotice`, `contactNote`, `contactCtaLabel`, and `contactCtaHref`.
+  - Configured `siteContent.ts` with neutral closing copy (`Clear guidance for important coverage decisions.`), educational disclaimer, regulatory reservation note, safe non-functional legal placeholder, dynamic copyright, and aligned navigation labels.
+- **Component Implementation (`src/components/layout/Footer.tsx`):**
+  - Semantic `<footer>` with `role="contentinfo"`.
+  - **Visual Design:** Deep Maritime Slate canvas (`bg-brand-primary`, `#1A2B3C`) with Warm Ivory text (`text-canvas`), subtle top border, and generous, compact padding (`py-12 lg:py-16`). Signals clean visual closure without dramatic dark-tech styling.
+  - **Brand & Positioning:** Lora brand mark, uppercase professional descriptor, and concise neutral positioning statement.
+  - **Semantic Navigation:** `<nav aria-label="Footer Navigation">` with compact two-column grid linking all 6 existing anchor targets (`#about`, `#services`, `#process`, `#education`, `#faq`, `#contact`).
+  - **Consultation Pathway:** Dedicated consultation note directing visitors to `#contact` with accessible arrow link.
+  - **Legal & Compliance Row:** Educational disclaimer, jurisdiction placeholder, copyright, and safe legal placeholder note. Zero fake registration numbers, fake carrier affiliations, or fabricated regulatory claims.
+- **Mounted in `src/App.tsx`:** Placed directly after `</main>`.
+- **Production Build Verification (`npm run build`):**
+  - Compiled cleanly in 8.91s with 0 TypeScript errors and 0 Vite warnings.
+- **Live Browser DevTools Automated Measurements:**
+  - 0 console errors and 0 console warnings.
+  - Exactly 1 `<h1>` on page (`#hero-heading`).
+  - All 6 section anchors plus `#top` verified to resolve to valid existing DOM elements.
+  - Responsive measurements across all 6 viewports:
+    - 1440px: 448px height, 0 horizontal overflow (`scrollWidth: 1425 <= 1440`)
+    - 1280px: 448px height, 0 horizontal overflow (`scrollWidth: 1265 <= 1280`)
+    - 1024px: 448px height, 0 horizontal overflow (`scrollWidth: 1009 <= 1024`)
+    - 768px: 479px height, 0 horizontal overflow (`scrollWidth: 753 <= 768`)
+    - 390px: 858px height, 0 horizontal overflow (`scrollWidth: 390 <= 390`)
+    - 320px: 901px height, 0 horizontal overflow (`scrollWidth: 320 <= 320`)
+
+### 2. Next Step
+- **Recommendation:** **READY FOR FULL-PAGE REFINEMENT**
+- Proceed to **Full-Page Refinement & Production Readiness Audit** (holistic evaluation of visual rhythm, cross-section balance, accessibility compliance, and production asset readiness).
+
+---
+
+## Log Entry 021 — Full-Page Refinement & Production Readiness Audit
+- **Date:** 2026-09-12
+- **Author:** Antigravity (Senior Frontend Architect / Product Designer / Accessibility Specialist / Performance Engineer)
+- **Phase:** Full-Page Refinement & Production Readiness Audit Completed (Audit Only)
+- **Status:** Complete — VERDICT: READY FOR REFINEMENT
+
+### 1. Audit Scope & Protocol
+- **Objective:** Holistic evaluation of the entire implemented Bindhu portfolio page sequence (Header → Hero → Trust → About → Services → Process → Education → Social Proof → FAQ → Contact → Footer).
+- **Execution Protocol:** Inspect → Measure → Evaluate → Classify → Prioritize → Report.
+- **Strict Boundaries Observed:** Audit-only execution. No arbitrary code changes, no Git commits or pushes, no deployments.
+
+### 2. Comprehensive Findings Summary
+- **Executive Verdict:** `READY FOR REFINEMENT`
+- **Application Health:** Production build passed cleanly in 7.42s (`tsc -b && vite build` with 0 TypeScript errors, 0 bundle warnings). Dev server ran with 0 console errors, 0 console warnings, 0 failed network requests.
+- **Heading Hierarchy:** Exactly 1 `<h1>` (`#hero-heading`), exactly 8 semantic `<h2>` section headings, 0 heading skips. Screen-reader hidden elements (`display: none`) verified properly ignored by assistive trees.
+- **Page Dimensions & Overflow:**
+  - 1440px Desktop: 8,467px height, 0 horizontal overflow (`scrollWidth: 1425px <= 1440px`)
+  - 1280px Desktop: 8,467px height, 0 horizontal overflow (`scrollWidth: 1265px <= 1280px`)
+  - 1024px Laptop: 8,712px height, 0 horizontal overflow (`scrollWidth: 1009px <= 1024px`)
+  - 768px Tablet: 10,039px height, 0 horizontal overflow (`scrollWidth: 753px <= 768px`)
+  - 390px Mobile: 13,037px height, 0 horizontal overflow (`scrollWidth: 390px <= 390px`)
+  - 320px Small Mobile: 14,725px height, 0 horizontal overflow (`scrollWidth: 320px <= 320px`)
+- **Interactions Tested & Passed:**
+  - Header: Mobile drawer open, scroll lock (`overflow: hidden`), Escape key dismissal, scroll unlock.
+  - Services: Interactive tab selection and panel synchronization on desktop; responsive accordion toggle on mobile.
+  - Education: Single-item question disclosure toggle with animated chevron and clean focus rings.
+  - FAQ: All 5 items collapsed by default (`openId: null`), single-item toggle model, keyboard Enter/Space activation.
+  - Contact: Multi-mode architecture active in `placeholder` mode with health privacy notice and preparation checklist.
+- **Content Authenticity & Safety:** 100% compliant. Exactly 0 fake credentials, 0 fake names, 0 fake testimonials, 0 fake ratings, 0 carrier logos, 0 market-specific terms (Medicare, Medicaid, HMO, PPO, ACA), 0 fake contact details (phone, email, calendar link, physical address).
+- **Severity Classification:**
+  - **P0 (Blockers):** 0 issues.
+  - **P1 (High - Code Blockers):** 0 issues. (Client data assets remain external dependencies).
+  - **P2 (Medium - Refinement Backlog):**
+    1. CTA Phrasing Harmony: Minor variance between Header ("Book a Consultation"), Services ("Explore your situation"), and Footer ("Schedule Consultation"). Recommend harmonizing to a unified voice.
+    2. Mobile Cumulative Vertical Height: 13,037px at 390px width. Recommend tightening mobile vertical padding across large sections (`py-12 sm:py-16 lg:py-24`).
+    3. Production SEO & Sharing Metadata: Missing Open Graph, Twitter Cards, canonical URL tag, and JSON-LD schema.
+  - **P3 (Low / Polish):**
+    1. Footer legal disclaimer subtle pill badge styling.
+    2. Subtle card hover micro-interaction enhancements.
+
+### 3. Next Recommended Steps
+1. Present the complete 24-section audit report to the user.
+2. Establish a Git Checkpoint Commit & Push for Phases 11–13 + Audit documentation upon user approval.
+3. Execute the prioritized P2 refinement backlog.

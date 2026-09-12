@@ -89,10 +89,28 @@
   - Verified social-proof framework with dynamic publication gating (`status === 'verified'` AND `approvedForPublication === true`).
   - Dignified editorial availability frame communicating privacy and publication ethics; 0 fake testimonials, quotes, initials, or star ratings.
   - Compact vertical footprint (771px desktop, 891px mobile); Warm Ivory canvas maintaining alternating paper cadence.
-- [ ] **Frequently Asked Questions (Phase 11)**
-  - Interactive accordion addressing consumer anxieties and consultation expectations.
-- [ ] **Consultation Booking & Inquiry Form (Phase 12)**
-  - Low-friction inquiry form and appointment booking call-to-action.
+- [x] **Frequently Asked Questions (Phase 11)** *(Completed 2026-09-12)*
+  - Concise editorial hairline accordion list (5 practical decision-support questions).
+  - Native disclosure buttons with single-item toggle model and keyboard navigation.
+  - Soft Linen canvas (`bg-canvas-alt`, `#F4F3EE`), continuing paper cadence (Ivory → Linen).
+  - Strict Content Safety: All 5 answers marked `status: 'pending'`, zero market-specific or operational claims.
+- [x] **Consultation Booking & Contact (Phase 12)** *(Completed 2026-09-12)*
+  - FAQ initial-state refinement: all FAQ items collapsed by default (`openId: null`), reducing mobile page height.
+  - Two-column editorial composition: eyebrow, H2 headline, 3-step expectation list ("Start with your questions", "Share what matters", "Decide what comes next").
+  - Polished placeholder contact panel with preparation guidance tips and zero fake contact channels.
+  - Multi-mode architecture (`placeholder` | `direct` | `form`) with `placeholder` active.
+  - Strict explicit privacy note: *"Please do not include medical or other sensitive personal information."*
+  - Warm Ivory canvas (`bg-canvas`, `#FBFBF9`), continuing the alternating paper cadence.
+- [x] **Footer & Site Closing (Phase 13)** *(Completed 2026-09-12)*
+  - Global site footer created with brand mark, professional descriptor, and neutral closing positioning copy.
+  - Reuses all 6 section anchor links (`#about`, `#services`, `#process`, `#education`, `#faq`, `#contact`).
+  - Safe consultation path link to `#contact`.
+  - Educational disclaimer, compliance placeholder note, and dynamic copyright.
+  - Deep Maritime Slate canvas (`bg-brand-primary`, `#1A2B3C`) with Warm Ivory text (`text-canvas`).
+  - Removed temporary Phase 3 foundation verification harness from `App.tsx`.
+- [x] **Full-Page Refinement & Production Readiness Audit** *(Completed 2026-09-12)*
+  - Holistic evaluation of application health, heading hierarchy, visual rhythm, cross-section balance, accessibility compliance, interaction integrity, content authenticity, and production readiness.
+  - Audit Verdict: `READY FOR REFINEMENT`. Zero P0 blockers, zero P1 code blockers, 3 P2 refinement items (CTA harmony, mobile padding, SEO tags), 2 P3 polish items.
 
 ---
 

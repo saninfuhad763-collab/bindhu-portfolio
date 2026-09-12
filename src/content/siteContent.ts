@@ -356,66 +356,124 @@ export const siteContent: SiteContent = {
     stories: [],
   },
 
-  faqs: [
-    {
-      id: 'faq-1',
-      question: 'What is the role of an independent health insurance consultant?',
-      answer:
-        'An independent consultant works with you to evaluate available coverage options across multiple providers, helping you understand differences and select a plan that matches your specific circumstances.',
-    },
-    {
-      id: 'faq-2',
-      question: 'How do consultations typically work?',
-      answer:
-        'Consultations are conversational and informational. We begin by reviewing your healthcare priorities, budget, and any preferred providers, then examine matching plans together at your own pace.',
-    },
-    {
-      id: 'faq-3',
-      question: 'Can I keep my current doctors and specialists?',
-      answer:
-        'During our review, provider network verification is a top priority. We check that your key physicians, facilities, and medications are included in the plans under consideration.',
-    },
-    {
-      id: 'faq-4',
-      question: 'What information should I have ready for our initial conversation?',
-      answer:
-        'Having a basic list of current doctors, regular prescriptions, and an idea of your monthly budget is helpful, but not required for an introductory conversation.',
-    },
-  ],
+  faq: {
+    eyebrow: 'Common Questions',
+    headline: 'A little clarity before you begin.',
+    description:
+      'A few practical answers for anyone who is still figuring out what they need or what to ask.',
+    items: [
+      {
+        id: 'faq-1',
+        number: '01',
+        question: 'What should I prepare before reaching out?',
+        answer:
+          'You do not need to have everything figured out. Start with the questions, concerns, or changes you would like to understand more clearly.',
+        status: 'pending',
+      },
+      {
+        id: 'faq-2',
+        number: '02',
+        question: 'Can I ask questions if I’m still exploring?',
+        answer:
+          'Yes. The conversation can begin with questions and uncertainty rather than a final decision.',
+        status: 'pending',
+      },
+      {
+        id: 'faq-3',
+        number: '03',
+        question: 'What should I expect from an initial conversation?',
+        answer:
+          'The conversation can begin by understanding your situation, priorities, and the questions you want to work through.',
+        status: 'pending',
+      },
+      {
+        id: 'faq-4',
+        number: '04',
+        question: 'Do I need to know exactly what I need beforehand?',
+        answer:
+          'No final decision is assumed at the beginning. The first step can simply be getting clearer about what matters to you.',
+        status: 'pending',
+      },
+      {
+        id: 'faq-5',
+        number: '05',
+        question: 'What happens after the conversation?',
+        answer:
+          'The next step depends on what you need and what remains unclear. The goal is to leave with a clearer sense of what to consider next.',
+        status: 'pending',
+      },
+    ],
+  },
 
   contact: {
-    eyebrow: 'Get In Touch',
-    headline: 'Schedule a Conversational Policy Review',
+    eyebrow: 'CONSULTATION',
+    headline: 'A clearer next step starts with a conversation.',
     description:
-      'Have questions about your coverage or exploring new options? Send an inquiry below to start a friendly, zero-pressure conversation.',
-    privacyNotice: 'Your information is treated with strict confidentiality and never shared with third parties.',
-    fields: {
-      nameLabel: 'Your Full Name',
-      contactMethodLabel: 'Email Address or Phone Number',
-      coverageInterestLabel: 'Primary Coverage Interest',
-      coverageOptions: [
-        'Individual / Family Coverage',
-        'Senior / Retirement Transition',
-        'Small Business / Team Coverage',
-        'General Policy Review / Questions',
+      'Start with the questions, concerns, or changes you would like to understand more clearly.',
+    expectations: [
+      {
+        id: 'exp-questions',
+        title: 'Start with your questions',
+        description:
+          'You do not need to have everything figured out before beginning.',
+      },
+      {
+        id: 'exp-share',
+        title: 'Share what matters',
+        description:
+          'Begin with the situation, priorities, or questions you want to work through.',
+      },
+      {
+        id: 'exp-next',
+        title: 'Decide what comes next',
+        description:
+          'The conversation can help clarify the next step without unnecessary pressure.',
+      },
+    ],
+    mode: 'placeholder',
+    placeholderState: {
+      badge: 'Consultation Inquiries',
+      title: "Let's begin with a conversation.",
+      description:
+        'Contact details and consultation scheduling will be added here once they are confirmed.',
+      guidanceTitle: 'Helpful things to keep in mind when preparing:',
+      guidanceItems: [
+        'Notes or questions about your current coverage or transition',
+        'Key dates or changes in your timeline (if applicable)',
+        'Any specific topics or priorities you would like to focus on',
       ],
-      notesLabel: 'Tell me a bit about your situation (optional)',
-      submitButtonLabel: 'Send Review Request',
     },
+    form: {
+      nameLabel: 'Full Name',
+      emailLabel: 'Email Address',
+      inquiryLabel: 'What would you like to understand?',
+      notesLabel: 'Additional context or questions (optional)',
+      submitButtonLabel: 'Begin the Conversation',
+    },
+    directContact: {},
+    privacyNotice:
+      'Please do not include medical or other sensitive personal information.',
   },
 
   footer: {
+    positioning: 'Clear guidance for important coverage decisions.',
     disclaimer:
-      'Disclaimer: Information provided on this website is for educational and informational purposes. Specific policy terms, conditions, and coverage details are governed by official plan documents.',
-    regulatoryNote: 'Licensing and regulatory registrations are maintained according to applicable jurisdiction guidelines. Details available upon confirmation.',
+      'Information provided on this website is for educational and informational purposes. Specific policy terms, conditions, and coverage details are governed by official plan documents.',
+    regulatoryNote:
+      'Licensing and regulatory registrations are maintained according to applicable jurisdiction guidelines. Details available upon confirmation.',
+    legalNotice:
+      'Privacy, terms, and accessibility information will be added when final site details are confirmed.',
     copyright: `© ${new Date().getFullYear()} Bindhu. All rights reserved.`,
+    contactNote: 'Consultation details will be added here once confirmed.',
+    contactCtaLabel: 'Schedule Consultation',
+    contactCtaHref: '#contact',
     navigationLinks: [
       { label: 'About', href: '#about' },
       { label: 'Services', href: '#services' },
-      { label: 'Process', href: '#process' },
-      { label: 'Education', href: '#education' },
+      { label: 'How It Works', href: '#process' },
+      { label: 'Guidance', href: '#education' },
       { label: 'FAQ', href: '#faq' },
-      { label: 'Contact', href: '#contact' },
+      { label: 'Consultation', href: '#contact' },
     ],
   },
 };
