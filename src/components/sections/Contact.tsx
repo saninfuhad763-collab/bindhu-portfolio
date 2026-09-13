@@ -3,6 +3,7 @@ import { Container } from '../layout/Container';
 import { siteContent } from '../../content/siteContent';
 import { Shield, ArrowRight, Mail, Phone, Calendar } from 'lucide-react';
 import { Button } from '../ui/Button';
+import { Reveal } from '../motion/Reveal';
 
 /**
  * Phase 12 — Consultation & Contact Section
@@ -30,7 +31,7 @@ export const Contact: React.FC = () => {
       <Container size="standard">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-16 items-start">
           {/* Left Column: Editorial Positioning & Expectations */}
-          <div className="lg:col-span-7">
+          <Reveal variant="fade-right" className="lg:col-span-7">
             {/* Eyebrow */}
             <span className="font-body text-eyebrow font-semibold text-action-primary uppercase tracking-wider block mb-3">
               {contact.eyebrow}
@@ -76,10 +77,10 @@ export const Contact: React.FC = () => {
                 ))}
               </ul>
             </div>
-          </div>
+          </Reveal>
 
           {/* Right Column: Contact Panel (Mode Driven) */}
-          <div className="lg:col-span-5">
+          <Reveal variant="fade-left" delay={0.1} className="lg:col-span-5">
             <div className="bg-surface border border-border-subtle rounded-2xl p-6 sm:p-8 lg:p-9 shadow-card relative">
               {/* MODE 1: PLACEHOLDER (Current default state before verified contact channels) */}
               {contact.mode === 'placeholder' && (
@@ -273,7 +274,7 @@ export const Contact: React.FC = () => {
                 </form>
               )}
             </div>
-          </div>
+          </Reveal>
         </div>
       </Container>
     </section>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Container } from '../layout/Container';
 import { siteContent } from '../../content/siteContent';
 import { Plus } from 'lucide-react';
+import { Reveal } from '../motion/Reveal';
 
 /**
  * Phase 11 — FAQ / Decision-Support Questions
@@ -33,7 +34,7 @@ export const FAQ: React.FC = () => {
       <Container size="standard">
         <div className="max-w-3xl mx-auto">
           {/* Section Header */}
-          <div className="text-center mb-8 sm:mb-12">
+          <Reveal variant="fade-up" className="text-center mb-8 sm:mb-12">
             <span className="font-body text-eyebrow font-semibold text-action-primary uppercase tracking-wider block mb-3">
               {faq.eyebrow}
             </span>
@@ -48,10 +49,11 @@ export const FAQ: React.FC = () => {
             <p className="font-body text-body-large text-content-secondary leading-relaxed max-w-reading mx-auto">
               {faq.description}
             </p>
-          </div>
+          </Reveal>
 
           {/* Editorial Hairline FAQ List */}
-          <div className="divide-y divide-border-subtle border-y border-border-subtle">
+          <Reveal variant="fade-up" delay={0.1}>
+            <div className="divide-y divide-border-subtle border-y border-border-subtle">
             {faq.items.map((item) => {
               const isOpen = openId === item.id;
 
@@ -122,6 +124,7 @@ export const FAQ: React.FC = () => {
               );
             })}
           </div>
+          </Reveal>
         </div>
       </Container>
     </section>

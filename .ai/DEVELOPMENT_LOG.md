@@ -1054,3 +1054,42 @@ Proceed to **Phase 8 — Consultation Process Section** (step-by-step guidance w
 
 ### 3. Next Step
 - Review Performance Audit Report and determine subsequent milestone.
+
+---
+
+## Log Entry 007 — GSAP Motion Quality & Bundle Tradeoff Review
+- **Date:** 2026-09-13
+- **Author:** Antigravity (Interaction Designer / Performance Reviewer / React Architect)
+- **Phase:** GSAP Motion Quality & Bundle Tradeoff Review
+- **Status:** Verified Complete — VERDICT: MOTION READY FOR CHECKPOINT
+
+### 1. Work Completed & Audit Findings
+- **Executive Motion Review:** Complete audit of visual quality, motion density, responsive behavior, smooth scrolling, anchor safety, reduced-motion bypass, bundle cost, and accessibility regression.
+- **Visual Quality & Restraint:** Pacing verified as calm, human, and Warm Editorial. Zero bouncy or flashy animations.
+- **Motion Density Optimization:**
+  - Grouped 4 individual pillar reveals in `TrustValue.tsx` into a single unified 2x2 container reveal (`fade-up` with 0.1s delay), eliminating 3 redundant ScrollTriggers.
+  - Grouped 8 individual step reveals in `Process.tsx` into 2 unified timeline container reveals (1 desktop, 1 mobile), eliminating 8 redundant ScrollTriggers.
+  - Overall Reveal instances reduced from 25 to 14 (-44%), calming visual rhythm and reducing observer overhead.
+- **Anchor Navigation Hardening:**
+  - Added modifier key (`metaKey`, `ctrlKey`, `shiftKey`, `altKey`) and non-primary button (`button !== 0`) bypass to `handleAnchorClick`, preventing unintended interception of standard browser behaviors (Ctrl+Click, Cmd+Click, middle-click).
+  - Added direct URL hash and `hashchange` listeners ensuring direct landings on hash URLs (e.g. `/#services`) and browser back/forward navigation stop cleanly 80px below the viewport top.
+- **GSAP Bundle Optimization:**
+  - Removed unused `ScrollToPlugin` import and registration from `ScrollSystem.tsx` (built-in `ScrollSmoother.scrollTo` and native `window.scrollTo` provide full functionality).
+  - Net bundle reduction: -3.41 kB raw JS, -1.35 kB gzip JS.
+- **Production Build Baseline:**
+  - Build Duration: 5.43s (`tsc -b && vite build`, 0 errors, 0 warnings).
+  - Total JS Bundle: 343.92 kB raw / 115.04 kB gzip (`dist/assets/index-DfIsVsYJ.js`).
+  - Total CSS: 33.37 kB raw / 6.55 kB gzip (`dist/assets/index-BDJVOX1C.css`).
+  - HTML Payload: 2.11 kB raw / 0.85 kB gzip (`dist/index.html`).
+  - Total initial page weight: 122.44 kB gzip across 3 assets.
+- **Responsive & Accessibility Verification:**
+  - 0 horizontal overflow across all 6 viewports (1440, 1280, 1024, 768, 390, 320px).
+  - 0 console errors/warnings.
+  - Reduced-motion behavior was verified: instantaneous display with zero transforms, native scrolling.
+  - Motion performance was validated in the local production preview; final real-user production validation remains pending deployment.
+  - Accessibility integrity verified: single H1, 8 H2s, 0 unlabelled buttons, 0 duplicate IDs.
+
+### 2. Verification
+- Production build passing cleanly in 5.43s (0 TypeScript errors, 0 Vite bundle warnings).
+- Runtime tested via Chrome DevTools MCP across desktop and mobile.
+- GSAP motion architecture implemented and checkpointed; client-content integration remains pending.

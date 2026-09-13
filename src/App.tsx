@@ -10,56 +10,58 @@ import { SocialProof } from './components/sections/SocialProof';
 import { FAQ } from './components/sections/FAQ';
 import { Contact } from './components/sections/Contact';
 import { Footer } from './components/layout/Footer';
+import { ScrollSystem } from './components/motion/ScrollSystem';
 
 /**
  * Main Application Shell with Header, Hero, TrustValue, About, Services, Process, Education, SocialProof, FAQ, Contact & Footer
+ * Integrated with GSAP ScrollSmoother & Motion System
  */
 export const App: React.FC = () => {
+  const skipLink = (
+    <a
+      href="#main-content"
+      className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-brand-primary focus:text-white focus:rounded focus:ring-2 focus:ring-focus-ring focus:shadow-md font-body text-sm font-medium"
+    >
+      Skip to main content
+    </a>
+  );
+
   return (
     <div className="min-h-screen bg-canvas text-content-primary flex flex-col" id="top">
-      {/* Skip to Content Link for WCAG 2.1 AA Compliance */}
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-brand-primary focus:text-white focus:rounded focus:ring-2 focus:ring-focus-ring focus:shadow-md font-body text-sm font-medium"
-      >
-        Skip to main content
-      </a>
+      <ScrollSystem header={<Header />} skipLink={skipLink}>
+        {/* Main Content Area */}
+        <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-none">
+          {/* Production Hero Section */}
+          <Hero />
 
-      {/* Production Global Header */}
-      <Header />
+          {/* Production Trust & Value Anchor Section */}
+          <TrustValue />
 
-      {/* Main Content Area */}
-      <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-none">
-        {/* Production Hero Section */}
-        <Hero />
+          {/* Production About Bindhu Section */}
+          <About />
 
-        {/* Production Trust & Value Anchor Section */}
-        <TrustValue />
+          {/* Production Advisory Services Section */}
+          <Services />
 
-        {/* Production About Bindhu Section */}
-        <About />
+          {/* Production Consultation Process Section */}
+          <Process />
 
-        {/* Production Advisory Services Section */}
-        <Services />
+          {/* Production Insurance Education Section */}
+          <Education />
 
-        {/* Production Consultation Process Section */}
-        <Process />
+          {/* Production Verified Social Proof Framework Section */}
+          <SocialProof />
 
-        {/* Production Insurance Education Section */}
-        <Education />
+          {/* Production FAQ Section */}
+          <FAQ />
 
-        {/* Production Verified Social Proof Framework Section */}
-        <SocialProof />
+          {/* Production Consultation & Contact Section */}
+          <Contact />
+        </main>
 
-        {/* Production FAQ Section */}
-        <FAQ />
-
-        {/* Production Consultation & Contact Section */}
-        <Contact />
-      </main>
-
-      {/* Production Global Footer */}
-      <Footer />
+        {/* Production Global Footer */}
+        <Footer />
+      </ScrollSystem>
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Container } from '../layout/Container';
 import { siteContent } from '../../content/siteContent';
+import { Reveal } from '../motion/Reveal';
 
 /**
  * About Bindhu Section — Phase 6
@@ -14,6 +15,7 @@ import { siteContent } from '../../content/siteContent';
  * - Secondary text CTA pointing toward #services
  * - Strict content safety: zero unverified credentials, years of experience, or claims
  * - Accessible single H2 heading and H3 philosophy points
+ * - GSAP ScrollTrigger reveals (portrait fade-right, narrative fade-left) with 1.015 image hover scale
  */
 export const About: React.FC = () => {
   const { about, client } = siteContent;
@@ -28,11 +30,11 @@ export const About: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-16 items-start">
           {/* Left Column: 4:5 Portrait Composition (Stacks second on mobile for natural narrative intro) */}
           <div className="order-2 lg:order-1 lg:col-span-5 flex flex-col items-center lg:items-start lg:sticky lg:top-28">
-            <div className="w-full max-w-[360px] sm:max-w-[400px] lg:max-w-none">
+            <Reveal variant="fade-right" className="w-full max-w-[360px] sm:max-w-[400px] lg:max-w-none">
               {/* Frame Container with offset tactile paper layer */}
-              <div className="relative">
+              <div className="relative group">
                 <div
-                  className="absolute inset-0 -translate-x-2.5 translate-y-2.5 sm:-translate-x-3.5 sm:translate-y-3.5 bg-canvas-alt border border-border-subtle/80 rounded-xl"
+                  className="absolute inset-0 -translate-x-2.5 translate-y-2.5 sm:-translate-x-3.5 sm:translate-y-3.5 bg-canvas-alt border border-border-subtle/80 rounded-xl transition-transform duration-500 ease-out group-hover:-translate-x-3 group-hover:translate-y-3"
                   aria-hidden="true"
                 />
 
@@ -46,7 +48,7 @@ export const About: React.FC = () => {
                     <img
                       src={about.imageSource}
                       alt={about.imageAlt}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover transition-transform duration-500 ease-out hover:scale-[1.015]"
                       loading="lazy"
                       decoding="async"
                     />
@@ -108,73 +110,73 @@ export const About: React.FC = () => {
                   </p>
                 </div>
               )}
-            </div>
+            </Reveal>
           </div>
 
           {/* Right Column: Editorial Narrative & Advisory Philosophy */}
           <div className="order-1 lg:order-2 lg:col-span-7 flex flex-col items-start">
-            {/* Eyebrow */}
-            <div className="inline-flex items-center gap-2 mb-3.5 sm:mb-4">
-              <span className="w-5 h-px bg-advisory-accent/60" aria-hidden="true" />
-              <span className="font-body text-eyebrow font-semibold uppercase text-advisory-accent tracking-wider">
-                {about.eyebrow}
-              </span>
-            </div>
+            <Reveal variant="fade-left">
+              {/* Eyebrow */}
+              <div className="inline-flex items-center gap-2 mb-3.5 sm:mb-4">
+                <span className="w-5 h-px bg-advisory-accent/60" aria-hidden="true" />
+                <span className="font-body text-eyebrow font-semibold uppercase text-advisory-accent tracking-wider">
+                  {about.eyebrow}
+                </span>
+              </div>
 
-            {/* Section Heading (H2) */}
-            <h2
-              id="about-heading"
-              className="font-display text-section-h2 font-semibold text-brand-primary tracking-tight leading-[1.22] mb-6 sm:mb-7"
-            >
-              {about.headline}
-            </h2>
+              {/* Section Heading (H2) */}
+              <h2
+                id="about-heading"
+                className="font-display text-section-h2 font-semibold text-brand-primary tracking-tight leading-[1.22] mb-6 sm:mb-7"
+              >
+                {about.headline}
+              </h2>
 
-            {/* Narrative Paragraphs */}
-            <div className="space-y-4 font-body text-body-regular text-content-secondary max-w-reading leading-relaxed mb-8 sm:mb-10">
-              {about.paragraphs.map((paragraph, index) => (
-                <p key={index}>{paragraph}</p>
-              ))}
-            </div>
-
-            {/* Advisory Philosophy Statements (Editorial micro-grid, no heavy card boxes) */}
-            <div className="w-full pt-8 border-t border-border-subtle/80 mb-8 sm:mb-10">
-              <p className="font-body text-eyebrow font-semibold uppercase text-content-muted tracking-wider mb-5">
-                Core Approach
-              </p>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                {about.philosophy.map((item) => (
-                  <div key={item.id} className="flex flex-col space-y-1.5">
-                    <div className="flex items-center gap-2">
-                      <span
-                        className="w-1.5 h-1.5 rounded-full bg-action-primary flex-shrink-0"
-                        aria-hidden="true"
-                      />
-                      <h3 className="font-display text-h4 font-semibold text-brand-primary">
-                        {item.title}
-                      </h3>
-                    </div>
-                    <p className="font-body text-small-meta text-content-secondary leading-relaxed">
-                      {item.description}
-                    </p>
-                  </div>
+              {/* Narrative Paragraphs */}
+              <div className="space-y-4 font-body text-body-regular text-content-secondary max-w-reading leading-relaxed mb-8 sm:mb-10">
+                {about.paragraphs.map((paragraph, index) => (
+                  <p key={index}>{paragraph}</p>
                 ))}
               </div>
-            </div>
 
-            {/* Secondary Text Action pointing toward Services */}
-            <div className="pt-2">
+              {/* Advisory Philosophy Statements (Editorial micro-grid, no heavy card boxes) */}
+              <div className="w-full pt-8 border-t border-border-subtle/80 mb-8 sm:mb-10">
+                <span className="font-body text-xs font-semibold uppercase tracking-wider text-content-muted block mb-6">
+                  Core Advisory Approach
+                </span>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
+                  {about.philosophy.map((item) => (
+                    <div key={item.id} className="flex flex-col items-start">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span
+                          className="w-1.5 h-1.5 rounded-full bg-action-primary flex-shrink-0"
+                          aria-hidden="true"
+                        />
+                        <h3 className="font-display text-body-large font-semibold text-brand-primary">
+                          {item.title}
+                        </h3>
+                      </div>
+                      <p className="font-body text-small-meta text-content-secondary leading-relaxed">
+                        {item.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Secondary CTA: Link to #services */}
               <a
                 href={about.cta.href}
-                className="inline-flex items-center gap-2 font-body text-button font-medium text-action-primary hover:text-action-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring rounded py-1 transition-colors group"
+                className="group inline-flex items-center gap-2 font-body text-sm font-semibold text-brand-primary hover:text-action-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 rounded"
               >
                 <span>{about.cta.label}</span>
                 <ArrowRight
-                  className="w-4 h-4 transition-transform group-hover:translate-x-1"
+                  className="w-4 h-4 text-action-primary group-hover:translate-x-1 transition-transform"
                   aria-hidden="true"
                 />
               </a>
-            </div>
+            </Reveal>
           </div>
         </div>
       </Container>

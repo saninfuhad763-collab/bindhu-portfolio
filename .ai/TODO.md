@@ -130,8 +130,14 @@
 
 ## Low Priority (Refinement, Polish & Hardening)
 
-- [ ] **Micro-Interactions & Animation**
-  - Gentle scroll-triggered reveals and button hover states maintaining a calm aesthetic.
+- [x] **Motion Architecture — GSAP Smooth Scroll + ScrollTrigger + Premium UI Motion** *(Completed 2026-09-13)*
+  - Implemented GSAP 3 + ScrollSmoother + ScrollTrigger motion engine (unused ScrollToPlugin removed).
+  - Codified Responsive Motion Constitution across 5 tiers (Desktop, Tablet, Mobile, Narrow Mobile, Reduced Motion).
+  - Created centralized motion configuration token module (`src/components/motion/motionConfig.ts`).
+  - Created responsive `ScrollSystem` wrapper with desktop smooth scrolling, native mobile touch scrolling, and 80px offset anchor navigation with modifier bypass.
+  - Created reusable `Reveal` component (consolidated from 25 to 14 instances) with `prefers-reduced-motion` bypass.
+  - Choreographed Hero entrance sequence and FloatingAccent system.
+  - Verified 0 layout shift, 0 horizontal overflow across 6 viewports, 0 console errors. Reduced-motion behavior was verified. Motion performance was validated in the local production preview; final real-user production validation remains pending deployment.
 - [x] **Deep Accessibility (a11y) Audit — Full Page** *(Completed 2026-09-12)*
   - Verified WCAG 2.1 AA contrast compliance across 18 pairs (all text >= 4.5:1, focus ring 7.03:1).
   - Verified keyboard focus rings (`focus-visible:ring-focus-ring`) and skip-link programmatic target focusability (`tabIndex={-1}`).

@@ -3,6 +3,7 @@ import { Container } from '../layout/Container';
 import { Button } from '../ui/Button';
 import { siteContent } from '../../content/siteContent';
 import { ChevronRight, ChevronDown, Check, ArrowRight } from 'lucide-react';
+import { Reveal } from '../motion/Reveal';
 
 /**
  * Phase 7 — Advisory Services Section
@@ -57,7 +58,7 @@ export const Services: React.FC = () => {
     >
       <Container size="standard">
         {/* Section Intro Header */}
-        <div className="max-w-3xl mb-8 sm:mb-12 lg:mb-16">
+        <Reveal variant="fade-up" className="max-w-3xl mb-8 sm:mb-12 lg:mb-16">
           <span className="font-body text-eyebrow font-semibold text-action-primary uppercase tracking-wider block mb-3">
             {services.eyebrow}
           </span>
@@ -70,7 +71,7 @@ export const Services: React.FC = () => {
           <p className="font-body text-body-large text-content-secondary leading-relaxed">
             {services.description}
           </p>
-        </div>
+        </Reveal>
 
         {/* Desktop Progressive Disclosure (>=1024px) */}
         <div className="hidden lg:grid lg:grid-cols-12 lg:gap-8 items-start">

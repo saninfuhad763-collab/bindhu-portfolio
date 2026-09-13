@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Container } from '../layout/Container';
 import { siteContent } from '../../content/siteContent';
 import { ChevronDown } from 'lucide-react';
+import { Reveal } from '../motion/Reveal';
 
 /**
  * Phase 9 — Insurance Education / Editorial Guidance
@@ -35,30 +36,32 @@ export const Education: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16 items-start">
           {/* Left Column: Editorial Introduction (Sticky on desktop) */}
           <div className="lg:col-span-5 lg:sticky lg:top-28">
-            <span className="font-body text-eyebrow font-semibold text-action-primary uppercase tracking-wider block mb-3">
-              {education.eyebrow}
-            </span>
-            <h2
-              id="education-heading"
-              className="font-display text-section-h2 text-brand-primary leading-tight mb-4"
-            >
-              {education.headline}
-            </h2>
-            <p className="font-body text-body-large text-content-secondary leading-relaxed mb-6">
-              {education.description}
-            </p>
-            <div className="p-4 rounded-xl bg-canvas border border-border-subtle/80">
-              <span className="font-body text-xs font-semibold text-action-primary uppercase tracking-wider block mb-1">
-                Clarity Before Commitment
+            <Reveal variant="fade-right">
+              <span className="font-body text-eyebrow font-semibold text-action-primary uppercase tracking-wider block mb-3">
+                {education.eyebrow}
               </span>
-              <p className="font-body text-body-small text-content-secondary leading-relaxed">
-                Consultative guidance means asking the right questions first, so you make informed decisions on your own timeline.
+              <h2
+                id="education-heading"
+                className="font-display text-section-h2 text-brand-primary leading-tight mb-4"
+              >
+                {education.headline}
+              </h2>
+              <p className="font-body text-body-large text-content-secondary leading-relaxed mb-6">
+                {education.description}
               </p>
-            </div>
+              <div className="p-4 rounded-xl bg-canvas border border-border-subtle/80">
+                <span className="font-body text-xs font-semibold text-action-primary uppercase tracking-wider block mb-1">
+                  Clarity Before Commitment
+                </span>
+                <p className="font-body text-body-small text-content-secondary leading-relaxed">
+                  Consultative guidance means asking the right questions first, so you make informed decisions on your own timeline.
+                </p>
+              </div>
+            </Reveal>
           </div>
 
           {/* Right Column: Editorial Question Index */}
-          <div className="lg:col-span-7">
+          <Reveal variant="fade-left" delay={0.1} className="lg:col-span-7">
             <div className="divide-y divide-border-subtle border-y border-border-subtle">
               {education.topics.map((topic) => {
                 const isOpen = openId === topic.id;
@@ -145,7 +148,7 @@ export const Education: React.FC = () => {
                 );
               })}
             </div>
-          </div>
+          </Reveal>
         </div>
       </Container>
     </section>
