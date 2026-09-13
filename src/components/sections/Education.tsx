@@ -66,7 +66,7 @@ export const Education: React.FC = () => {
               {education.topics.map((topic) => {
                 const isOpen = openId === topic.id;
                 return (
-                  <div key={topic.id} className="py-6 first:pt-0 last:pb-0 transition-colors">
+                  <div key={topic.id} className="py-6 first:pt-0 last:pb-0 transition-colors duration-200 rounded-xl px-3 sm:px-4 -mx-3 sm:-mx-4 hover:bg-surface/50">
                     {/* Question Header Button */}
                     <h3>
                       <button
@@ -104,7 +104,7 @@ export const Education: React.FC = () => {
                         </div>
 
                         <span
-                          className={`mt-1 w-8 h-8 rounded-full border border-border-subtle flex items-center justify-center flex-shrink-0 transition-all duration-200 ${
+                          className={`mt-1 w-8 h-8 rounded-full border border-border-subtle flex items-center justify-center flex-shrink-0 transition-all duration-200 group-hover:scale-105 motion-reduce:transform-none ${
                             isOpen
                               ? 'bg-action-primary/10 border-action-primary/30 text-action-primary'
                               : 'bg-canvas text-content-muted group-hover:text-content-primary'
@@ -112,7 +112,7 @@ export const Education: React.FC = () => {
                           aria-hidden="true"
                         >
                           <ChevronDown
-                            className={`w-4 h-4 transition-transform duration-200 ${
+                            className={`w-4 h-4 transition-transform duration-200 motion-reduce:transform-none ${
                               isOpen ? 'rotate-180 text-action-primary' : ''
                             }`}
                           />

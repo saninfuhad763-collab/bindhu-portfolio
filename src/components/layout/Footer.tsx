@@ -83,10 +83,10 @@ export const Footer: React.FC = () => {
 
               <a
                 href={footer.contactCtaHref}
-                className="inline-flex items-center gap-1.5 font-body text-sm font-semibold text-action-primary hover:text-emerald-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring rounded py-1 min-h-[44px] sm:min-h-0"
+                className="inline-flex items-center gap-1.5 font-body text-sm font-semibold text-action-primary hover:text-emerald-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring rounded py-1 min-h-[44px] sm:min-h-0 group"
               >
                 <span>{footer.contactCtaLabel}</span>
-                <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
+                <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transform-none" aria-hidden="true" />
               </a>
             </div>
           </div>

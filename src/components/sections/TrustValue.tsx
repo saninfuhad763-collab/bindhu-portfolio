@@ -20,7 +20,7 @@ export const TrustValue: React.FC = () => {
 
   const renderIcon = (iconName: string) => {
     const iconProps = {
-      className: 'w-5 h-5 text-brand-primary group-hover:text-action-primary transition-colors duration-200',
+      className: 'w-5 h-5 text-brand-primary',
       strokeWidth: 1.75,
       'aria-hidden': true,
     };
@@ -74,12 +74,12 @@ export const TrustValue: React.FC = () => {
           </div>
 
           {/* Right Column: 2x2 Value Pillar Grid */}
-          <Reveal variant="fade-up" delay={0.08} stagger={0.09} selector=".group" className="lg:col-span-7">
+          <Reveal variant="fade-up" delay={0.08} stagger={0.09} selector=".trust-pillar" className="lg:col-span-7">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
               {trustValue.pillars.map((pillar) => (
                 <div
                   key={pillar.id}
-                  className="group p-6 sm:p-7 rounded-lg bg-surface border border-border-subtle shadow-card hover:border-action-primary/40 hover:shadow-card-hover transition-all duration-200 flex flex-col justify-start h-full"
+                  className="trust-pillar p-6 sm:p-7 rounded-lg bg-surface border border-border-subtle shadow-card flex flex-col justify-start h-full"
                 >
                   {/* Icon Emblem */}
                   <div className="w-10 h-10 rounded-md bg-canvas border border-border-subtle flex items-center justify-center mb-4 flex-shrink-0">

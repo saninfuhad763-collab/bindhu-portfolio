@@ -142,6 +142,57 @@ export const Services: React.FC = () => {
     }
   };
 
+  // Hover Profile B: Component-scoped pointer-tracking 3D tilt (max ±2°, perspective 1000, y: -2px)
+  const handleTabPointerMove = (e: React.PointerEvent<HTMLButtonElement>) => {
+    if (
+      typeof window === 'undefined' ||
+      !window.matchMedia('(pointer: fine)').matches ||
+      window.matchMedia(BREAKPOINTS.reduceMotion).matches
+    ) {
+      return;
+    }
+
+    const target = e.currentTarget;
+    const rect = target.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+
+    const rotateX = -Number(((y / (rect.height / 2)) * 2).toFixed(2));
+    const rotateY = Number(((x / (rect.width / 2)) * 2).toFixed(2));
+
+    gsap.to(target, {
+      transformPerspective: 1000,
+      rotateX,
+      rotateY,
+      y: -2,
+      duration: 0.15,
+      ease: 'power1.out',
+      overwrite: 'auto',
+    });
+  };
+
+  const handleTabPointerLeave = (e: React.PointerEvent<HTMLButtonElement> | React.FocusEvent<HTMLButtonElement>) => {
+    if (
+      typeof window === 'undefined' ||
+      !window.matchMedia('(pointer: fine)').matches ||
+      window.matchMedia(BREAKPOINTS.reduceMotion).matches
+    ) {
+      return;
+    }
+
+    const target = e.currentTarget;
+    gsap.to(target, {
+      transformPerspective: 1000,
+      rotateX: 0,
+      rotateY: 0,
+      y: 0,
+      duration: 0.35,
+      ease: 'power2.out',
+      clearProps: 'transform',
+      overwrite: 'auto',
+    });
+  };
+
   return (
     <section
       ref={sectionRef}
@@ -189,11 +240,14 @@ export const Services: React.FC = () => {
                     aria-controls={`service-panel-${item.id}`}
                     tabIndex={isSelected ? 0 : -1}
                     onKeyDown={(e) => handleTabKeyDown(e, index)}
+                    onPointerMove={handleTabPointerMove}
+                    onPointerLeave={handleTabPointerLeave}
+                    onBlur={handleTabPointerLeave}
                     onClick={() => setActiveId(item.id)}
-                    className={`w-full text-left p-5 rounded-xl transition-all duration-200 border flex items-center justify-between gap-4 group relative overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ${
+                    className={`w-full text-left p-5 rounded-xl transition-colors duration-200 border flex items-center justify-between gap-4 group relative overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ${
                       isSelected
                         ? 'bg-surface border-action-primary/60 shadow-card ring-1 ring-action-primary/20 text-brand-primary'
-                        : 'bg-surface/50 hover:bg-surface border-border-subtle hover:border-border-strong text-content-secondary hover:text-brand-primary hover:-translate-y-0.5'
+                        : 'bg-surface/50 hover:bg-surface border-border-subtle hover:border-border-strong text-content-secondary hover:text-brand-primary'
                     }`}
                   >
                     {/* Active vertical accent pill on left border */}

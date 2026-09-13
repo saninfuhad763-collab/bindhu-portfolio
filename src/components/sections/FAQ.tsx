@@ -58,7 +58,7 @@ export const FAQ: React.FC = () => {
               const isOpen = openId === item.id;
 
               return (
-                <div key={item.id} className="transition-colors">
+                <div key={item.id} className="transition-colors duration-200 rounded-xl px-3 sm:px-4 -mx-3 sm:-mx-4 hover:bg-surface/50">
                   <h3>
                     <button
                       type="button"
@@ -91,7 +91,7 @@ export const FAQ: React.FC = () => {
                       </div>
 
                       <span
-                        className={`mt-0.5 w-7 h-7 rounded-full border border-border-subtle flex items-center justify-center flex-shrink-0 transition-all duration-200 ${
+                        className={`mt-0.5 w-7 h-7 rounded-full border border-border-subtle flex items-center justify-center flex-shrink-0 transition-all duration-200 group-hover:scale-105 motion-reduce:transform-none ${
                           isOpen
                             ? 'bg-action-primary/10 border-action-primary/30 text-action-primary'
                             : 'bg-canvas text-content-muted group-hover:text-content-primary'
@@ -99,7 +99,7 @@ export const FAQ: React.FC = () => {
                         aria-hidden="true"
                       >
                         <Plus
-                          className={`w-4 h-4 transition-transform duration-200 ${
+                          className={`w-4 h-4 transition-transform duration-200 motion-reduce:transform-none ${
                             isOpen ? 'rotate-45 text-action-primary' : 'text-content-muted'
                           }`}
                         />

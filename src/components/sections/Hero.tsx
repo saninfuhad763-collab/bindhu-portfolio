@@ -193,7 +193,7 @@ export const Hero: React.FC = () => {
                 variant="primary"
                 size="md"
                 href={hero.primaryCta.href}
-                className="w-full sm:w-auto shadow-sm hover:-translate-y-0.5 transition-all duration-200"
+                className="w-full sm:w-auto"
               >
                 {hero.primaryCta.label}
               </Button>
@@ -201,7 +201,7 @@ export const Hero: React.FC = () => {
                 variant="secondary"
                 size="md"
                 href={hero.secondaryCta.href}
-                className="w-full sm:w-auto hover:-translate-y-0.5 transition-all duration-200"
+                className="w-full sm:w-auto"
               >
                 {hero.secondaryCta.label}
               </Button>
@@ -223,16 +223,16 @@ export const Hero: React.FC = () => {
 
           {/* Right Column: Portrait Composition & Visual Framing */}
           <div ref={portraitRef} className="lg:col-span-5 flex justify-center lg:justify-end w-full">
-            <div className="relative w-full max-w-[360px] sm:max-w-[400px] lg:max-w-none">
+            <div className="relative w-full max-w-[360px] sm:max-w-[400px] lg:max-w-none group">
               {/* Subtle background decorative paper layer for editorial depth */}
               <div
-                className="absolute inset-0 translate-x-2.5 translate-y-2.5 sm:translate-x-3.5 sm:translate-y-3.5 bg-canvas-alt border border-border-subtle/80 rounded-xl transition-transform duration-500 ease-out group-hover:translate-x-3 group-hover:translate-y-3"
+                className="absolute inset-0 translate-x-2.5 translate-y-2.5 sm:translate-x-3.5 sm:translate-y-3.5 bg-canvas-alt border border-border-subtle/80 rounded-xl transition-transform duration-500 ease-out group-hover:translate-x-3 sm:group-hover:translate-x-4 group-hover:translate-y-3 sm:group-hover:translate-y-4 motion-reduce:transform-none"
                 aria-hidden="true"
               />
 
               {/* Main Portrait Frame with standard 4:5 ratio */}
               <div
-                className="relative aspect-[4/5] w-full rounded-xl bg-surface border border-border-subtle overflow-hidden shadow-card group"
+                className="relative aspect-[4/5] w-full rounded-xl bg-surface border border-border-subtle overflow-hidden shadow-card"
                 role="img"
                 aria-label={hero.imageAlt}
               >
@@ -240,7 +240,7 @@ export const Hero: React.FC = () => {
                   <img
                     src={hero.imageSource}
                     alt={hero.imageAlt}
-                    className="w-full h-full object-cover transition-transform duration-500 ease-out hover:scale-[1.015]"
+                    className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.018] motion-reduce:transform-none"
                     loading="eager"
                     fetchPriority="high"
                     decoding="async"

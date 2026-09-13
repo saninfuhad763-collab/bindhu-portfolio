@@ -1,21 +1,21 @@
 # Current State — Bindhu Portfolio
 
 ## 1. Snapshot Summary
-- **Current Phase:** Phase 17 — Advisory Services Sticky Navigator & Interactive Composition (Motion Fix 8)
-- **Project State:** Advisory Services upgraded with desktop sticky navigation (`position: sticky` + ScrollSmoother ScrollTrigger pin bridge at `top: 115px`, ~34px below the 81px fixed header), restrained content transition (`opacity: 0 -> 1, y: 12px -> 0px` over 0.3s), enhanced clickable affordances (`01 Personal Guidance →` with left Eucalyptus accent bar and gliding arrow), full keyboard navigation (arrows, home, end with wrap-around), and preserved mobile accordion. Production build verified cleanly with 0 errors and 0 warnings.
-- **Executive Performance & Visual State:** Local preview clean, zero CLS (0.00), responsive 4:5 image ratio preserved across all 6 viewports (1440px to 320px). Live DevTools inspection clean (0 console errors, 0 warnings across all 6 viewports; 0 horizontal overflow).
-- **Executive Motion & Performance Verdict:** **`ADVISORY SERVICES COMPOSITION APPROVED`**
-  - *Status:* Reduced-motion behavior verified. Local runtime performance observed; final real-user production validation remains pending deployment.
+- **Current Phase:** Phase 18 — Premium Hover & Pointer Interaction System (Motion Fix 5)
+- **Project State:** Bespoke, tactile, and restrained hover/pointer interaction system implemented across interactive surfaces. Buttons feature subtle -2px micro-lift, refined shadow, and directional arrow glide. Service cards feature component-scoped pointer-tracking 3D tilt (`transformPerspective: 1000`, `rotateX: max ±2°`, `rotateY: max ±2°`, `y: -2px`) strictly gated to `(pointer: fine)` and non-reduced-motion with clean neutral return via `clearProps: 'transform'`. Hero and About portraits receive subtle 1.018 / 1.015 scale inside `overflow-hidden` 4:5 frames with decorative paper layer offset response. Header mobile trigger, FAQ, Education, and Footer interactive icons/rows updated with tactile micro-interactions. Static informational content (Trust pillars, Process steps, Social Proof reserved frame, Disclosures) strictly preserved in calm, unanimated state.
+- **Executive Performance & Visual State:** Local preview clean, zero CLS (0.00), responsive 4:5 image ratio preserved across all 6 viewports (1440px to 320px). Live DevTools inspection clean (0 console errors, 0 warnings; 0 horizontal overflow with `scrollWidth <= innerWidth`).
+- **Executive Motion & Performance Verdict:** **`HOVER SYSTEM APPROVED`**
+  - *Status:* Reduced-motion behavior verified (`prefers-reduced-motion: reduce` bypasses transforms). Local runtime performance observed; final real-user production validation remains pending deployment.
   - *Verified Now:*
     - Local production-preview build (`tsc -b && vite build` passing cleanly with 0 errors, 0 warnings).
-    - Local runtime behavior (GPU-accelerated transforms and opacity only, `gsap.matchMedia()` responsive context cleanup, native touch scroll preserved, 0 horizontal overflow).
-    - Current bundle sizes (total 115.80 kB gzip JS, 6.68 kB CSS, 0.85 kB HTML).
+    - Local runtime behavior (GPU-accelerated transforms and opacity only, `clearProps: 'transform'` ensuring zero leftover inline styles, native touch scroll preserved, `pointer: coarse` safe).
+    - Current bundle sizes (total 116.19 kB gzip JS, 6.87 kB CSS, 0.85 kB HTML).
   - *Pending:*
     - Real production-domain performance.
     - Real-user Core Web Vitals.
     - Final client portrait performance (WebP/AVIF <= 90 kB).
     - Final social-sharing asset performance.
-- **Latest Stable State:** Verified production build passing cleanly (`tsc -b && vite build`). Motion Fix 8 implemented (uncommitted in working tree). Baseline checkpoint `6fc27e6 feat: refine motion and services interaction`.
+- **Latest Stable State:** Verified production build passing cleanly (`tsc -b && vite build`). Motion Fix 5 implemented (uncommitted in working tree). Baseline checkpoint `a20dfdd feat: enhance advisory services interaction`.
 
 ---
 
@@ -155,11 +155,10 @@
 ## 6. Git Status
 - **Repository State:** On branch `main` tracking `origin/main`.
 - **GitHub Remote:** `https://github.com/saninfuhad763-collab/bindhu-portfolio.git`
-- **Working Tree:** Clean. Motion Fix 8 checkpointed and pushed.
-- **Latest Checkpoint:** `feat: enhance advisory services interaction`
+- **Working Tree:** Uncommitted. Motion Fix 5 (Premium Hover & Pointer Interaction System) implemented across 9 component files.
+- **Latest Checkpoint:** `feat: enhance advisory services interaction` (`a20dfdd`)
 
 ---
 
 ## 7. Next Recommended Step
-**Motion Fix 5 — Premium Hover System**
-
+**Motion Fix 4 — Selective Premium Floating Motion**

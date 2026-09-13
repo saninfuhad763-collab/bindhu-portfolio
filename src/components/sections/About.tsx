@@ -34,7 +34,7 @@ export const About: React.FC = () => {
               {/* Frame Container with offset tactile paper layer */}
               <div className="relative group">
                 <div
-                  className="absolute inset-0 -translate-x-2.5 translate-y-2.5 sm:-translate-x-3.5 sm:translate-y-3.5 bg-canvas-alt border border-border-subtle/80 rounded-xl transition-transform duration-500 ease-out group-hover:-translate-x-3 group-hover:translate-y-3"
+                  className="absolute inset-0 -translate-x-2.5 translate-y-2.5 sm:-translate-x-3.5 sm:translate-y-3.5 bg-canvas-alt border border-border-subtle/80 rounded-xl transition-transform duration-500 ease-out group-hover:-translate-x-3 sm:group-hover:-translate-x-4 group-hover:translate-y-3 sm:group-hover:translate-y-4 motion-reduce:transform-none"
                   aria-hidden="true"
                 />
 
@@ -48,7 +48,7 @@ export const About: React.FC = () => {
                     <img
                       src={about.imageSource}
                       alt={about.imageAlt}
-                      className="w-full h-full object-cover transition-transform duration-500 ease-out hover:scale-[1.015]"
+                      className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.015] motion-reduce:transform-none"
                       loading="lazy"
                       decoding="async"
                     />
@@ -172,7 +172,7 @@ export const About: React.FC = () => {
               >
                 <span>{about.cta.label}</span>
                 <ArrowRight
-                  className="w-4 h-4 text-action-primary group-hover:translate-x-1 transition-transform"
+                  className="w-4 h-4 text-action-primary group-hover:translate-x-1 transition-transform motion-reduce:transform-none"
                   aria-hidden="true"
                 />
               </a>

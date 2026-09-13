@@ -233,3 +233,29 @@ This document records established architectural, design, operational, and organi
 - **Verification:** Verified at 1440px, 1280px, 1024px, 768px, 390px, and 320px viewports. Zero horizontal overflow (`scrollWidth <= innerWidth`). All interactive touch targets >= 48px. Clean production build verified (`tsc -b && vite build` code 0).
 - **Status:** Checkpointed and pushed in `feat: enhance advisory services interaction`.
 
+---
+
+## Decision 017 — Premium Hover & Pointer Interaction System (Motion Fix 5)
+- **Status:** Implemented (Uncommitted working tree)
+- **Date:** 2026-09-13
+- **Context & Problem:** While the editorial typography and layout hierarchy were validated, interactive affordances previously relied on inconsistent micro-interactions. The site required a cohesive, bespoke, restrained hover and pointer interaction architecture that elevates perceived quality without generic SaaS tropes (no cursor followers, magnetic buttons, or excessive tilt).
+- **Core Design Principles:**
+  1. *Subtle & Intentional:* Micro-movements strictly bounded (buttons: -1px to -2px lift; cards: max ±2° tilt; images: 1.015–1.018 scale).
+  2. *Strict Transform Ownership:* Outer wrappers (`Reveal`, grid cells, `.pin-spacer`) own entrance reveals, responsive layout, and ScrollTrigger pinning; inner interactive elements exclusively own hover/pointer transforms.
+  3. *Clean Return to Neutral:* All pointer-driven GSAP tweens specify `clearProps: 'transform'`, leaving zero permanent inline transforms in the DOM.
+  4. *Input Safety & Progressive Enhancement:* Pointer-tracking 3D tilts are gated to `(pointer: fine)` and bypass `prefers-reduced-motion: reduce`. Touch devices (`pointer: coarse`) remain completely unaffected with zero sticky-hover artifacts.
+  5. *Calm Informational Restraint:* Static non-clickable content (Trust pillars, Process steps, Social proof reserved frame, legal disclosures) remains completely unanimated on hover.
+- **5 Distinct Interaction Profiles Implemented:**
+  - **Profile A (Buttons - Primary, Secondary, Advisory):** -2px micro-lift (`hover:-translate-y-0.5`), refined shadow (`hover:shadow-card-hover`), active return (`active:translate-y-0`), and 3–4px directional arrow glide (`group-hover:translate-x-1`) with `motion-reduce:transform-none`. Zero 3D tilt.
+  - **Profile B (Service Cards / Desktop Tabs):** Component-scoped pointer-tracking 3D tilt (`transformPerspective: 1000`, `rotateX: max ±2°`, `rotateY: max ±2°`, `y: -2px`, smooth return to neutral on leave `duration: 0.35, ease: 'power2.out', clearProps: 'transform'`), gated to `(pointer: fine)` and `!prefers-reduced-motion`.
+  - **Profile C (Editorial Portraits):** Hero portrait scale `1.018` with decorative paper offset response (`translate-x-3 sm:translate-x-4 translate-y-3 sm:translate-y-4`); About portrait scale `1.015` with paper offset response (`-translate-x-3 sm:-translate-x-4 translate-y-3 sm:translate-y-4`). Both bounded by `overflow-hidden` 4:5 frames.
+  - **Profile D (Interactive Icons):** Mobile menu toggle in Header (`group-hover:scale-105`), FAQ expand button (`group-hover:scale-105`), Education expand chevron (`group-hover:scale-105`), Footer consultation link (`group-hover:translate-x-0.5 group-hover:-translate-y-0.5`).
+  - **Profile E (Interactive Disclosure Rows):** FAQ and Education accordion rows receive a gentle background wash on hover (`hover:bg-surface/50 rounded-xl transition-colors duration-200`).
+  - **Static Content:** Trust pillars, Process steps, Social Proof reserved frame, Disclosures left completely unanimated.
+- **Verification & Evidence:**
+  - Production build (`tsc -b && vite build`) passed cleanly with 0 TypeScript errors and 0 Vite warnings.
+  - Runtime validation in Chromium at 1440px desktop (`pointer: fine`) and 390px mobile (`pointer: coarse`).
+  - Zero console messages observed.
+  - Horizontal overflow verified: `scrollWidth <= innerWidth` across tested viewports.
+  - 2 screenshots captured: 1440px desktop Services and 390px mobile Services.
+- **Status:** Checkpointed in `feat: add premium hover interactions`.

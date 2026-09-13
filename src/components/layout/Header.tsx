@@ -148,15 +148,15 @@ export const Header: React.FC = () => {
             <button
               type="button"
               onClick={toggleMobileMenu}
-              className="touch-target w-12 h-12 inline-flex items-center justify-center rounded text-brand-primary hover:bg-canvas-alt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring transition-colors"
+              className="touch-target w-12 h-12 inline-flex items-center justify-center rounded text-brand-primary hover:bg-canvas-alt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring transition-colors group"
               aria-expanded={isMobileMenuOpen}
               aria-controls="mobile-navigation-menu"
               aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
             >
               {isMobileMenuOpen ? (
-                <X className="w-6 h-6" aria-hidden="true" />
+                <X className="w-6 h-6 transition-transform duration-200 group-hover:scale-105 motion-reduce:transform-none" aria-hidden="true" />
               ) : (
-                <Menu className="w-6 h-6" aria-hidden="true" />
+                <Menu className="w-6 h-6 transition-transform duration-200 group-hover:scale-105 motion-reduce:transform-none" aria-hidden="true" />
               )}
             </button>
           </div>
