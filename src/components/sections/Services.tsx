@@ -76,16 +76,14 @@ export const Services: React.FC = () => {
     cards.forEach((card, i) => {
       if (i === activeIndex) {
         gsap.set(card, {
-          opacity: 1,
+          autoAlpha: 1,
           x: 0,
-          visibility: 'visible',
           pointerEvents: 'auto',
         });
       } else {
         gsap.set(card, {
-          opacity: 0,
-          x: 28,
-          visibility: 'hidden',
+          autoAlpha: 0,
+          x: 30,
           pointerEvents: 'none',
         });
       }
@@ -125,16 +123,14 @@ export const Services: React.FC = () => {
       cards.forEach((card, i) => {
         if (i === newIndex) {
           gsap.set(card, {
-            opacity: 1,
+            autoAlpha: 1,
             x: 0,
-            visibility: 'visible',
             pointerEvents: 'auto',
           });
         } else {
           gsap.set(card, {
-            opacity: 0,
+            autoAlpha: 0,
             x: 0,
-            visibility: 'hidden',
             pointerEvents: 'none',
           });
         }
@@ -150,9 +146,8 @@ export const Services: React.FC = () => {
     cards.forEach((card, i) => {
       if (i !== prevIndex && i !== newIndex) {
         gsap.set(card, {
-          opacity: 0,
-          x: 28,
-          visibility: 'hidden',
+          autoAlpha: 0,
+          x: 30,
           pointerEvents: 'none',
         });
       }
@@ -161,33 +156,29 @@ export const Services: React.FC = () => {
     const outgoingCard = cards[prevIndex];
     const incomingCard = cards[newIndex];
 
-    // Outgoing content: smooth fade and calm leftward exit
+    // Outgoing content: subtle, quiet exit toward the left
     if (outgoingCard) {
       gsap.to(outgoingCard, {
-        opacity: 0,
-        x: -16,
-        duration: 0.22,
-        ease: 'power2.in',
+        autoAlpha: 0,
+        x: -14,
+        duration: 0.2,
+        ease: 'power1.in',
         pointerEvents: 'none',
-        onComplete: () => {
-          gsap.set(outgoingCard, { visibility: 'hidden' });
-        },
       });
     }
 
-    // Incoming content: enters smoothly from the right (+28px -> 0) and settles
+    // Incoming content: smooth AOS-style right-to-left glide (+30px -> 0)
     if (incomingCard) {
       gsap.fromTo(
         incomingCard,
         {
-          opacity: 0,
-          x: 28,
-          visibility: 'visible',
+          autoAlpha: 0,
+          x: 30,
         },
         {
-          opacity: 1,
+          autoAlpha: 1,
           x: 0,
-          duration: 0.35,
+          duration: 0.38,
           ease: 'power2.out',
           pointerEvents: 'auto',
         }
@@ -270,7 +261,7 @@ export const Services: React.FC = () => {
         </Reveal>
 
         {/* Desktop Two-Column Editorial Stage (>=1024px) */}
-        <div className="hidden lg:grid lg:grid-cols-12 lg:gap-8 xl:gap-12 items-start relative">
+        <div className="hidden lg:grid lg:grid-cols-12 lg:gap-8 xl:gap-12 items-center relative">
           {/* Left Column: Situation Navigator Index */}
           <div className="lg:col-span-5 relative">
             <div className="relative">
@@ -370,28 +361,6 @@ export const Services: React.FC = () => {
                   );
                 })}
               </div>
-            </div>
-
-            {/* Editorial Counter Indicator */}
-            <div
-              className="pt-4 px-1 flex items-center justify-between text-xs text-content-muted font-mono"
-              aria-hidden="true"
-            >
-              <div className="flex items-center gap-3">
-                <span className="font-semibold text-brand-primary tabular-nums">
-                  0{activeIndex + 1} / 0{services.items.length}
-                </span>
-                {/* Slender indicator track */}
-                <div className="w-20 h-1 bg-border-subtle/60 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-action-primary rounded-full transition-all duration-300 ease-out"
-                    style={{ width: `${((activeIndex + 1) / services.items.length) * 100}%` }}
-                  />
-                </div>
-              </div>
-              <span className="font-body text-[11px] tracking-wider uppercase text-content-muted/80">
-                Select to explore
-              </span>
             </div>
           </div>
 

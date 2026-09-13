@@ -1,15 +1,19 @@
 # Current State — Bindhu Portfolio
 
 ## 1. Snapshot Summary
-- **Current Phase:** Phase 27 — Advisory Services Spatially Stable Two-Column Architecture Verified
-- **Project State:** ADVISORY SERVICES SPATIALLY STABLE TWO-COLUMN ARCHITECTURE VERIFIED. The previous scroll-pinned timeline and virtual 3200px runway have been completely decommissioned. Advisory Services now operates as a stable, unpinned two-part interactive composition: 4 selectable services remain on the left, while the selected service content transitions smoothly on the right with a calm, directional right-to-left editorial motion (`x: +28px -> 0, opacity: 0 -> 1` via `power2.out`, 0.35s). Service selection never moves the page (`window.scrollY` remains 100% stationary). Document flow between `About -> Services -> How It Works` is natural, predictable, and continuous.
-- **Executive Performance & Visual State:** Local preview clean, zero CLS (0.00), responsive 4:5 image ratio preserved across all 6 viewports (1440px to 320px). Live DevTools inspection clean (0 console errors, 0 warnings; 0 horizontal overflow with `scrollWidth <= innerWidth` across 1440, 1280, 1024, 768, 390, 320px).
-- **Executive Motion & Navigation Verdict:** **`SPATIALLY STABLE ADVISORY SERVICES REDESIGN APPROVED & VERIFIED`**
-  - *Status:* Two-column stable layout verified. 0px scroll shift on card clicks, right-to-left directional transition, clean interruptibility, and seamless document flow confirmed.
+- **Current Phase:** Phase 28 — Advisory Services Refined: Vertical Centering, Counter Removal, AOS-Style Transition
+- **Project State:** ADVISORY SERVICES PHASE 28 REFINEMENTS APPLIED AND VERIFIED. Phase 28 delivered three focused refinements to the Phase 26/27 spatially stable two-column architecture: (1) left navigation block is now vertically centered with the right content panel via `items-center` on the desktop grid container — achieving 0px center delta at all desktop breakpoints; (2) the `04 / 04` counter and `SELECT TO EXPLORE` instruction row have been completely removed from the DOM with no empty gap; (3) right-side card transitions use GSAP `autoAlpha` + `x: +30px → 0` (0.38s, `power2.out` incoming; `x: 0 → -14px`, 0.20s, `power1.in` outgoing). Service selection never moves the page (`window.scrollY` remains 100% stationary). Document flow between `About → Services → How It Works` is natural, predictable, and continuous. Zero ScrollTrigger instances active in or around the services section.
+- **Executive Performance & Visual State:** Production build clean: `tsc -b && vite build` passes in 10.79s with 0 TypeScript errors and 0 Vite warnings. Zero console errors in browser. Responsive verified at 1440×900, 1024×768 (desktop two-column) and 390×844 (mobile accordion). Zero horizontal overflow.
+- **Executive Motion & Navigation Verdict:** **`ADVISORY SERVICES PHASE 28 REFINEMENTS APPROVED & VERIFIED`**
+  - *Status:* items-center alignment confirmed (0px center delta). Counter fully removed. autoAlpha transition working correctly (settles to opacity:1, transform:matrix(1,0,0,1,0,0) after GSAP completes). Rapid click interruption confirmed (last-clicked tab wins; all others hidden). 0px scroll delta across all interactions.
   - *Verified Now:*
-    - Local production-preview build (`tsc -b && vite build` passing cleanly with 0 errors, 0 warnings in 15.42s).
-    - Multi-scenario browser automation (01→02, 02→03, 03→04, 04→03, 03→02, 02→01, 01→04, 04→01, 02→04, 03→01, repeat 02→02, rapid switching, keyboard arrows/Home/End).
-    - Responsive viewports: 1440×900, 1280×800, 1024×768 (desktop 2-column) and 390×844, 320×568 (mobile accordion).
+    - Production build `tsc -b && vite build`: 0 errors, 0 warnings, 10.79s.
+    - Browser automation: Tab 1→2→3→4 sequential (5s settle each), rapid 01→02→04, rapid 04→03→01→02. All settle correctly at opacity:1, x:0.
+    - 0 ScrollTrigger instances in services section. No pinned runways.
+    - Section gaps: About→Services=0px, Services→Process=-0.23px (flush).
+    - Left/right vertical centering: delta=0px at 1440×900 and 1024×768.
+    - Footer counter text completely absent from DOM and innerText.
+    - Mobile accordion visible and operational at 390×844.
   - *Pending:*
     - Client Content & Asset Onboarding.
     - Real production-domain performance.

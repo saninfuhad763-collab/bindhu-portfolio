@@ -500,4 +500,22 @@ This document records established architectural, design, operational, and organi
   - Scroll Stability: Confirmed `window.scrollY` remains 100% stationary (0px change) across all card clicks.
   - Page Flow: Verified 0px gap between Services and Process with smooth, natural scrolling in both directions.
 
+---
 
+## Decision 027: Advisory Services Phase 28 Visual Refinements (Alignment, Counter Removal, autoAlpha Transition)
+- **Status:** Implemented & Verified (Uncommitted)
+- **Date:** 2026-09-13
+- **Context:** Following the Phase 26 spatially stable two-column redesign (Decision 026), three focused visual/interaction refinements were requested: (1) vertically center the left service navigation with the right content panel; (2) completely remove the `04 / 04` counter and `SELECT TO EXPLORE` instruction row; (3) refine the right-to-left transition to an AOS-style `autoAlpha` glide with slightly tuned timing.
+- **Changes:**
+  1. **Vertical Alignment:** Changed `items-start` to `items-center` on the `lg:grid-cols-12` desktop container. This aligns both flex children (left 5-col nav and right 7-col folio) on their center axes using standard CSS grid alignment. Measured center delta = **0px** at both 1440×900 and 1024×768. No hardcoded `margin-top` required. Stable against content height changes.
+  2. **Counter Removal:** Removed the `Editorial Counter Indicator` block containing `0{activeIndex + 1} / 0{services.items.length}` and `Select to explore`. The JSX block is completely gone — no `display:none`, no `aria-hidden` wrapper, no empty replacement. DOM search confirms zero instances of `/ 04` or `select to explore` text at any breakpoint.
+  3. **autoAlpha Transition (entering):** Changed from `opacity`+`visibility` pair to GSAP `autoAlpha` (which manages visibility atomically). Entry: `autoAlpha: 0, x: 30` → `autoAlpha: 1, x: 0` in 0.38s, `power2.out`. Exit: `autoAlpha: 0, x: -14` in 0.20s, `power1.in`. `gsap.killTweensOf(cards)` preserves interruptibility.
+- **Verification Evidence:**
+  - Build: `tsc -b && vite build` in 10.79s with 0 errors, 0 warnings.
+  - Centering: `leftCenter = cardCenter = 576.78px` (delta = 0.00001px) at 1440×900; delta = 0px at 1024×768.
+  - Counter removal: `hasCounter: false`, `hasSelectToExplore: false` confirmed via deep DOM search.
+  - Sequential tab transitions (01→02→03→04, each with 5s settle): all settle at `opacity:'1', visibility:'visible', transform:'matrix(1,0,0,1,0,0)'`.
+  - Rapid click (01→02→04): final active = Tab 4, all others hidden, 0px scroll delta.
+  - Section gaps: `About→Services = 0px`, `Services→Process ≈ 0px`. 0 ScrollTrigger instances.
+  - Mobile: accordion visible at 390×844, 0 console errors.
+  - **Note on DevTools rAF throttling:** The Chrome DevTools MCP evaluates scripts with severely throttled requestAnimationFrame (~2 fps in headless mode). GSAP tweens (0.38s + 0.20s) require up to ~4–6 seconds of real wall-clock `setTimeout` wait in evaluate_script tests to settle. In a normal browser tab with active focus and full GPU compositing, the 380ms tween completes in one smooth rAF pass. This is a test harness artifact, not a production behavior issue.

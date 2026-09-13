@@ -1334,5 +1334,58 @@ Proceed to **Phase 8 — Consultation Process Section** (step-by-step guidance w
 - **Unrelated Sections Safety:** `ScrollSystem.tsx` and all unrelated sections (Hero, About, Process, FAQ, Contact, Footer) remained completely untouched and functional.
 - **Git Safety:** Clean working tree preserved; all modifications left uncommitted for human review.
 
+---
 
+## Log Entry 029 — Phase 28: Advisory Services Alignment, Counter Removal & autoAlpha Transition
+- **Date:** 2026-09-13
+- **Author:** Antigravity (Continuation Agent — Claude Sonnet 4.6 Thinking)
+- **Phase:** Phase 28 — Advisory Services Phase 28 Refinements
 
+### 1. Work Completed
+Three focused refinements applied to `src/components/sections/Services.tsx`:
+
+**Refinement A — Vertical Centering (Req. 1):**
+- Changed `items-start` → `items-center` on the `hidden lg:grid lg:grid-cols-12` desktop grid container.
+- Achieves mathematical vertical alignment (0px center delta) without any hardcoded `margin-top`.
+- Measured: `leftCenter = cardCenter = 576.78px`, `delta = 0.00001px` at 1440×900. `delta = 0px` at 1024×768.
+
+**Refinement B — Footer Counter Removal (Req. 3):**
+- Removed the complete `Editorial Counter Indicator` JSX block:
+  - `0{activeIndex + 1} / 0{services.items.length}` fraction counter
+  - Progress track bar
+  - `Select to explore` instruction label
+- No empty `<div>` placeholder left. No `display:none` wrapper. Complete removal.
+
+**Refinement C — autoAlpha Transition (Req. 2):**
+- Replaced `opacity + visibility` management with GSAP `autoAlpha` (atomically manages both).
+- Incoming: `autoAlpha: 0, x: 30` → `autoAlpha: 1, x: 0` in 0.38s (`power2.out`).
+- Outgoing: `autoAlpha: 0, x: -14` in 0.20s (`power1.in`). No `onComplete` visibility setter needed.
+- `gsap.killTweensOf(cards)` on every selection ensures clean interruptibility.
+
+### 2. Verification & Evidence Matrix
+- **Production Build:** `tsc -b && vite build` in 10.79s, 0 TypeScript errors, 0 Vite warnings.
+- **Console:** 0 errors, 0 warnings in browser DevTools.
+- **Centering:** delta = 0px confirmed at 1440×900 and 1024×768.
+- **Counter Removal:** Deep DOM search: `hasCounter: false`, `hasSelectToExplore: false`.
+- **Sequential Transitions:** Tab 01→02→03→04, each with 5s settle: all settled at `opacity:'1', transform: matrix(1,0,0,1,0,0)`, `visibility: visible`. scrollDelta = 0px each.
+- **Rapid Click:** `01→02→04` rapid: final active = Tab 4, correct. `04→03→01→02` rapid: final active = Tab 2, correct. All others hidden. scrollDelta = 0px.
+- **Page Flow:** About→Services gap = 0px, Services→Process gap = -0.23px (flush). No artificial runway. No pinning.
+- **ScrollTrigger:** 0 instances in services section (confirmed via `ScrollTrigger.getAll()`).
+- **Responsive:** 1440×900 ✓, 1024×768 ✓, 390×844 mobile accordion ✓.
+- **ARIA:** `role="tablist"`, 4× `role="tab"`, 4× `role="tabpanel"`, `aria-selected`, `aria-controls`, `tabIndex` all correct.
+- **Reduced Motion:** Code path verified (lines 122–139). Uses `gsap.set()` with `x: 0` for immediate switch. `prefers-reduced-motion: false` on test system (no OS override configured).
+
+### 3. Important Test Harness Note
+Chrome DevTools MCP evaluates scripts with severely throttled rAF (~2 fps vs. normal 60fps). GSAP tweens (0.38s) require 4–6 second `setTimeout` walls in test scripts to settle. This is a headless-mode constraint only. In real browser usage with GPU compositing and active page focus, the 380ms tween plays in one smooth pass.
+
+### 4. Files Modified
+- `src/components/sections/Services.tsx` — only modified file in working tree.
+- `.ai/CURRENT_STATE.md` — updated to Phase 28.
+- `.ai/DECISIONS.md` — appended Decision 027.
+- `.ai/DEVELOPMENT_LOG.md` — this entry.
+
+### 5. Files NOT Modified
+- `src/components/ScrollSystem.tsx` — untouched.
+- `src/config/motionConfig.ts` — untouched.
+- All other sections (Hero, About, Process, Education, SocialProof, FAQ, Contact, Footer) — untouched.
+- Git state: all changes uncommitted per project safety policy.
