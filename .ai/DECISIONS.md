@@ -202,4 +202,34 @@ This document records established architectural, design, operational, and organi
 - **Reveal Density:** Active DOM instances increased by only 1 (from 16 to 17) to provide coverage for Services navigator, while eliminating monolithic card blocks via internal staggers.
 - **Reduced Motion:** Verified: `prefers-reduced-motion: reduce` bypass immediately runs `gsap.set(targets, { opacity: 1, x: 0, y: 0, clearProps: 'transform' })`. Zero delays, zero tweens, zero transforms.
 - **Selective Screenshots:** 2 captures: 1440px desktop Trust section and 390px mobile Trust section.
-- **Uncommitted Status:** All modifications across `Reveal.tsx`, `motionConfig.ts`, sections, and documentation remain strictly uncommitted.
+- **Uncommitted Status:** Checkpointed and pushed in `6fc27e6 feat: refine motion and services interaction`.
+
+---
+
+## Decision 016 — Advisory Services Sticky Navigator & Flowing Detail Composition
+- **Status:** Implemented (Uncommitted working tree)
+- **Date:** 2026-09-13
+- **Context:** The Advisory Services section previously presented a static two-column layout on desktop where both columns scrolled identically, losing the situation navigator context as the user scrolled through the detailed service card. Furthermore, switching service tabs lacked a refined editorial content transition, and the left-side items lacked distinct interactive affordance.
+- **Architectural Solution:**
+  - **CSS Sticky & Grid Architecture:** Desktop (>=1024px) utilizes an asymmetrical 5:7 two-column grid with `items-stretch`. The left column (`lg:col-span-5 relative`) stretches to match the natural document flow height of the right detail panel (~873px). The navigator container is configured with native CSS `position: sticky` (`className="lg:sticky space-y-3"`).
+  - **ScrollSmoother Pinning Bridge:** Because ScrollSmoother transforms `#smooth-content` on desktop, native CSS `position: sticky` cannot establish a viewport-relative pinning boundary. A lightweight ScrollTrigger pin was integrated via `gsap.matchMedia()` (`start: 'top top+=132'`, `endTrigger: panel`, `end: () => 'bottom top+=' + (132 + nav.offsetHeight)`, `pin: nav`, `pinSpacing: false`). This keeps the navigator pinned at `top: 115px` (~34px clearance below the 81px fixed header) throughout panel scrolling, then unpins cleanly when the panel bottom aligns with the navigator bottom (sub-pixel difference <=0.7px), preventing any overlap with `#process`.
+  - **Desktop/Mobile Split:** `<1024px` preserves the accessible accordion architecture. Desktop sticky pinning and tab mechanics are cleanly bypassed on mobile/tablet.
+  - **Interactive Affordance & Active State:**
+    - Each navigator item includes clear typographic hierarchy: prominent number badge (`item.number`), display title (`item.category`), and subtitle (`item.shortLabel`).
+    - Right-edge directional arrow (`ArrowRight`) glides 4px on hover (`translate-x-1`) and locks in place when active.
+    - Active item features an editorial vertical Eucalyptus accent bar on the left edge (`w-1 rounded-r-full bg-action-primary`), subtle card surface (`bg-surface border-action-primary/60 shadow-card ring-1 ring-action-primary/20`), and active badge treatment.
+    - Fine-pointer hover incorporates subtle `-translate-y-0.5` lift and border darkening without 3D tilt.
+    - Visible focus rings (`focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2`) ensure keyboard navigation accessibility.
+  - **Content Transition Strategy:**
+    - The outer card shell maintains fixed positioning and geometry to eliminate layout jitter.
+    - Changing panel content is wrapped in `panelContentRef`.
+    - Tab switches trigger a short, restrained GSAP transition (`opacity: 0 -> 1`, `y: 12px -> 0px`, `duration: 0.30s`, `ease: 'power2.out'`, `clearProps: 'transform'`).
+    - Initial page-load reveal is bypassed (`isInitialRender`) so the section entrance is owned solely by `Reveal.tsx`.
+    - Page scroll position is strictly preserved (0 scroll displacement during tab switching).
+  - **Accessibility Preservation:**
+    - Full WAI-ARIA tab semantics maintained (`role="tablist"`, `role="tab"`, `role="tabpanel"`, `aria-selected`, `aria-controls`, `aria-labelledby`).
+    - Full keyboard navigation supported (`ArrowDown`, `ArrowUp`, `Home`, `End` with wrap-around and automatic focus transfer).
+    - Reduced-motion preference (`prefers-reduced-motion: reduce`) verified: immediate state and content updates with zero transforms and zero delay.
+- **Verification:** Verified at 1440px, 1280px, 1024px, 768px, 390px, and 320px viewports. Zero horizontal overflow (`scrollWidth <= innerWidth`). All interactive touch targets >= 48px. Clean production build verified (`tsc -b && vite build` code 0).
+- **Status:** Checkpointed and pushed in `feat: enhance advisory services interaction`.
+

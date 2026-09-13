@@ -1,21 +1,21 @@
 # Current State — Bindhu Portfolio
 
 ## 1. Snapshot Summary
-- **Current Phase:** Phase 16 — Motion & Services Refinement Checkpointed (UI Fix 10, Motion Fixes 1–3)
-- **Project State:** Full-page GSAP 3 motion system calibrated and refined. Includes UI Fix 10 (Services "Explore your situation" CTA alignment), Motion Fix 1 (ScrollSmoother calibrated to `smooth: 1.15` with `smoothTouch: 0` preserved), Motion Fix 2 (Hero entrance converted to independent page-load choreography converging at ~1.0–1.1s without early scroll collision), and Motion Fix 3 (reusable Reveal system upgraded with 4-pillar grouped stagger, 4-step journey timeline stagger, calibrated responsive triggers `top 84%` desktop / `top 85%` tablet / `top 86%` mobile, `gsap.set()` priming, and automated `clearProps: 'transform'`). Motion Fixes 1–3 and UI Fix 10 checkpointed and pushed.
+- **Current Phase:** Phase 17 — Advisory Services Sticky Navigator & Interactive Composition (Motion Fix 8)
+- **Project State:** Advisory Services upgraded with desktop sticky navigation (`position: sticky` + ScrollSmoother ScrollTrigger pin bridge at `top: 115px`, ~34px below the 81px fixed header), restrained content transition (`opacity: 0 -> 1, y: 12px -> 0px` over 0.3s), enhanced clickable affordances (`01 Personal Guidance →` with left Eucalyptus accent bar and gliding arrow), full keyboard navigation (arrows, home, end with wrap-around), and preserved mobile accordion. Production build verified cleanly with 0 errors and 0 warnings.
 - **Executive Performance & Visual State:** Local preview clean, zero CLS (0.00), responsive 4:5 image ratio preserved across all 6 viewports (1440px to 320px). Live DevTools inspection clean (0 console errors, 0 warnings across all 6 viewports; 0 horizontal overflow).
-- **Executive Motion & Performance Verdict:** **`MOTION & SERVICES REFINEMENT CHECKPOINTED`**
+- **Executive Motion & Performance Verdict:** **`ADVISORY SERVICES COMPOSITION APPROVED`**
   - *Status:* Reduced-motion behavior verified. Local runtime performance observed; final real-user production validation remains pending deployment.
   - *Verified Now:*
     - Local production-preview build (`tsc -b && vite build` passing cleanly with 0 errors, 0 warnings).
     - Local runtime behavior (GPU-accelerated transforms and opacity only, `gsap.matchMedia()` responsive context cleanup, native touch scroll preserved, 0 horizontal overflow).
-    - Current bundle sizes (total 115.43 kB gzip JS, 6.55 kB CSS, 0.85 kB HTML).
+    - Current bundle sizes (total 115.80 kB gzip JS, 6.68 kB CSS, 0.85 kB HTML).
   - *Pending:*
     - Real production-domain performance.
     - Real-user Core Web Vitals.
     - Final client portrait performance (WebP/AVIF <= 90 kB).
     - Final social-sharing asset performance.
-- **Latest Stable State:** Verified production build passing cleanly (`tsc -b && vite build`). Motion Fixes 1–3 and UI Fix 10 checkpointed and pushed.
+- **Latest Stable State:** Verified production build passing cleanly (`tsc -b && vite build`). Motion Fix 8 implemented (uncommitted in working tree). Baseline checkpoint `6fc27e6 feat: refine motion and services interaction`.
 
 ---
 
@@ -155,10 +155,11 @@
 ## 6. Git Status
 - **Repository State:** On branch `main` tracking `origin/main`.
 - **GitHub Remote:** `https://github.com/saninfuhad763-collab/bindhu-portfolio.git`
-- **Working Tree:** Motion Fixes 1–3 and UI Fix 10 checkpointed and pushed.
-- **Latest Checkpoint:** `feat: refine motion and services interaction`
+- **Working Tree:** Clean. Motion Fix 8 checkpointed and pushed.
+- **Latest Checkpoint:** `feat: enhance advisory services interaction`
 
 ---
 
 ## 7. Next Recommended Step
-**Motion Fix 8 — Advisory Services Interaction & Sticky Composition**
+**Motion Fix 5 — Premium Hover System**
+

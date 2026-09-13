@@ -1,16 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Container } from '../layout/Container';
 import { Button } from '../ui/Button';
 import { siteContent } from '../../content/siteContent';
-import { ChevronRight, ChevronDown, Check, ArrowRight } from 'lucide-react';
+import { ChevronDown, Check, ArrowRight } from 'lucide-react';
 import { Reveal } from '../motion/Reveal';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { BREAKPOINTS } from '../motion/motionConfig';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 /**
  * Phase 7 — Advisory Services Section
  *
  * Implements an interactive progressive-disclosure pattern:
- * - Desktop (>=1024px): Asymmetrical two-column editorial navigator
- *   (Left: Situation index 01-04; Right: Rich selected detail panel).
+ * - Desktop (>=1024px): Asymmetrical two-column editorial composition with a
+ *   sticky situation navigator (01–04) that stays anchored while the right detail panel flows.
+ *   Uses native CSS position: sticky (top-28 = 112px accounting for the 80px fixed header + 32px breathing room)
+ *   supplemented with ScrollTrigger pin under ScrollSmoother to bridge the ancestor transform.
  * - Mobile (<1024px): Accessible accordion with >=48px touch targets,
  *   visible focus rings, and explicit ARIA semantics.
  *
@@ -21,10 +30,93 @@ import { Reveal } from '../motion/Reveal';
  */
 export const Services: React.FC = () => {
   const { services } = siteContent;
-  const [activeId, setActiveId] = useState<string>(services.items[0]?.id || 'service-individual');
-  const [mobileOpenId, setMobileOpenId] = useState<string | null>(services.items[0]?.id || 'service-individual');
+  const [activeId, setActiveId] = useState<string>(services.items[0]?.id || 'service-personal');
+  const [mobileOpenId, setMobileOpenId] = useState<string | null>(services.items[0]?.id || 'service-personal');
+
+  const sectionRef = useRef<HTMLElement>(null);
+  const navigatorRef = useRef<HTMLDivElement>(null);
+  const detailPanelRef = useRef<HTMLDivElement>(null);
+  const panelContentRef = useRef<HTMLDivElement>(null);
+  const isInitialRender = useRef(true);
 
   const activeService = services.items.find((item) => item.id === activeId) || services.items[0];
+
+  // Restrained content transition on tab selection change (Desktop)
+  useEffect(() => {
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+
+    const contentEl = panelContentRef.current;
+    if (!contentEl) return;
+
+    const isReduced = window.matchMedia(BREAKPOINTS.reduceMotion).matches;
+    if (isReduced) {
+      gsap.set(contentEl, { opacity: 1, y: 0, clearProps: 'transform' });
+      return;
+    }
+
+    // Short visual transition: opacity + 12px translate (settles quickly, no bounce)
+    gsap.fromTo(
+      contentEl,
+      { opacity: 0, y: 12 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.3,
+        ease: 'power2.out',
+        clearProps: 'transform',
+      }
+    );
+  }, [activeId]);
+
+  // Desktop sticky pinning integration:
+  // Pure CSS `position: sticky; top: 112px;` handles standard document flow.
+  // When ScrollSmoother is active on desktop, ScrollTrigger pinning bridges the transform
+  // on #smooth-content, locking the navigator at top: 112px until the panel ends.
+  useEffect(() => {
+    const mm = gsap.matchMedia();
+
+    mm.add(
+      {
+        isDesktop: BREAKPOINTS.desktop,
+        reduceMotion: BREAKPOINTS.reduceMotion,
+      },
+      (context) => {
+        const { isDesktop, reduceMotion } = context.conditions as {
+          isDesktop: boolean;
+          reduceMotion: boolean;
+        };
+
+        if (!isDesktop || reduceMotion) return;
+
+        const nav = navigatorRef.current;
+        const panel = detailPanelRef.current;
+        const section = sectionRef.current;
+        if (!nav || !panel || !section) return;
+
+        // Sticky boundary: Starts when navigator hits 112px below viewport top (80px header + 32px breathing room),
+        // stops when panel bottom reaches the bottom of the sticky navigator
+        const st = ScrollTrigger.create({
+          trigger: nav,
+          start: 'top top+=132',
+          endTrigger: panel,
+          end: () => `bottom top+=${132 + nav.offsetHeight}`,
+          pin: nav,
+          pinSpacing: false,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        });
+
+        return () => {
+          st.kill();
+        };
+      }
+    );
+
+    return () => mm.revert();
+  }, []);
 
   const handleTabKeyDown = (e: React.KeyboardEvent, index: number) => {
     const itemsCount = services.items.length;
@@ -52,6 +144,7 @@ export const Services: React.FC = () => {
 
   return (
     <section
+      ref={sectionRef}
       id="services"
       className="py-12 sm:py-16 lg:py-28 bg-canvas-alt border-t border-border-subtle/80 relative"
       aria-labelledby="services-heading"
@@ -74,73 +167,85 @@ export const Services: React.FC = () => {
         </Reveal>
 
         {/* Desktop Progressive Disclosure (>=1024px) */}
-        <Reveal variant="fade-up" delay={0.08} className="hidden lg:grid lg:grid-cols-12 lg:gap-8 items-start">
+        <Reveal variant="fade-up" delay={0.08} className="hidden lg:grid lg:grid-cols-12 lg:gap-8 items-stretch relative">
           {/* Left Column: Situation Navigator Index */}
-          <div
-            className="lg:col-span-5 space-y-3"
-            role="tablist"
-            aria-orientation="vertical"
-            aria-label="Advisory service areas"
-          >
-            {services.items.map((item, index) => {
-              const isSelected = activeId === item.id;
-              return (
-                <button
-                  key={item.id}
-                  type="button"
-                  role="tab"
-                  id={`service-tab-${item.id}`}
-                  aria-selected={isSelected}
-                  aria-controls={`service-panel-${item.id}`}
-                  tabIndex={isSelected ? 0 : -1}
-                  onKeyDown={(e) => handleTabKeyDown(e, index)}
-                  onClick={() => setActiveId(item.id)}
-                  className={`w-full text-left p-5 rounded-xl transition-all duration-200 border flex items-start justify-between gap-4 group focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring ${
-                    isSelected
-                      ? 'bg-surface border-action-primary/50 shadow-card ring-1 ring-action-primary/20'
-                      : 'bg-surface/50 hover:bg-surface border-border-subtle hover:border-border-strong text-content-secondary'
-                  }`}
-                >
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2.5 mb-1.5">
+          <div className="lg:col-span-5 relative">
+            <div
+              ref={navigatorRef}
+              className="lg:sticky space-y-3"
+              role="tablist"
+              aria-orientation="vertical"
+              aria-label="Advisory service areas"
+            >
+              {services.items.map((item, index) => {
+                const isSelected = activeId === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    role="tab"
+                    id={`service-tab-${item.id}`}
+                    aria-selected={isSelected}
+                    aria-controls={`service-panel-${item.id}`}
+                    tabIndex={isSelected ? 0 : -1}
+                    onKeyDown={(e) => handleTabKeyDown(e, index)}
+                    onClick={() => setActiveId(item.id)}
+                    className={`w-full text-left p-5 rounded-xl transition-all duration-200 border flex items-center justify-between gap-4 group relative overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ${
+                      isSelected
+                        ? 'bg-surface border-action-primary/60 shadow-card ring-1 ring-action-primary/20 text-brand-primary'
+                        : 'bg-surface/50 hover:bg-surface border-border-subtle hover:border-border-strong text-content-secondary hover:text-brand-primary hover:-translate-y-0.5'
+                    }`}
+                  >
+                    {/* Active vertical accent pill on left border */}
+                    <span
+                      className={`absolute left-0 top-3 bottom-3 w-1 rounded-r-full transition-all duration-200 ${
+                        isSelected ? 'bg-action-primary opacity-100' : 'bg-transparent opacity-0'
+                      }`}
+                      aria-hidden="true"
+                    />
+
+                    <div className="flex items-center gap-3.5 flex-1 min-w-0 pl-1">
                       <span
-                        className={`font-body text-xs font-semibold px-2 py-0.5 rounded transition-colors ${
+                        className={`font-body text-xs font-semibold px-2.5 py-1 rounded transition-colors shrink-0 ${
                           isSelected
                             ? 'bg-action-primary text-white'
-                            : 'bg-canvas-alt text-content-muted group-hover:text-content-secondary'
+                            : 'bg-canvas-alt text-content-muted group-hover:text-content-secondary group-hover:bg-canvas-alt/80'
                         }`}
                       >
                         {item.number}
                       </span>
-                      <span className="font-body text-xs text-content-muted uppercase tracking-wider font-medium">
-                        {item.category}
-                      </span>
+                      <div className="flex flex-col min-w-0">
+                        <span
+                          className={`font-display text-base lg:text-lg leading-snug truncate transition-colors ${
+                            isSelected
+                              ? 'text-brand-primary font-semibold'
+                              : 'text-content-primary group-hover:text-brand-primary'
+                          }`}
+                        >
+                          {item.category}
+                        </span>
+                        <span className="font-body text-xs text-content-muted truncate mt-0.5">
+                          {item.shortLabel}
+                        </span>
+                      </div>
                     </div>
-                    <span
-                      className={`font-display text-card-h3 block leading-snug transition-colors ${
+
+                    <ArrowRight
+                      className={`w-4 h-4 shrink-0 transition-all duration-200 ${
                         isSelected
-                          ? 'text-brand-primary font-semibold'
-                          : 'text-content-primary group-hover:text-brand-primary'
+                          ? 'text-action-primary translate-x-1'
+                          : 'text-content-muted group-hover:text-content-secondary group-hover:translate-x-1'
                       }`}
-                    >
-                      {item.shortLabel}
-                    </span>
-                  </div>
-                  <ChevronRight
-                    className={`w-5 h-5 mt-1 flex-shrink-0 transition-transform duration-200 ${
-                      isSelected
-                        ? 'text-action-primary translate-x-0.5'
-                        : 'text-content-muted group-hover:text-content-secondary'
-                    }`}
-                    aria-hidden="true"
-                  />
-                </button>
-              );
-            })}
+                      aria-hidden="true"
+                    />
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           {/* Right Column: Selected Detail Card */}
-          <div className="lg:col-span-7">
+          <div ref={detailPanelRef} className="lg:col-span-7">
             {activeService && (
               <div
                 id={`service-panel-${activeService.id}`}
@@ -149,89 +254,91 @@ export const Services: React.FC = () => {
                 aria-labelledby={`service-tab-${activeService.id}`}
                 className="bg-surface border border-border-subtle rounded-2xl p-8 lg:p-10 shadow-card focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
               >
-                {/* Panel Top Metadata */}
-                <div className="flex items-center justify-between gap-4 flex-wrap pb-5 border-b border-border-subtle/80">
-                  <div className="flex items-center gap-2">
-                    <span className="font-body text-xs font-semibold px-2.5 py-1 rounded bg-action-primary/10 text-action-primary">
-                      {activeService.number}
-                    </span>
-                    <span className="font-body text-xs text-content-muted uppercase tracking-wider font-medium">
-                      {activeService.category}
+                <div ref={panelContentRef}>
+                  {/* Panel Top Metadata */}
+                  <div className="flex items-center justify-between gap-4 flex-wrap pb-5 border-b border-border-subtle/80">
+                    <div className="flex items-center gap-2">
+                      <span className="font-body text-xs font-semibold px-2.5 py-1 rounded bg-action-primary/10 text-action-primary">
+                        {activeService.number}
+                      </span>
+                      <span className="font-body text-xs text-content-muted uppercase tracking-wider font-medium">
+                        {activeService.category}
+                      </span>
+                    </div>
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-body text-content-muted bg-canvas-alt border border-border-subtle">
+                      <span className="w-1.5 h-1.5 rounded-full bg-advisory-accent" aria-hidden="true" />
+                      {activeService.verificationStatus || activeService.verificationNotice}
                     </span>
                   </div>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-body text-content-muted bg-canvas-alt border border-border-subtle">
-                    <span className="w-1.5 h-1.5 rounded-full bg-advisory-accent" aria-hidden="true" />
-                    {activeService.verificationStatus || activeService.verificationNotice}
-                  </span>
-                </div>
 
-                {/* Service Heading & Summary */}
-                <div className="mt-6 mb-8">
-                  <h3 className="font-display text-card-h2 text-brand-primary leading-tight mb-3">
-                    {activeService.title}
-                  </h3>
-                  <p className="font-body text-body-regular text-content-secondary leading-relaxed">
-                    {activeService.description}
-                  </p>
-                </div>
+                  {/* Service Heading & Summary */}
+                  <div className="mt-6 mb-8">
+                    <h3 className="font-display text-card-h2 text-brand-primary leading-tight mb-3">
+                      {activeService.title}
+                    </h3>
+                    <p className="font-body text-body-regular text-content-secondary leading-relaxed">
+                      {activeService.description}
+                    </p>
+                  </div>
 
-                {/* Who This Is For Box */}
-                <div className="p-5 rounded-xl bg-canvas-alt/70 border border-border-subtle/80 mb-6">
-                  <p className="font-body text-eyebrow font-semibold text-brand-primary uppercase tracking-wider mb-1.5">
-                    Who This Guidance Is For
-                  </p>
-                  <p className="font-body text-body-small text-content-secondary leading-relaxed">
-                    {activeService.audience}
-                  </p>
-                </div>
+                  {/* Who This Is For Box */}
+                  <div className="p-5 rounded-xl bg-canvas-alt/70 border border-border-subtle/80 mb-6">
+                    <p className="font-body text-eyebrow font-semibold text-brand-primary uppercase tracking-wider mb-1.5">
+                      Who This Guidance Is For
+                    </p>
+                    <p className="font-body text-body-small text-content-secondary leading-relaxed">
+                      {activeService.audience}
+                    </p>
+                  </div>
 
-                {/* Scope: What We Evaluate Together */}
-                <div className="mb-6">
-                  <p className="font-body text-eyebrow font-semibold text-brand-primary uppercase tracking-wider mb-3">
-                    What We Evaluate Together
-                  </p>
-                  <ul className="space-y-2.5">
-                    {activeService.advisoryScope.map((scopeItem, idx) => (
-                      <li key={idx} className="flex items-start gap-3">
-                        <span
-                          className="mt-0.5 w-5 h-5 rounded-full bg-action-primary/10 text-action-primary flex items-center justify-center flex-shrink-0"
-                          aria-hidden="true"
-                        >
-                          <Check className="w-3 h-3 stroke-[2.5]" />
-                        </span>
-                        <span className="font-body text-body-small text-content-secondary leading-relaxed">
-                          {scopeItem}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                  {/* Scope: What We Evaluate Together */}
+                  <div className="mb-6">
+                    <p className="font-body text-eyebrow font-semibold text-brand-primary uppercase tracking-wider mb-3">
+                      What We Evaluate Together
+                    </p>
+                    <ul className="space-y-2.5">
+                      {activeService.advisoryScope.map((scopeItem, idx) => (
+                        <li key={idx} className="flex items-start gap-3">
+                          <span
+                            className="mt-0.5 w-5 h-5 rounded-full bg-action-primary/10 text-action-primary flex items-center justify-center flex-shrink-0"
+                            aria-hidden="true"
+                          >
+                            <Check className="w-3 h-3 stroke-[2.5]" />
+                          </span>
+                          <span className="font-body text-body-small text-content-secondary leading-relaxed">
+                            {scopeItem}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
 
-                {/* Expected Outcome Reassurance Box */}
-                <div className="p-5 rounded-xl bg-canvas border border-border-subtle mb-8">
-                  <p className="font-body text-eyebrow font-semibold text-action-primary uppercase tracking-wider mb-1">
-                    Expected Outcome
-                  </p>
-                  <p className="font-body text-body-small text-content-primary leading-relaxed font-medium">
-                    {activeService.expectedOutcome}
-                  </p>
-                </div>
+                  {/* Expected Outcome Reassurance Box */}
+                  <div className="p-5 rounded-xl bg-canvas border border-border-subtle mb-8">
+                    <p className="font-body text-eyebrow font-semibold text-action-primary uppercase tracking-wider mb-1">
+                      Expected Outcome
+                    </p>
+                    <p className="font-body text-body-small text-content-primary leading-relaxed font-medium">
+                      {activeService.expectedOutcome}
+                    </p>
+                  </div>
 
-                {/* Detail Panel Footer & CTA */}
-                <div className="pt-6 border-t border-border-subtle/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <Button
-                    href={services.cta.href}
-                    variant="primary"
-                    size="md"
-                    icon={<ArrowRight className="w-4 h-4" />}
-                    iconPosition="right"
-                    className="flex-shrink-0 whitespace-nowrap"
-                  >
-                    {services.cta.label}
-                  </Button>
-                  <p className="font-body text-small-meta text-content-muted">
-                    Zero sales obligation · Independent consultative evaluation
-                  </p>
+                  {/* Detail Panel Footer & CTA */}
+                  <div className="pt-6 border-t border-border-subtle/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <Button
+                      href={services.cta.href}
+                      variant="primary"
+                      size="md"
+                      icon={<ArrowRight className="w-4 h-4" />}
+                      iconPosition="right"
+                      className="flex-shrink-0 whitespace-nowrap"
+                    >
+                      {services.cta.label}
+                    </Button>
+                    <p className="font-body text-small-meta text-content-muted">
+                      Zero sales obligation · Independent consultative evaluation
+                    </p>
+                  </div>
                 </div>
               </div>
             )}
