@@ -5,6 +5,7 @@ import { Button } from '../ui/Button';
 import { siteContent } from '../../content/siteContent';
 import { MOTION, BREAKPOINTS } from '../motion/motionConfig';
 import { FloatingAccent } from '../motion/FloatingAccent';
+import { AnimatedGradient } from '../motion/AnimatedGradient';
 
 /**
  * Hero Section Component — Bindhu Portfolio
@@ -161,7 +162,8 @@ export const Hero: React.FC = () => {
       aria-labelledby="hero-heading"
       className="relative bg-canvas pt-10 pb-16 sm:pt-14 sm:pb-20 lg:pt-18 lg:pb-28 overflow-hidden"
     >
-      <Container size="standard">
+      <AnimatedGradient variant="hero" />
+      <Container size="standard" className="relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* Left Column: Editorial Value Proposition & CTAs */}
           <div className="lg:col-span-7 flex flex-col items-start">

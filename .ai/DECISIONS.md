@@ -289,3 +289,39 @@ This document records established architectural, design, operational, and organi
   - Production build (`tsc -b && vite build`) passed with 0 errors and 0 warnings.
   - Runtime validation across 1440px, 1280px, 1024px, 768px, 390px, and 320px with zero horizontal overflow (`scrollWidth <= innerWidth`).
   - Screenshots captured at 1440px desktop and 390px mobile.
+
+---
+
+## Decision 019 — Selective Animated Gradient System (Motion Fix 7 & 7B Calibration)
+- **Status:** Checkpointed in `feat: refine animated gradient atmosphere`.
+- **Date:** 2026-09-13
+- **Context & Problem:** While the initial gradient architecture was technically sound, initial opacities ($3\%\text{–}5\%$) and broad radii ($640\text{–}680\text{px}$) made the atmospheric presence too subtle to be easily perceived during normal browsing. Motion Fix 7B calibrated opacity, radial focus, and drift speed to achieve clearly perceptible, premium atmospheric depth without becoming dominant or SaaS-like.
+- **Selected Areas & Calibrated Profiles:**
+  - *Hero:*
+    - Orb A (Terracotta dawn warmth behind portrait): Center opacity $0.085$ (tested $0.06\text{–}0.10$), $38\%$ stop at $0.03$, transparent at $68\%$. Dimensions: $600\times 600\text{px}$. Drift: $+28\text{px}, -20\text{px}$, duration $13.0\text{s}$, delay $0.0\text{s}$.
+    - Orb B (Eucalyptus grounding behind value prop): Center opacity $0.070$ (tested $0.05\text{–}0.09$), $42\%$ stop at $0.025$, transparent at $72\%$. Dimensions: $540\times 540\text{px}$. Drift: $-24\text{px}, +22\text{px}$, duration $11.5\text{s}$, delay $1.0\text{s}$.
+  - *Services:*
+    - Orb A (Eucalyptus consultative diffusion behind detail panel): Center opacity $0.075$ (tested $0.06\text{–}0.09$), $40\%$ stop at $0.025$, transparent at $68\%$. Dimensions: $580\times 580\text{px}$. Drift: $-22\text{px}, +26\text{px}$, duration $14.0\text{s}$, delay $0.6\text{s}$.
+    - Orb B (Terracotta grounding warmth): Center opacity $0.065$ (tested $0.05\text{–}0.08$), $38\%$ stop at $0.020$, transparent at $68\%$. Dimensions: $500\times 500\text{px}$. Drift: $+20\text{px}, -18\text{px}$, duration $12.0\text{s}$, delay $0.0\text{s}$.
+  - *Contact:*
+    - Orb A (Eucalyptus welcoming atmosphere supporting booking card): Center opacity $0.085$ (tested $0.06\text{–}0.10$), $42\%$ stop at $0.030$, transparent at $70\%$. Dimensions: $580\times 580\text{px}$. Drift: $+25\text{px}, -25\text{px}$, duration $13.5\text{s}$, delay $1.2\text{s}$.
+    - Orb B (Terracotta warmth under editorial column): Center opacity $0.070$ (tested $0.05\text{–}0.09$), $40\%$ stop at $0.025$, transparent at $68\%$. Dimensions: $520\times 520\text{px}$. Drift: $-20\text{px}, +20\text{px}$, duration $15.0\text{s}$, delay $0.0\text{s}$.
+  - *Deliberately Excluded:* Header, Trust pillars, About, Process, Education, Social Proof, FAQ, and Footer remain completely free of gradient motion to preserve section cadence, authoritative simplicity, and high contrast.
+- **Gradient Movement Strategy:**
+  - Gradient animation primarily uses transform-based movement.
+  - Pure CSS `radial-gradient` color stops fading naturally to transparent without paint-heavy blur filters (`filter: blur(...)`) or expensive SVG masks.
+  - Low-frequency, asynchronous multi-axis drift ($11.5\text{s}–15.0\text{s}$ cycles) with gentle scale modulation ($0.97–1.03$) and `sine.inOut` easing.
+  - Decoupled from floating accents ($4.8\text{s}–6.2\text{s}$) and hover interactions, avoiding phase synchronization or harmonic repetition.
+- **Responsive & Reduced-Motion Policy:**
+  - Desktop (≥1024px): Full calibrated drift ($20–28\text{px}$).
+  - Tablet (768–1023px): Reduced amplitude (~50%, $10–14\text{px}$).
+  - Mobile (<768px) & Narrow Mobile (≤360px): Motion disabled ($0\text{px}$ displacement); static radial gradients remain visible for zero-overhead background depth.
+  - Reduced Motion (`prefers-reduced-motion: reduce`): Motion disabled; transforms cleared via `clearProps: 'transform'`.
+- **Accessibility & Transform Ownership:**
+  - Gradient layers are rendered with `aria-hidden="true"`, `pointer-events-none select-none`, and `z-0` behind content (`relative z-10`).
+  - Local contrast behavior verified: text contrast ratios continue to comfortably exceed WCAG AAA standards ($>13:1$).
+- **Verification:**
+  - Production build (`tsc -b && vite build`) passed with 0 errors and 0 warnings.
+  - No layout instability was observed during local preview testing.
+  - Runtime validation across 1440px, 1280px, 1024px, 768px, 390px, and 320px with zero horizontal overflow (`scrollWidth <= innerWidth`).
+  - Visual inspection confirmed at 1440px desktop and 390px mobile.

@@ -5,6 +5,7 @@ import { Shield, ArrowRight, Mail, Phone, Calendar } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Reveal } from '../motion/Reveal';
 import { FloatingAccent } from '../motion/FloatingAccent';
+import { AnimatedGradient } from '../motion/AnimatedGradient';
 
 /**
  * Phase 12 — Consultation & Contact Section
@@ -26,10 +27,11 @@ export const Contact: React.FC = () => {
   return (
     <section
       id="contact"
-      className="py-12 sm:py-16 lg:py-24 bg-canvas border-t border-border-subtle/80 relative"
+      className="py-12 sm:py-16 lg:py-24 bg-canvas border-t border-border-subtle/80 relative overflow-hidden"
       aria-labelledby="contact-heading"
     >
-      <Container size="standard">
+      <AnimatedGradient variant="contact" />
+      <Container size="standard" className="relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-16 items-start">
           {/* Left Column: Editorial Positioning & Expectations */}
           <Reveal variant="fade-right" className="lg:col-span-7">

@@ -5,6 +5,7 @@ import { siteContent } from '../../content/siteContent';
 import { ChevronDown, Check, ArrowRight } from 'lucide-react';
 import { Reveal } from '../motion/Reveal';
 import { FloatingAccent } from '../motion/FloatingAccent';
+import { AnimatedGradient } from '../motion/AnimatedGradient';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { BREAKPOINTS } from '../motion/motionConfig';
@@ -198,10 +199,11 @@ export const Services: React.FC = () => {
     <section
       ref={sectionRef}
       id="services"
-      className="py-12 sm:py-16 lg:py-28 bg-canvas-alt border-t border-border-subtle/80 relative"
+      className="py-12 sm:py-16 lg:py-28 bg-canvas-alt border-t border-border-subtle/80 relative overflow-hidden"
       aria-labelledby="services-heading"
     >
-      <Container size="standard">
+      <AnimatedGradient variant="services" />
+      <Container size="standard" className="relative z-10">
         {/* Section Intro Header */}
         <Reveal variant="fade-up" className="max-w-3xl mb-8 sm:mb-12 lg:mb-16">
           <span className="font-body text-eyebrow font-semibold text-action-primary uppercase tracking-wider block mb-3">

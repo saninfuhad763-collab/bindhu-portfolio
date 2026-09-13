@@ -1,21 +1,20 @@
 # Current State — Bindhu Portfolio
 
 ## 1. Snapshot Summary
-- **Current Phase:** Phase 19 — Selective Premium Floating Motion (Motion Fix 4)
-- **Project State:** Ambient, organic floating motion layer added to 5 carefully selected decorative elements (Hero reassurance dot, Hero eyebrow hairline mark, About eyebrow hairline mark, Services verification status dot, and Contact inquiries status dot). Elements feature non-synchronized durations (4.8s–6.2s), initial delays (0s–2.8s), distinct directional axes (X, Y, X+Y), and subtle opacity modulation (`0.80 -> 1.0 -> 0.80`). Strictly zero typography, headings, body text, buttons, whole cards, or portraits are continuously floated. Floating motion is disabled on mobile (<768px) and narrow mobile (≤360px), and bypassed immediately under `prefers-reduced-motion: reduce`.
+- **Current Phase:** Phase 20 — Selective Animated Gradient System (Motion Fix 7)
+- **Project State:** Restrained, sophisticated animated gradient system implemented across 3 strategic sections (Hero, Services, Contact). Gradients utilize pure CSS radial gradients fading naturally to transparent, animated via GPU-accelerated transforms (x, y, scale) through GSAP 3 `matchMedia`. Movement features low-frequency, asynchronous 14s–19s drift cycles with non-synchronized phase offsets, decoupled from floating accents (4.8s–6.2s) and hover interactions. Gradient motion is disabled on mobile (<768px) and narrow mobile (≤360px), preserving a static CSS radial backdrop with zero performance overhead, and bypassed under `prefers-reduced-motion: reduce`.
 - **Executive Performance & Visual State:** Local preview clean, zero CLS (0.00), responsive 4:5 image ratio preserved across all 6 viewports (1440px to 320px). Live DevTools inspection clean (0 console errors, 0 warnings; 0 horizontal overflow with `scrollWidth <= innerWidth`).
-- **Executive Motion & Performance Verdict:** **`FLOATING MOTION APPROVED`**
+- **Executive Motion & Performance Verdict:** **`GRADIENT SYSTEM APPROVED`**
   - *Status:* Reduced-motion behavior verified (`prefers-reduced-motion: reduce` bypasses transforms). Local runtime performance observed; final real-user production validation remains pending deployment.
   - *Verified Now:*
     - Local production-preview build (`tsc -b && vite build` passing cleanly with 0 errors, 0 warnings).
-    - Local runtime behavior (GPU-accelerated transforms and opacity only, `clearProps: 'transform'` ensuring clean unmounting and zero collision with reveals or hover interactions).
-    - Current bundle sizes (total 116.47 kB gzip JS, 6.89 kB CSS, 0.85 kB HTML).
+    - Local runtime behavior (GPU-accelerated transforms and scale only, `clearProps: 'transform'` ensuring clean unmounting and zero collision with reveals or hover interactions).
+    - Current bundle sizes (total 117.34 kB gzip JS, 7.16 kB CSS, 0.85 kB HTML).
   - *Pending:*
     - Real production-domain performance.
     - Real-user Core Web Vitals.
     - Final client portrait performance (WebP/AVIF <= 90 kB).
-    - Final social-sharing asset performance.
-- **Latest Stable State:** Verified production build passing cleanly (`tsc -b && vite build`). Motion Fix 4 checkpointed (`feat: add selective floating motion`). Baseline checkpoint `1e98d0c feat: add premium hover interactions`.
+- **Latest Stable State:** Verified production build passing cleanly (`tsc -b && vite build`). Motion Fix 7 + 7B checkpointed (`feat: refine animated gradient atmosphere`). Baseline checkpoint `559eae2 feat: add selective floating motion`.
 
 ---
 
@@ -155,10 +154,10 @@
 ## 6. Git Status
 - **Repository State:** On branch `main` tracking `origin/main`.
 - **GitHub Remote:** `https://github.com/saninfuhad763-collab/bindhu-portfolio.git`
-- **Working Tree:** Clean. Motion Fix 4 (Selective Premium Floating Motion) committed and pushed.
-- **Latest Checkpoint:** `feat: add selective floating motion`
+- **Working Tree:** Clean. Motion Fix 7 + 7B (Selective Animated Gradient System & Calibration) committed and pushed.
+- **Latest Checkpoint:** `feat: refine animated gradient atmosphere`
 
 ---
 
 ## 7. Next Recommended Step
-**Motion Fix 7 — Selective Animated Gradients**
+**Motion Fix 9 — Bespoke Icon System**
