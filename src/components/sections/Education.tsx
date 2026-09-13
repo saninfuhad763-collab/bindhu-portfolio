@@ -29,7 +29,7 @@ export const Education: React.FC = () => {
   return (
     <section
       id="education"
-      className="py-12 sm:py-16 lg:py-28 bg-canvas-alt border-t border-border-subtle/80 relative"
+      className="py-14 sm:py-16 lg:py-24 bg-canvas-alt border-t border-border-subtle/80 relative"
       aria-labelledby="education-heading"
     >
       <Container size="standard">
@@ -42,7 +42,7 @@ export const Education: React.FC = () => {
               </span>
               <h2
                 id="education-heading"
-                className="font-display text-section-h2 text-brand-primary leading-tight mb-4"
+                className="font-display text-section-h2 font-semibold text-brand-primary tracking-tight mb-4"
               >
                 {education.headline}
               </h2>

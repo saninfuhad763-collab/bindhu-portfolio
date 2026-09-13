@@ -23,18 +23,18 @@ export const Process: React.FC = () => {
   return (
     <section
       id="process"
-      className="py-12 sm:py-16 lg:py-28 bg-canvas border-t border-border-subtle/80 relative"
+      className="py-14 sm:py-16 lg:py-24 bg-canvas border-t border-border-subtle/80 relative"
       aria-labelledby="process-heading"
     >
       <Container size="standard">
         {/* Section Intro Header */}
-        <Reveal variant="fade-up" className="max-w-3xl mb-10 sm:mb-14 lg:mb-20">
+        <Reveal variant="fade-up" className="max-w-3xl mb-10 sm:mb-12 lg:mb-16">
           <span className="font-body text-eyebrow font-semibold text-action-primary uppercase tracking-wider block mb-3">
             {process.eyebrow}
           </span>
           <h2
             id="process-heading"
-            className="font-display text-section-h2 text-brand-primary leading-tight mb-4"
+            className="font-display text-section-h2 font-semibold text-brand-primary tracking-tight mb-4"
           >
             {process.headline}
           </h2>
@@ -70,7 +70,7 @@ export const Process: React.FC = () => {
                     </div>
 
                     {/* Step Title */}
-                    <h3 className="font-display text-card-h3 text-brand-primary mb-2.5 leading-snug">
+                    <h3 className="font-display text-card-h3 font-semibold text-brand-primary tracking-tight mb-2.5 leading-snug">
                       <span className="sr-only">Step {step.number}: </span>
                       {step.title}
                     </h3>
@@ -119,7 +119,7 @@ export const Process: React.FC = () => {
                     </div>
 
                     {/* Step Title */}
-                    <h3 className="font-display text-card-h3 text-brand-primary mb-2 leading-snug">
+                    <h3 className="font-display text-card-h3 font-semibold text-brand-primary tracking-tight mb-2 leading-snug">
                       <span className="sr-only">Step {step.number}: </span>
                       {step.title}
                     </h3>

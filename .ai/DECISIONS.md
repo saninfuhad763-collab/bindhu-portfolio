@@ -325,3 +325,32 @@ This document records established architectural, design, operational, and organi
   - No layout instability was observed during local preview testing.
   - Runtime validation across 1440px, 1280px, 1024px, 768px, 390px, and 320px with zero horizontal overflow (`scrollWidth <= innerWidth`).
   - Visual inspection confirmed at 1440px desktop and 390px mobile.
+
+---
+
+## Decision 020 — Global Typography & Spatial Rhythm Alignment (Velora Reference)
+- **Status:** Approved / Implemented
+- **Date:** 2026-09-13
+- **Context:** Visual inspection of the supplied Velora reference confirmed that the primary divergence between Bindhu and the reference was Bindhu's reliance on a literary serif font (Lora) for headings and minor section spacing variance. Velora employs an authoritative, high-density geometric sans-serif heading system with tight optical leading, negative letter-spacing, and generous, disciplined whitespace.
+- **Decision:**
+  - **Option B Selected:** Replaced `Lora` with `Plus Jakarta Sans` as the unified typography family across the entire application (both display headings and body copy).
+  - **Font Imports:** Removed `Lora` entirely from Google Fonts. Loaded `Plus Jakarta Sans` (weights 400, 500, 600, 700) in `index.html`. Reduced font network payload and eliminated font weight overhead.
+  - **Scale & Leading Tokens:**
+    - `hero-h1`: `clamp(2.25rem, 4.5vw, 3.5rem)`, `leading: 1.16`, `tracking: -0.025em`, font-semibold (600).
+    - `section-h2`: `clamp(1.875rem, 3.2vw, 2.625rem)`, `leading: 1.2`, `tracking: -0.02em`, font-semibold (600).
+    - `card-h3`: `1.375rem` (22px), `leading: 1.3`, `tracking: -0.015em`, font-semibold (600).
+    - `h4`: `1.125rem` (18px), `leading: 1.4`, `tracking: -0.01em`, font-semibold (600).
+    - `body-large` / `body-lead`: `1.1875rem` (19px), `leading: 1.65`, `tracking: -0.005em`.
+    - `body-regular`: `1.0625rem` (17px), `leading: 1.65`, `tracking: 0`.
+    - `body-small`: `0.875rem` (14px), `leading: 1.6`, `tracking: 0.005em`.
+    - `eyebrow`: `0.8125rem` (13px), `leading: 1.4`, `tracking: 0.08em`, uppercase/semibold.
+  - **Global Spacing Normalization:**
+    - Section padding normalized across all content sections (Trust, About, Services, Process, Education, Social Proof, FAQ, Contact) to `py-14 sm:py-16 lg:py-24` (56px mobile / 64px tablet / 96px desktop).
+    - Section intro margin normalized to `mb-8 sm:mb-12 lg:mb-16`.
+    - Card padding normalized to `p-6 sm:p-7 lg:p-8` with `rounded-xl`.
+  - **Trust Icon Removal:**
+    - All 4 Lucide icons and emblem badge boxes removed from `TrustValue.tsx`. Cards converted to pure typographic, dignified editorial pillars.
+- **Verification:**
+  - Build passed: 0 TypeScript errors, 0 Vite warnings.
+  - Bundle size: JS 350.65 kB (116.86 kB gzip), CSS 37.94 kB (7.08 kB gzip), HTML 2.08 kB (0.83 kB gzip).
+  - Runtime verified via Chrome DevTools MCP: 0 console errors, 0 warnings across 1440, 1280, 1024, 768, 390, 320px with zero horizontal overflow.

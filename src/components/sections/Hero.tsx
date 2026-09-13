@@ -189,7 +189,7 @@ export const Hero: React.FC = () => {
             <h1
               ref={headlineRef}
               id="hero-heading"
-              className="font-display text-hero-h1 font-semibold text-brand-primary tracking-tight mb-5 sm:mb-6 leading-[1.18]"
+              className="font-display text-hero-h1 font-semibold text-brand-primary tracking-tight mb-5 sm:mb-6"
             >
               {hero.headline}
             </h1>

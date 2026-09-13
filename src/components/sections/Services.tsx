@@ -199,7 +199,7 @@ export const Services: React.FC = () => {
     <section
       ref={sectionRef}
       id="services"
-      className="py-12 sm:py-16 lg:py-28 bg-canvas-alt border-t border-border-subtle/80 relative overflow-hidden"
+      className="py-14 sm:py-16 lg:py-24 bg-canvas-alt border-t border-border-subtle/80 relative overflow-hidden"
       aria-labelledby="services-heading"
     >
       <AnimatedGradient variant="services" />
@@ -211,7 +211,7 @@ export const Services: React.FC = () => {
           </span>
           <h2
             id="services-heading"
-            className="font-display text-section-h2 text-brand-primary leading-tight mb-4"
+            className="font-display text-section-h2 font-semibold text-brand-primary tracking-tight mb-4"
           >
             {services.headline}
           </h2>

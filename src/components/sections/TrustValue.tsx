@@ -1,5 +1,4 @@
 import React from 'react';
-import { Compass, UserRound, Route, MessageCircle } from 'lucide-react';
 import { Container } from '../layout/Container';
 import { siteContent } from '../../content/siteContent';
 import { Reveal } from '../motion/Reveal';
@@ -14,36 +13,16 @@ import { Reveal } from '../motion/Reveal';
  * - Zero fabricated credentials, ratings, client counts, or carrier logos
  * - Semantic H2 heading and H3 card titles for accessible document hierarchy
  * - Subtle GSAP ScrollTrigger reveals with staggered pillar entry
+ * - Pure typographic editorial cards: decorative icons removed for clean, dignified presentation
  */
 export const TrustValue: React.FC = () => {
   const { trustValue } = siteContent;
-
-  const renderIcon = (iconName: string) => {
-    const iconProps = {
-      className: 'w-5 h-5 text-brand-primary',
-      strokeWidth: 1.75,
-      'aria-hidden': true,
-    };
-
-    switch (iconName) {
-      case 'compass':
-        return <Compass {...iconProps} />;
-      case 'userRound':
-        return <UserRound {...iconProps} />;
-      case 'route':
-        return <Route {...iconProps} />;
-      case 'messageCircle':
-        return <MessageCircle {...iconProps} />;
-      default:
-        return <Compass {...iconProps} />;
-    }
-  };
 
   return (
     <section
       id="trust"
       aria-labelledby="trust-heading"
-      className="bg-canvas-alt py-12 sm:py-16 lg:py-24 border-t border-b border-border-subtle/70"
+      className="bg-canvas-alt py-14 sm:py-16 lg:py-24 border-t border-b border-border-subtle/70"
     >
       <Container size="standard">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
@@ -61,7 +40,7 @@ export const TrustValue: React.FC = () => {
               {/* Section Heading (H2) */}
               <h2
                 id="trust-heading"
-                className="font-display text-section-h2 font-semibold text-brand-primary tracking-tight leading-[1.22] mb-4 sm:mb-5"
+                className="font-display text-section-h2 font-semibold text-brand-primary tracking-tight mb-4 sm:mb-5"
               >
                 {trustValue.headline}
               </h2>
@@ -79,15 +58,10 @@ export const TrustValue: React.FC = () => {
               {trustValue.pillars.map((pillar) => (
                 <div
                   key={pillar.id}
-                  className="trust-pillar p-6 sm:p-7 rounded-lg bg-surface border border-border-subtle shadow-card flex flex-col justify-start h-full"
+                  className="trust-pillar p-6 sm:p-7 rounded-xl bg-surface border border-border-subtle shadow-card flex flex-col justify-start h-full"
                 >
-                  {/* Icon Emblem */}
-                  <div className="w-10 h-10 rounded-md bg-canvas border border-border-subtle flex items-center justify-center mb-4 flex-shrink-0">
-                    {renderIcon(pillar.iconName)}
-                  </div>
-
                   {/* Pillar Title (H3) */}
-                  <h3 className="font-display text-h4 font-semibold text-brand-primary mb-2 tracking-tight">
+                  <h3 className="font-display text-h4 font-semibold text-brand-primary mb-2.5 tracking-tight">
                     {pillar.title}
                   </h3>
 

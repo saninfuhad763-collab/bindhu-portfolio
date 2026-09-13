@@ -1,21 +1,22 @@
 # Current State — Bindhu Portfolio
 
 ## 1. Snapshot Summary
-- **Current Phase:** Phase 20 (Post-Rollback) — Services Icon Rollback & Baseline Normalization
-- **Project State:** Restrained, sophisticated animated gradient system implemented across 3 strategic sections (Hero, Services, Contact). Motion Fix 9A (Bespoke Advisory Services Icon Language) was visually reviewed, rejected, and completely removed. The Advisory Services section has been fully restored to its pre-9A state matching checkpoint `7f0952a`. All motion systems (ScrollSmoother, ScrollTrigger, Hero entrance, scroll reveals, Services sticky navigator, hover/pointer system, selective floating accents, and calibrated animated gradients) remain completely intact and verified.
-- **Executive Performance & Visual State:** Local preview clean, zero CLS (0.00), responsive 4:5 image ratio preserved across all 6 viewports (1440px to 320px). Live DevTools inspection clean (0 console errors, 0 warnings; 0 horizontal overflow with `scrollWidth <= innerWidth`).
-- **Executive Motion & Performance Verdict:** **`SERVICES RESTORED — PRE-9A BASELINE VERIFIED`**
-  - *Status:* Motion Fix 9A fully removed. Reduced-motion behavior verified. Local runtime performance observed.
+- **Current Phase:** Phase 24 — Global Typography & Spacing Re-Design (Velora Reference Alignment)
+- **Project State:** Full typographic and spatial re-design executed in strict alignment with the supplied Velora reference discipline. Option B selected: Lora serif replaced with Plus Jakarta Sans (400, 500, 600, 700) across all display headings and body copy, establishing a contemporary, high-density, authoritative editorial atmosphere. Global spacing fully normalized across all sections (standardized `py-14 sm:py-16 lg:py-24`, uniform card padding, and golden-ratio inter-block margins). All 4 decorative Trust icons completely removed from `TrustValue.tsx`. Complete transform ownership verified with zero competing transforms or duplicate RAF loops. All motion subsystems (ScrollSmoother, ScrollTrigger reveals, Hero entrance timeline, Services sticky composition, premium hover/pointer interactions, selective floating accents, and calibrated animated gradients) operate as a single coherent, calm, editorial motion language.
+- **Executive Performance & Visual State:** Local preview clean, zero CLS (0.00), responsive 4:5 image ratio preserved across all 6 viewports (1440px to 320px). Live DevTools inspection clean (0 console errors, 0 warnings; 0 horizontal overflow with `scrollWidth <= innerWidth` across 1440, 1280, 1024, 768, 390, 320px).
+- **Executive Motion & Performance Verdict:** **`GLOBAL TYPOGRAPHY + SPACING REFINEMENT APPROVED`**
+  - *Status:* Typography re-designed and unified to Plus Jakarta Sans. Spacing normalized globally. Trust icons removed. Full motion system intact and verified.
   - *Verified Now:*
     - Local production-preview build (`tsc -b && vite build` passing cleanly with 0 errors, 0 warnings).
-    - Local runtime behavior (clean restored Services layout, 0 horizontal overflow, 0 console messages).
-    - Current bundle sizes (total 117.32 kB gzip JS, 7.11 kB CSS, 0.85 kB HTML).
+    - Local runtime behavior (clean modern sans-serif typography, iconless trust cards, 0 horizontal overflow, 0 console messages).
+    - Current bundle sizes (total 116.86 kB gzip JS, 7.08 kB CSS, 0.83 kB HTML).
   - *Pending:*
-    - Services visual language reassessment before any replacement icon work.
+    - Typography + Trust Refinement Checkpoint.
+    - Final motion checkpoint.
     - Real production-domain performance.
     - Real-user Core Web Vitals.
     - Final client portrait performance (WebP/AVIF <= 90 kB).
-- **Latest Stable State:** Verified production build passing cleanly (`tsc -b && vite build`). Motion Fix 9A rejected and removed. Services restored to pre-9A baseline. Baseline checkpoint `7f0952a feat: refine animated gradient atmosphere`.
+- **Latest Stable State:** Verified production build passing cleanly (`tsc -b && vite build`). Baseline checkpoint `a285415 revert: remove rejected services icon system`. Working tree uncommitted per instructions.
 
 ---
 
@@ -38,8 +39,9 @@
   - **Phase 5 Trust & Value Anchor Implementation:**
     - `src/components/sections/TrustValue.tsx` created and QA approved.
     - Asymmetrical two-part editorial layout (Left: Section Heading & Description; Right: 2x2 Pillar Grid).
-    - 4 non-factual service pillars: Clear Guidance (`compass`), Personalized Support (`userRound`), Straightforward Process (`route`), Plain-Language Explanations (`messageCircle`).
-    - Soft Linen canvas background (`bg-canvas-alt`) providing natural, calm contrast from Hero's Warm Ivory base.
+    - 4 non-factual service pillars: Clear Guidance, Personalized Support, Straightforward Process, Plain-Language Explanations.
+    - Pure typographic editorial cards: decorative Lucide icons and emblem boxes completely removed in Phase 23 pre-final checkpoint refinement, creating dignified, uncluttered cards with `rounded-xl` and balanced spacing.
+    - Soft Linen canvas (`bg-canvas-alt`) providing natural, calm contrast from Hero's Warm Ivory base.
   - **Phase 6 About Bindhu Implementation:**
     - `src/components/sections/About.tsx` created and visually QA approved.
     - Asymmetrical editorial portrait + narrative composition (Left: 4:5 portrait frame with tactile offset paper layer; Right: Eyebrow, H2, narrative paragraphs, 3 philosophy statements, text link to `#services`).
@@ -161,4 +163,4 @@
 ---
 
 ## 7. Next Recommended Step
-**Services Visual Language Reassessment** — Conduct visual language reassessment before any replacement icon implementation. Do not schedule an icon implementation yet.
+**Final Motion Checkpoint** — Create a clean Git checkpoint for the fully normalized and verified responsive motion system.

@@ -25,7 +25,7 @@ export const About: React.FC = () => {
     <section
       id="about"
       aria-labelledby="about-heading"
-      className="bg-canvas py-12 sm:py-16 lg:py-28 overflow-hidden border-b border-border-subtle/70"
+      className="bg-canvas py-14 sm:py-16 lg:py-24 overflow-hidden border-b border-border-subtle/70"
     >
       <Container size="standard">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-16 items-start">
@@ -139,7 +139,7 @@ export const About: React.FC = () => {
               {/* Section Heading (H2) */}
               <h2
                 id="about-heading"
-                className="font-display text-section-h2 font-semibold text-brand-primary tracking-tight leading-[1.22] mb-6 sm:mb-7"
+                className="font-display text-section-h2 font-semibold text-brand-primary tracking-tight mb-6 sm:mb-7"
               >
                 {about.headline}
               </h2>

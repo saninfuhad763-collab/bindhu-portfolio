@@ -28,7 +28,7 @@ export const FAQ: React.FC = () => {
   return (
     <section
       id="faq"
-      className="py-12 sm:py-16 lg:py-24 bg-canvas-alt border-t border-border-subtle/80 relative"
+      className="py-14 sm:py-16 lg:py-24 bg-canvas-alt border-t border-border-subtle/80 relative"
       aria-labelledby="faq-heading"
     >
       <Container size="standard">
@@ -41,7 +41,7 @@ export const FAQ: React.FC = () => {
 
             <h2
               id="faq-heading"
-              className="font-display text-section-h2 text-brand-primary leading-tight mb-4"
+              className="font-display text-section-h2 font-semibold text-brand-primary tracking-tight mb-4"
             >
               {faq.headline}
             </h2>

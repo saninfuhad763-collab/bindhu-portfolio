@@ -27,7 +27,7 @@ export const Contact: React.FC = () => {
   return (
     <section
       id="contact"
-      className="py-12 sm:py-16 lg:py-24 bg-canvas border-t border-border-subtle/80 relative overflow-hidden"
+      className="py-14 sm:py-16 lg:py-24 bg-canvas border-t border-border-subtle/80 relative overflow-hidden"
       aria-labelledby="contact-heading"
     >
       <AnimatedGradient variant="contact" />
@@ -43,13 +43,13 @@ export const Contact: React.FC = () => {
             {/* Section Heading */}
             <h2
               id="contact-heading"
-              className="font-display text-section-h2 text-brand-primary tracking-tight leading-tight mb-5"
+              className="font-display text-section-h2 font-semibold text-brand-primary tracking-tight mb-5"
             >
               {contact.headline}
             </h2>
 
             {/* Section Description */}
-            <p className="font-body text-body-lead text-content-secondary leading-relaxed max-w-xl mb-10">
+            <p className="font-body text-body-large text-content-secondary leading-relaxed max-w-xl mb-10">
               {contact.description}
             </p>
 
