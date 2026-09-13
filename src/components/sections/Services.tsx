@@ -4,6 +4,7 @@ import { Button } from '../ui/Button';
 import { siteContent } from '../../content/siteContent';
 import { ChevronDown, Check, ArrowRight } from 'lucide-react';
 import { Reveal } from '../motion/Reveal';
+import { FloatingAccent } from '../motion/FloatingAccent';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { BREAKPOINTS } from '../motion/motionConfig';
@@ -320,7 +321,17 @@ export const Services: React.FC = () => {
                       </span>
                     </div>
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-body text-content-muted bg-canvas-alt border border-border-subtle">
-                      <span className="w-1.5 h-1.5 rounded-full bg-advisory-accent" aria-hidden="true" />
+                      <FloatingAccent
+                        axis="y"
+                        distanceY={3}
+                        duration={5.2}
+                        delay={2.1}
+                        opacityMin={0.85}
+                        opacityMax={1.0}
+                        className="inline-flex flex-shrink-0"
+                      >
+                        <span className="w-1.5 h-1.5 rounded-full bg-advisory-accent block" aria-hidden="true" />
+                      </FloatingAccent>
                       {activeService.verificationStatus || activeService.verificationNotice}
                     </span>
                   </div>

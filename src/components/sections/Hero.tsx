@@ -167,7 +167,17 @@ export const Hero: React.FC = () => {
           <div className="lg:col-span-7 flex flex-col items-start">
             {/* Eyebrow / Context Category */}
             <div ref={eyebrowRef} className="inline-flex items-center gap-2.5 mb-4 sm:mb-5">
-              <span className="w-5 h-px bg-advisory-accent/60" aria-hidden="true" />
+              <FloatingAccent
+                axis="x"
+                distanceX={3.5}
+                duration={6.2}
+                delay={0.7}
+                opacityMin={0.8}
+                opacityMax={1.0}
+                className="inline-flex flex-shrink-0"
+              >
+                <span className="w-5 h-px bg-advisory-accent/60 block" aria-hidden="true" />
+              </FloatingAccent>
               <span className="font-body text-eyebrow font-semibold uppercase text-advisory-accent tracking-wider">
                 {hero.eyebrow}
               </span>
@@ -209,7 +219,13 @@ export const Hero: React.FC = () => {
 
             {/* Reassurance Note */}
             <div ref={reassuranceRef} className="flex items-center gap-2.5 text-content-muted">
-              <FloatingAccent distance={3} duration={4.5} className="flex-shrink-0">
+              <FloatingAccent
+                axis="y"
+                distanceY={4}
+                duration={4.8}
+                delay={0}
+                className="flex-shrink-0"
+              >
                 <span
                   className="w-1.5 h-1.5 rounded-full bg-action-primary block"
                   aria-hidden="true"

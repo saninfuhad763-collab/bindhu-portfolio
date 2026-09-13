@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react';
 import { Container } from '../layout/Container';
 import { siteContent } from '../../content/siteContent';
 import { Reveal } from '../motion/Reveal';
+import { FloatingAccent } from '../motion/FloatingAccent';
 
 /**
  * About Bindhu Section — Phase 6
@@ -118,7 +119,18 @@ export const About: React.FC = () => {
             <Reveal variant="fade-left">
               {/* Eyebrow */}
               <div className="inline-flex items-center gap-2 mb-3.5 sm:mb-4">
-                <span className="w-5 h-px bg-advisory-accent/60" aria-hidden="true" />
+                <FloatingAccent
+                  axis="both"
+                  distanceX={3}
+                  distanceY={3}
+                  duration={5.6}
+                  delay={1.4}
+                  opacityMin={0.8}
+                  opacityMax={1.0}
+                  className="inline-flex flex-shrink-0"
+                >
+                  <span className="w-5 h-px bg-advisory-accent/60 block" aria-hidden="true" />
+                </FloatingAccent>
                 <span className="font-body text-eyebrow font-semibold uppercase text-advisory-accent tracking-wider">
                   {about.eyebrow}
                 </span>

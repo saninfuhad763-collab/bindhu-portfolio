@@ -4,6 +4,7 @@ import { siteContent } from '../../content/siteContent';
 import { Shield, ArrowRight, Mail, Phone, Calendar } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Reveal } from '../motion/Reveal';
+import { FloatingAccent } from '../motion/FloatingAccent';
 
 /**
  * Phase 12 — Consultation & Contact Section
@@ -87,7 +88,17 @@ export const Contact: React.FC = () => {
                 <div>
                   {/* Status Badge */}
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-primary/5 border border-brand-primary/10 text-brand-primary font-body text-xs font-medium">
-                    <span className="w-1.5 h-1.5 rounded-full bg-action-primary" aria-hidden="true" />
+                    <FloatingAccent
+                      axis="y"
+                      distanceY={3}
+                      duration={5.8}
+                      delay={2.8}
+                      opacityMin={0.85}
+                      opacityMax={1.0}
+                      className="inline-flex flex-shrink-0"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-action-primary block" aria-hidden="true" />
+                    </FloatingAccent>
                     {contact.placeholderState.badge}
                   </div>
 

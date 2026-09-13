@@ -259,3 +259,33 @@ This document records established architectural, design, operational, and organi
   - Horizontal overflow verified: `scrollWidth <= innerWidth` across tested viewports.
   - 2 screenshots captured: 1440px desktop Services and 390px mobile Services.
 - **Status:** Checkpointed in `feat: add premium hover interactions`.
+
+---
+
+## Decision 018 — Selective Premium Floating Motion (Motion Fix 4)
+- **Status:** Checkpointed in `feat: add selective floating motion`.
+- **Date:** 2026-09-13
+- **Context & Problem:** While the page possessed rich interaction and reveal choreography, ambient background rhythm was minimal. A selective, organic floating motion layer was required to make the interface feel alive and human without becoming gimmicky, hyperactive, or SaaS-like.
+- **Core Principles & Exclusions:**
+  - Ambient decorative elements only.
+  - Strict non-content rule: Zero floating on typography (H1, H2, body), buttons, cards, or portraits.
+  - Zero synchronized motion across elements (distinct axes, durations, delays, and amplitudes).
+  - Absolute pointer safety: all floating elements marked `pointer-events-none select-none aria-hidden="true"`.
+- **Selected Targets & Movement Profiles:**
+  1. *Hero Reassurance Dot:* Y-axis, 4px desktop (2.5px tablet, 0px mobile), 4.8s duration, 0s delay, `sine.inOut`.
+  2. *Hero Eyebrow Hairline:* X-axis, 3.5px desktop (2.3px tablet, 0px mobile), 6.2s duration, 0.7s delay, `sine.inOut`, subtle opacity modulation (`0.80 -> 1.0 -> 0.80`).
+  3. *About Eyebrow Hairline:* 2D (X+Y) elliptical drift, 3px desktop (2px tablet, 0px mobile), 5.6s duration, 1.4s delay, `sine.inOut`, subtle opacity modulation (`0.80 -> 1.0 -> 0.80`).
+  4. *Services Verification Dot:* Y-axis, 3px desktop (2px tablet, 0px mobile), 5.2s duration, 2.1s delay, `sine.inOut`, subtle opacity modulation (`0.85 -> 1.0 -> 0.85`).
+  5. *Contact Inquiries Dot:* Y-axis, 3px desktop (2px tablet, 0px mobile), 5.8s duration, 2.8s delay, `sine.inOut`, subtle opacity modulation (`0.85 -> 1.0 -> 0.85`).
+- **Responsive & Reduced-Motion Policy:**
+  - Desktop (≥1024px): 3–4px amplitude.
+  - Tablet (768–1023px): ~65% scaled amplitude (2–2.5px).
+  - Mobile (<768px) & Narrow Mobile (≤360px): Disabled (0px displacement, neutral opacity).
+  - Reduced Motion (`prefers-reduced-motion: reduce`): Disabled immediately with `clearProps: 'transform'`.
+- **Transform Ownership:**
+  - Floating accents operate exclusively on innermost decorative child elements.
+  - Ancestor wrappers exclusively own entrance reveals (`Reveal.tsx`), pinning (`ScrollTrigger`), and layout flow. Zero transform collision.
+- **Verification:**
+  - Production build (`tsc -b && vite build`) passed with 0 errors and 0 warnings.
+  - Runtime validation across 1440px, 1280px, 1024px, 768px, 390px, and 320px with zero horizontal overflow (`scrollWidth <= innerWidth`).
+  - Screenshots captured at 1440px desktop and 390px mobile.

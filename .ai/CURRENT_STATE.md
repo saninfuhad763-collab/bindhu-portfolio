@@ -1,21 +1,21 @@
 # Current State — Bindhu Portfolio
 
 ## 1. Snapshot Summary
-- **Current Phase:** Phase 18 — Premium Hover & Pointer Interaction System (Motion Fix 5)
-- **Project State:** Bespoke, tactile, and restrained hover/pointer interaction system implemented across interactive surfaces. Buttons feature subtle -2px micro-lift, refined shadow, and directional arrow glide. Service cards feature component-scoped pointer-tracking 3D tilt (`transformPerspective: 1000`, `rotateX: max ±2°`, `rotateY: max ±2°`, `y: -2px`) strictly gated to `(pointer: fine)` and non-reduced-motion with clean neutral return via `clearProps: 'transform'`. Hero and About portraits receive subtle 1.018 / 1.015 scale inside `overflow-hidden` 4:5 frames with decorative paper layer offset response. Header mobile trigger, FAQ, Education, and Footer interactive icons/rows updated with tactile micro-interactions. Static informational content (Trust pillars, Process steps, Social Proof reserved frame, Disclosures) strictly preserved in calm, unanimated state.
+- **Current Phase:** Phase 19 — Selective Premium Floating Motion (Motion Fix 4)
+- **Project State:** Ambient, organic floating motion layer added to 5 carefully selected decorative elements (Hero reassurance dot, Hero eyebrow hairline mark, About eyebrow hairline mark, Services verification status dot, and Contact inquiries status dot). Elements feature non-synchronized durations (4.8s–6.2s), initial delays (0s–2.8s), distinct directional axes (X, Y, X+Y), and subtle opacity modulation (`0.80 -> 1.0 -> 0.80`). Strictly zero typography, headings, body text, buttons, whole cards, or portraits are continuously floated. Floating motion is disabled on mobile (<768px) and narrow mobile (≤360px), and bypassed immediately under `prefers-reduced-motion: reduce`.
 - **Executive Performance & Visual State:** Local preview clean, zero CLS (0.00), responsive 4:5 image ratio preserved across all 6 viewports (1440px to 320px). Live DevTools inspection clean (0 console errors, 0 warnings; 0 horizontal overflow with `scrollWidth <= innerWidth`).
-- **Executive Motion & Performance Verdict:** **`HOVER SYSTEM APPROVED`**
+- **Executive Motion & Performance Verdict:** **`FLOATING MOTION APPROVED`**
   - *Status:* Reduced-motion behavior verified (`prefers-reduced-motion: reduce` bypasses transforms). Local runtime performance observed; final real-user production validation remains pending deployment.
   - *Verified Now:*
     - Local production-preview build (`tsc -b && vite build` passing cleanly with 0 errors, 0 warnings).
-    - Local runtime behavior (GPU-accelerated transforms and opacity only, `clearProps: 'transform'` ensuring zero leftover inline styles, native touch scroll preserved, `pointer: coarse` safe).
-    - Current bundle sizes (total 116.19 kB gzip JS, 6.87 kB CSS, 0.85 kB HTML).
+    - Local runtime behavior (GPU-accelerated transforms and opacity only, `clearProps: 'transform'` ensuring clean unmounting and zero collision with reveals or hover interactions).
+    - Current bundle sizes (total 116.47 kB gzip JS, 6.89 kB CSS, 0.85 kB HTML).
   - *Pending:*
     - Real production-domain performance.
     - Real-user Core Web Vitals.
     - Final client portrait performance (WebP/AVIF <= 90 kB).
     - Final social-sharing asset performance.
-- **Latest Stable State:** Verified production build passing cleanly (`tsc -b && vite build`). Motion Fix 5 implemented (uncommitted in working tree). Baseline checkpoint `a20dfdd feat: enhance advisory services interaction`.
+- **Latest Stable State:** Verified production build passing cleanly (`tsc -b && vite build`). Motion Fix 4 checkpointed (`feat: add selective floating motion`). Baseline checkpoint `1e98d0c feat: add premium hover interactions`.
 
 ---
 
@@ -155,10 +155,10 @@
 ## 6. Git Status
 - **Repository State:** On branch `main` tracking `origin/main`.
 - **GitHub Remote:** `https://github.com/saninfuhad763-collab/bindhu-portfolio.git`
-- **Working Tree:** Uncommitted. Motion Fix 5 (Premium Hover & Pointer Interaction System) implemented across 9 component files.
-- **Latest Checkpoint:** `feat: enhance advisory services interaction` (`a20dfdd`)
+- **Working Tree:** Clean. Motion Fix 4 (Selective Premium Floating Motion) committed and pushed.
+- **Latest Checkpoint:** `feat: add selective floating motion`
 
 ---
 
 ## 7. Next Recommended Step
-**Motion Fix 4 — Selective Premium Floating Motion**
+**Motion Fix 7 — Selective Animated Gradients**
