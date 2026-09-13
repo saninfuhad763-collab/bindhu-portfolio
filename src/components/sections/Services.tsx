@@ -74,7 +74,7 @@ export const Services: React.FC = () => {
         </Reveal>
 
         {/* Desktop Progressive Disclosure (>=1024px) */}
-        <div className="hidden lg:grid lg:grid-cols-12 lg:gap-8 items-start">
+        <Reveal variant="fade-up" delay={0.08} className="hidden lg:grid lg:grid-cols-12 lg:gap-8 items-start">
           {/* Left Column: Situation Navigator Index */}
           <div
             className="lg:col-span-5 space-y-3"
@@ -219,9 +219,15 @@ export const Services: React.FC = () => {
 
                 {/* Detail Panel Footer & CTA */}
                 <div className="pt-6 border-t border-border-subtle/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <Button href={services.cta.href} variant="primary" size="md">
+                  <Button
+                    href={services.cta.href}
+                    variant="primary"
+                    size="md"
+                    icon={<ArrowRight className="w-4 h-4" />}
+                    iconPosition="right"
+                    className="flex-shrink-0 whitespace-nowrap"
+                  >
                     {services.cta.label}
-                    <ArrowRight className="w-4 h-4 ml-1.5" aria-hidden="true" />
                   </Button>
                   <p className="font-body text-small-meta text-content-muted">
                     Zero sales obligation · Independent consultative evaluation
@@ -230,10 +236,10 @@ export const Services: React.FC = () => {
               </div>
             )}
           </div>
-        </div>
+        </Reveal>
 
         {/* Mobile & Tablet Accessible Accordion (<1024px) */}
-        <div className="lg:hidden block space-y-3.5">
+        <Reveal variant="fade-up" delay={0.08} className="lg:hidden block space-y-3.5">
           {services.items.map((item) => {
             const isOpen = mobileOpenId === item.id;
             return (
@@ -346,10 +352,11 @@ export const Services: React.FC = () => {
                         href={services.cta.href}
                         variant="primary"
                         size="md"
-                        className="w-full justify-center"
+                        icon={<ArrowRight className="w-4 h-4" />}
+                        iconPosition="right"
+                        className="w-full sm:w-auto justify-center whitespace-nowrap"
                       >
                         {services.cta.label}
-                        <ArrowRight className="w-4 h-4 ml-1.5" aria-hidden="true" />
                       </Button>
                     </div>
                   </div>
@@ -357,7 +364,7 @@ export const Services: React.FC = () => {
               </div>
             );
           })}
-        </div>
+        </Reveal>
       </Container>
     </section>
   );

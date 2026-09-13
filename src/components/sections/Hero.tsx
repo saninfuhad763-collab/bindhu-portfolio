@@ -65,11 +65,12 @@ export const Hero: React.FC = () => {
               reassuranceRef.current,
               portraitRef.current,
             ],
-            { opacity: 1, x: 0, y: 0 }
+            { opacity: 1, x: 0, y: 0, scale: 1, clearProps: 'transform' }
           );
           return;
         }
 
+        // Responsive displacements conforming to Responsive Motion Constitution
         const distY = isNarrowMobile
           ? MOTION.narrowMobile.revealY
           : isMobile
@@ -78,66 +79,74 @@ export const Hero: React.FC = () => {
           ? MOTION.tablet.revealY
           : MOTION.desktop.revealY;
 
-        const dur = isNarrowMobile
-          ? MOTION.narrowMobile.duration
-          : isMobile
-          ? MOTION.mobile.duration
-          : isTablet
-          ? MOTION.tablet.duration
-          : MOTION.desktop.duration;
+        const distX = isDesktop ? MOTION.desktop.revealX : 0;
 
-        const staggerOverlap = isMobile || isNarrowMobile ? '-=0.35' : '-=0.45';
+        // Element-group specific durations tuned for a cohesive ~1.0-1.1s total page-load choreography
+        const durEyebrow = isNarrowMobile ? 0.28 : isMobile ? 0.34 : isTablet ? 0.38 : 0.42;
+        const durHeadline = isNarrowMobile ? 0.36 : isMobile ? 0.42 : isTablet ? 0.48 : 0.52;
+        const durCopy = isNarrowMobile ? 0.32 : isMobile ? 0.38 : isTablet ? 0.42 : 0.46;
+        const durCta = isNarrowMobile ? 0.28 : isMobile ? 0.34 : isTablet ? 0.38 : 0.42;
+        const durReassurance = isNarrowMobile ? 0.24 : isMobile ? 0.28 : isTablet ? 0.32 : 0.36;
+        const durPortrait = isNarrowMobile ? 0.38 : isMobile ? 0.45 : isTablet ? 0.52 : 0.60;
 
         const tl = gsap.timeline({
           defaults: {
             ease: MOTION.ease.editorial,
-            duration: dur,
           },
         });
 
+        // Group A: Identity (Eyebrow)
         tl.fromTo(
           eyebrowRef.current,
-          { opacity: 0, y: Math.min(12, distY) },
-          { opacity: 1, y: 0, delay: 0.1 }
+          { opacity: 0, y: Math.min(10, distY) },
+          { opacity: 1, y: 0, duration: durEyebrow, delay: isNarrowMobile ? 0.04 : 0.06 }
         )
+          // Group B: Primary Message (H1)
           .fromTo(
             headlineRef.current,
             { opacity: 0, y: distY },
-            { opacity: 1, y: 0 },
-            staggerOverlap
+            { opacity: 1, y: 0, duration: durHeadline },
+            isDesktop ? '-=0.32' : '-=0.24'
           )
+          // Group C: Supporting Message (Subheadline)
           .fromTo(
             copyRef.current,
-            { opacity: 0, y: distY },
-            { opacity: 1, y: 0 },
-            staggerOverlap
+            { opacity: 0, y: Math.round(distY * 0.8) },
+            { opacity: 1, y: 0, duration: durCopy },
+            isDesktop ? '-=0.36' : '-=0.28'
           )
+          // Group D: Actions (Dual CTAs)
           .fromTo(
             ctaRef.current,
-            { opacity: 0, y: Math.min(14, distY) },
-            { opacity: 1, y: 0 },
-            staggerOverlap
+            { opacity: 0, y: Math.min(12, distY) },
+            { opacity: 1, y: 0, duration: durCta },
+            isDesktop ? '-=0.34' : '-=0.26'
           )
+          // Group E: Reassurance Note
           .fromTo(
             reassuranceRef.current,
-            { opacity: 0, y: Math.min(10, distY) },
-            { opacity: 1, y: 0 },
-            staggerOverlap
+            { opacity: 0, y: Math.min(8, distY) },
+            { opacity: 1, y: 0, duration: durReassurance },
+            isDesktop ? '-=0.28' : '-=0.22'
           )
+          // Group F: Portrait Composition
           .fromTo(
             portraitRef.current,
             {
               opacity: 0,
-              x: isDesktop ? MOTION.desktop.revealX : 0,
+              x: distX,
               y: isDesktop ? 0 : distY,
+              scale: isDesktop ? 0.985 : 1,
             },
             {
               opacity: 1,
               x: 0,
               y: 0,
-              duration: isDesktop ? MOTION.duration.heroSequence : dur,
+              scale: 1,
+              duration: durPortrait,
+              ease: MOTION.ease.editorial,
             },
-            isDesktop ? '-=0.55' : staggerOverlap
+            isDesktop ? '-=0.55' : isTablet ? '-=0.45' : '-=0.32'
           );
       },
       sectionRef

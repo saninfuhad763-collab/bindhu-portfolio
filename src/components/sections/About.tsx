@@ -30,7 +30,7 @@ export const About: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-16 items-start">
           {/* Left Column: 4:5 Portrait Composition (Stacks second on mobile for natural narrative intro) */}
           <div className="order-2 lg:order-1 lg:col-span-5 flex flex-col items-center lg:items-start lg:sticky lg:top-28">
-            <Reveal variant="fade-right" className="w-full max-w-[360px] sm:max-w-[400px] lg:max-w-none">
+            <Reveal variant="fade-right" delay={0.06} className="w-full max-w-[360px] sm:max-w-[400px] lg:max-w-none">
               {/* Frame Container with offset tactile paper layer */}
               <div className="relative group">
                 <div

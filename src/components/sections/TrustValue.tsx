@@ -74,7 +74,7 @@ export const TrustValue: React.FC = () => {
           </div>
 
           {/* Right Column: 2x2 Value Pillar Grid */}
-          <Reveal variant="fade-up" delay={0.1} className="lg:col-span-7">
+          <Reveal variant="fade-up" delay={0.08} stagger={0.09} selector=".group" className="lg:col-span-7">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
               {trustValue.pillars.map((pillar) => (
                 <div

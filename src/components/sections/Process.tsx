@@ -51,7 +51,7 @@ export const Process: React.FC = () => {
             aria-hidden="true"
           />
 
-          <Reveal variant="fade-up" delay={0.1}>
+          <Reveal variant="fade-up" delay={0.06} stagger={0.10} selector="li">
             <ol className="grid grid-cols-4 gap-8 relative list-none p-0 m-0">
               {process.steps.map((step) => (
                 <li key={step.id} className="relative flex flex-col">
@@ -98,7 +98,7 @@ export const Process: React.FC = () => {
 
         {/* Mobile Vertical Timeline (<1024px) */}
         <div className="lg:hidden block">
-          <Reveal variant="fade-up" delay={0.1}>
+          <Reveal variant="fade-up" delay={0.06} stagger={0.07} selector="li">
             <ol className="relative border-l border-border-subtle ml-4 sm:ml-5 space-y-9 sm:space-y-11 pl-6 sm:pl-8 list-none m-0">
               {process.steps.map((step) => (
                 <li key={step.id} className="relative">
@@ -145,7 +145,7 @@ export const Process: React.FC = () => {
 
         {/* Reassurance Note */}
         {process.reassuranceText && (
-          <Reveal variant="fade-up" delay={0.2} className="mt-10 sm:mt-14 lg:mt-20 pt-8 border-t border-border-subtle/80 text-center">
+          <Reveal variant="fade-up" delay={0.12} className="mt-10 sm:mt-14 lg:mt-20 pt-8 border-t border-border-subtle/80 text-center">
             <p className="font-body text-body-regular text-content-secondary max-w-reading mx-auto italic">
               "{process.reassuranceText}"
             </p>

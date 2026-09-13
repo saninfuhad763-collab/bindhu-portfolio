@@ -65,7 +65,7 @@ export const SocialProof: React.FC = () => {
           </Reveal>
 
           {/* Content Display: Verified Stories OR Reserved Editorial Frame */}
-          <Reveal variant="fade-up" delay={0.12}>
+          <Reveal variant="fade-up" delay={0.08}>
             {hasVerifiedStories ? (
               <div className="space-y-6 text-left">
                 {verifiedStories.map((story) => (

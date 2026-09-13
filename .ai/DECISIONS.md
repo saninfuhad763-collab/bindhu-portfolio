@@ -147,3 +147,59 @@ This document records established architectural, design, operational, and organi
   - **Scroll Stabilization:** Sticky header (`z-40`) with progressive background opacity (`bg-canvas/90` to `bg-canvas/95`), subtle backdrop blur (`backdrop-blur-md`), and hairline bottom border (`border-border-subtle`) triggered when scroll exceeds 20px. Replaces the jarring height resizing and theatrical animation from the reference site.
   - **Mobile Drawer:** Full-fidelity Warm Ivory panel with 48px touch targets, Lucide Menu/Close toggle, background scroll lock (`overflow: hidden`), and keyboard dismiss listener (Escape key).
   - **Accessibility Compliance:** WCAG 2.1 AA bypass link ("Skip to main content"), accessible `aria-expanded` and `aria-controls` bindings, 48px minimum touch targets, and visible focus rings (`:focus-visible`).
+
+---
+
+## Decision 013 — ScrollSmoother Desktop Smoothness Calibration
+- **Status:** Implemented (Uncommitted working tree)
+- **Date:** 2026-09-13
+- **Context:** User feedback indicated scrolling felt slightly rigid: *"The scrolling does not feel extremely smooth enough."*
+- **Tested Values:**
+  - `0.8`: Previous baseline. Overly tight; mouse wheel increments felt slightly stepped.
+  - `1.0`: Standard default. Improved, but conservative for an editorial slow-living design.
+  - `1.15`: **Selected**. Fluid, velvety glide; luxurious momentum without lag, drift, or overshoot.
+  - `1.25`: Over-smoothed. Inertia continues past stopping intention, causing reading disconnect.
+- **Decision:** Calibrate `ScrollSmoother.smooth` and `MOTION.duration.smoothScroll` to `1.15`. Maintain `smoothTouch: 0` for 100% native mobile touch scrolling.
+- **Uncommitted Status:** Changes in `motionConfig.ts` and `Services.tsx` remain uncommitted pending subsequent motion refinements.
+
+---
+
+## Decision 014 — Hero Entrance Choreography Calibration
+- **Status:** Implemented (Uncommitted working tree)
+- **Date:** 2026-09-13
+- **Previous Behavior:** The initial Hero entrance sequence stretched to ~1.50–1.60s. The portrait and reassurance note were placed at the tail end of a serial chain, so they were still actively animating when users initiated their first scroll down the page, colliding visually with the incoming Trust section.
+- **Root Cause:** Fixed uniform durations without sufficient overlap delayed the portrait start to $t \approx 0.75\text{s}$, ending past $1.50\text{s}$.
+- **New Choreography:** Pure page-load timeline (independent of ScrollTrigger) with element-specific durations and overlapping entrance offsets:
+  - Group A (Identity/Eyebrow): starts at $t = 0.04\text{--}0.06\text{s}$, duration 0.28–0.42s
+  - Group B (Primary Message/H1): starts at $t \approx 0.18\text{s}$, duration 0.36–0.52s
+  - Group C (Supporting Message/Subheadline): starts at $t \approx 0.34\text{s}$, duration 0.32–0.46s
+  - Group D (Actions/Dual CTAs): starts at $t \approx 0.46\text{s}$, duration 0.28–0.42s
+  - Group E (Reassurance Note): starts at $t \approx 0.60\text{s}$, duration 0.24–0.36s
+  - Group F (Portrait Composition): starts in parallel with CTAs at $t \approx 0.50\text{s}$ ($x: 20\text{px}$, scale $0.985 \rightarrow 1.0$ on desktop; $x: 0, y: 12\text{--}16\text{px}$ on tablet/mobile), completing simultaneously with copy between $t \approx 0.80\text{s}$ (mobile) and $1.13\text{s}$ (desktop).
+- **Responsive Behavior:** Conforms to Responsive Motion Constitution across 1440, 1280, 1024, 768, 390, and 320px viewports. Zero horizontal overflow (`scrollWidth <= window.innerWidth`).
+- **Reduced Motion:** Handled via `gsap.matchMedia()`: immediate `gsap.set()` applies `opacity: 1, x: 0, y: 0, scale: 1, clearProps: 'transform'`. No timeline or delay is executed.
+- **Uncommitted Status:** Changes in `Hero.tsx`, `motionConfig.ts` (Motion Fix 1), and `Services.tsx` (UI Fix 10) remain strictly uncommitted in the working tree pending subsequent motion fixes.
+
+---
+
+## Decision 015 — Scroll-Reveal Choreography, Grouping & Trigger Calibration
+- **Status:** Implemented (Uncommitted working tree)
+- **Date:** 2026-09-13
+- **Previous Behavior:** All reveals used an uncalibrated hardcoded trigger (`start: 'top 88%'`) without stagger or descendant target support. At 1440x900 desktop viewport, Trust section top (777px) sat above 88% (792px) on initial page load ($Y=0$), triggering prematurely during the Hero entrance. Trust pillars and Process steps lifted as heavy monolithic blocks. Services selector lacked reveal coverage. Missing `clearProps` left permanent inline transforms.
+- **Root Cause:** Uniform `start: 'top 88%'` was both too late for scrolling momentum and too high for sections just below the fold. `Reveal.tsx` lacked grouping and stagger orchestration.
+- **New Trigger Strategy:**
+  - Calibrated responsive trigger tokens: Desktop `top 84%` (756px in 900px viewport, preventing premature trigger at $Y=0$), Tablet `top 85%`, Mobile `top 86%`, Narrow Mobile `top 86%`.
+  - Upgraded `Reveal.tsx` to support `stagger`, `selector`, custom `start`, and automatic `clearProps: 'transform'` upon completion.
+  - Implemented `gsap.set()` initialization to ensure all targets are primed in hidden state before ScrollTrigger fires, followed by `gsap.to()` execution.
+- **Section-by-Section Choreography:**
+  - **Trust**: Heading leads; 4 pillars enter with 90ms grouped stagger (desktop) / 70ms (mobile) via `selector=".group"`.
+  - **About**: Coordinated entry; narrative leads, portrait follows with 60ms delay.
+  - **Services**: Section heading leads; desktop navigator and mobile accordion enter as cohesive regions (`delay={0.08}`) without altering internal tab/accordion mechanics.
+  - **Process**: 4 journey steps stagger sequentially ($0.10\text{s}$ desktop, $0.07\text{s}$ mobile) along the horizontal/vertical line; connector line remains structural.
+  - **Education, Social Proof, FAQ, Contact**: Coordinated group entries with calibrated delays (`0.08s`).
+  - **Footer**: Zero reveals (quiet landing).
+- **Responsive Behavior:** Conforms to Responsive Motion Constitution across 1440, 1280, 1024, 768, 390, and 320px viewports. Zero horizontal overflow (`scrollWidth <= innerWidth`).
+- **Reveal Density:** Active DOM instances increased by only 1 (from 16 to 17) to provide coverage for Services navigator, while eliminating monolithic card blocks via internal staggers.
+- **Reduced Motion:** Verified: `prefers-reduced-motion: reduce` bypass immediately runs `gsap.set(targets, { opacity: 1, x: 0, y: 0, clearProps: 'transform' })`. Zero delays, zero tweens, zero transforms.
+- **Selective Screenshots:** 2 captures: 1440px desktop Trust section and 390px mobile Trust section.
+- **Uncommitted Status:** All modifications across `Reveal.tsx`, `motionConfig.ts`, sections, and documentation remain strictly uncommitted.

@@ -1,22 +1,21 @@
 # Current State — Bindhu Portfolio
 
 ## 1. Snapshot Summary
-- **Current Phase:** Phase 15 — GSAP Motion Architecture Implemented & Checkpointed
-- **Project State:** Full-page GSAP 3 motion system reviewed, optimized, and verified. Includes GSAP 3, ScrollTrigger, ScrollSmoother, responsive `gsap.matchMedia()` architecture across 5 tiers (Desktop, Tablet, Mobile, Narrow Mobile, Reduced Motion), centralized motion tokens, reusable Reveal system (consolidated from 25 to 14 instances), FloatingAccent system, Hero entrance choreography, desktop smooth scrolling, native touch scrolling on mobile, reduced-motion bypass, and hardened in-page anchor navigation (with modifier key bypass and 80px sticky header offset clearance). Unused `ScrollToPlugin` removed. Production build passing cleanly (`tsc -b && vite build` in ~5.4s, 0 errors, 0 warnings). GSAP motion architecture implemented and checkpointed; client-content integration remains pending.
+- **Current Phase:** Phase 16 — Motion & Services Refinement Checkpointed (UI Fix 10, Motion Fixes 1–3)
+- **Project State:** Full-page GSAP 3 motion system calibrated and refined. Includes UI Fix 10 (Services "Explore your situation" CTA alignment), Motion Fix 1 (ScrollSmoother calibrated to `smooth: 1.15` with `smoothTouch: 0` preserved), Motion Fix 2 (Hero entrance converted to independent page-load choreography converging at ~1.0–1.1s without early scroll collision), and Motion Fix 3 (reusable Reveal system upgraded with 4-pillar grouped stagger, 4-step journey timeline stagger, calibrated responsive triggers `top 84%` desktop / `top 85%` tablet / `top 86%` mobile, `gsap.set()` priming, and automated `clearProps: 'transform'`). Motion Fixes 1–3 and UI Fix 10 checkpointed and pushed.
 - **Executive Performance & Visual State:** Local preview clean, zero CLS (0.00), responsive 4:5 image ratio preserved across all 6 viewports (1440px to 320px). Live DevTools inspection clean (0 console errors, 0 warnings across all 6 viewports; 0 horizontal overflow).
-- **Executive Motion & Performance Verdict:** **`MOTION ARCHITECTURE VERIFIED & CHECKPOINTED`**
-  - *Status:* Reduced-motion behavior was verified. Motion performance was validated in the local production preview; final real-user production validation remains pending deployment.
+- **Executive Motion & Performance Verdict:** **`MOTION & SERVICES REFINEMENT CHECKPOINTED`**
+  - *Status:* Reduced-motion behavior verified. Local runtime performance observed; final real-user production validation remains pending deployment.
   - *Verified Now:*
-    - Local production-preview build (`tsc -b && vite build` passing cleanly in ~5.4s).
-    - Local performance trace (observed LCP 821ms with `#hero-heading`, CLS 0.00, TTFB 10ms, DOM nodes 681).
-    - Current bundle sizes (total 115.04 kB gzip JS, 6.55 kB CSS, 0.85 kB HTML; GSAP suite ~55.4 kB gzip).
-    - Current runtime behavior (GPU-accelerated transforms and opacity only, `gsap.matchMedia()` responsive context cleanup, native touch scroll preserved, 0 horizontal overflow).
+    - Local production-preview build (`tsc -b && vite build` passing cleanly with 0 errors, 0 warnings).
+    - Local runtime behavior (GPU-accelerated transforms and opacity only, `gsap.matchMedia()` responsive context cleanup, native touch scroll preserved, 0 horizontal overflow).
+    - Current bundle sizes (total 115.43 kB gzip JS, 6.55 kB CSS, 0.85 kB HTML).
   - *Pending:*
     - Real production-domain performance.
     - Real-user Core Web Vitals.
     - Final client portrait performance (WebP/AVIF <= 90 kB).
     - Final social-sharing asset performance.
-- **Latest Stable State:** Verified production build passing cleanly (`tsc -b && vite build`). Live browser DevTools inspection clean (0 console errors, 0 warnings across all 6 viewports; 0 horizontal overflow). GSAP motion architecture implemented and checkpointed; client-content integration remains pending.
+- **Latest Stable State:** Verified production build passing cleanly (`tsc -b && vite build`). Motion Fixes 1–3 and UI Fix 10 checkpointed and pushed.
 
 ---
 
@@ -156,9 +155,10 @@
 ## 6. Git Status
 - **Repository State:** On branch `main` tracking `origin/main`.
 - **GitHub Remote:** `https://github.com/saninfuhad763-collab/bindhu-portfolio.git`
-- **Working Tree:** GSAP motion architecture implemented and checkpointed; client-content integration remains pending.
+- **Working Tree:** Motion Fixes 1–3 and UI Fix 10 checkpointed and pushed.
+- **Latest Checkpoint:** `feat: refine motion and services interaction`
 
 ---
 
 ## 7. Next Recommended Step
-Client Content & Asset Onboarding
+**Motion Fix 8 — Advisory Services Interaction & Sticky Composition**

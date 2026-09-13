@@ -61,7 +61,7 @@ export const Education: React.FC = () => {
           </div>
 
           {/* Right Column: Editorial Question Index */}
-          <Reveal variant="fade-left" delay={0.1} className="lg:col-span-7">
+          <Reveal variant="fade-left" delay={0.08} className="lg:col-span-7">
             <div className="divide-y divide-border-subtle border-y border-border-subtle">
               {education.topics.map((topic) => {
                 const isOpen = openId === topic.id;

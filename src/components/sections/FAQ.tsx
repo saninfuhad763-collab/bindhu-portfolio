@@ -52,7 +52,7 @@ export const FAQ: React.FC = () => {
           </Reveal>
 
           {/* Editorial Hairline FAQ List */}
-          <Reveal variant="fade-up" delay={0.1}>
+          <Reveal variant="fade-up" delay={0.08}>
             <div className="divide-y divide-border-subtle border-y border-border-subtle">
             {faq.items.map((item) => {
               const isOpen = openId === item.id;

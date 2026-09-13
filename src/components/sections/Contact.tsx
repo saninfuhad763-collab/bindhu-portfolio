@@ -80,7 +80,7 @@ export const Contact: React.FC = () => {
           </Reveal>
 
           {/* Right Column: Contact Panel (Mode Driven) */}
-          <Reveal variant="fade-left" delay={0.1} className="lg:col-span-5">
+          <Reveal variant="fade-left" delay={0.08} className="lg:col-span-5">
             <div className="bg-surface border border-border-subtle rounded-2xl p-6 sm:p-8 lg:p-9 shadow-card relative">
               {/* MODE 1: PLACEHOLDER (Current default state before verified contact channels) */}
               {contact.mode === 'placeholder' && (
