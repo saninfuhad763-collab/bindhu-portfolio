@@ -1,124 +1,224 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Container } from '../layout/Container';
 import { Button } from '../ui/Button';
 import { siteContent } from '../../content/siteContent';
-import { ChevronDown, Check, ArrowRight } from 'lucide-react';
+import { Check, ArrowRight } from 'lucide-react';
 import { Reveal } from '../motion/Reveal';
-import { FloatingAccent } from '../motion/FloatingAccent';
 import { AnimatedGradient } from '../motion/AnimatedGradient';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { BREAKPOINTS } from '../motion/motionConfig';
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
+import { useScrollSmoother } from '../motion/ScrollSystem';
 
 /**
- * Phase 7 — Advisory Services Section
+ * Advisory Services Section — Spatially Stable Two-Part Interactive Composition
  *
- * Implements an interactive progressive-disclosure pattern:
- * - Desktop (>=1024px): Asymmetrical two-column editorial composition with a
- *   sticky situation navigator (01–04) that stays anchored while the right detail panel flows.
- *   Uses native CSS position: sticky (top-28 = 112px accounting for the 80px fixed header + 32px breathing room)
- *   supplemented with ScrollTrigger pin under ScrollSmoother to bridge the ancestor transform.
- * - Mobile (<1024px): Accessible accordion with >=48px touch targets,
- *   visible focus rings, and explicit ARIA semantics.
- *
- * Adheres strictly to the locked design system:
- * - Alternating paper rhythm: Soft Linen canvas (`bg-canvas-alt`, #F4F3EE)
- * - Typography: Lora display + Plus Jakarta Sans interface
- * - Content Safety: Neutral categories with zero unverified carrier or product claims
+ * Interaction Architecture:
+ * - Desktop (>=1024px): Two-column composition in normal, natural document flow.
+ *   - Left Column: 4 selectable service items in a clean, minimal editorial index.
+ *   - Right Column: Stable editorial folio displaying the full content of the selected service.
+ *   - Selection Motion: When switching services, the incoming content enters smoothly
+ *     from the right edge (x: +28px -> 0, opacity: 0 -> 1, power2.out, 0.35s) while the
+ *     outgoing content cleanly dissolves (x: 0 -> -16px, opacity: 1 -> 0, power2.in, 0.22s).
+ *   - Spatially Stable: Switching services NEVER scrolls the page, jumps coordinates,
+ *     or interacts with other sections. Page scroll remains 100% normal and predictable.
+ *   - Height Stable: CSS grid overlay (col-start-1 row-start-1) prevents layout shifts.
+ *   - Interruptible: Rapid consecutive clicks cancel in-flight tweens and immediately
+ *     settle on the latest selected service without queued animation lag.
+ * - Mobile (<1024px): Stacked accessible accordion with >=48px touch targets,
+ *   full keyboard toggle, and zero horizontal overflow.
+ * - Reduced Motion: Instantaneous content switching with zero translation or delay.
  */
+
 export const Services: React.FC = () => {
   const { services } = siteContent;
   const [activeId, setActiveId] = useState<string>(services.items[0]?.id || 'service-personal');
   const [mobileOpenId, setMobileOpenId] = useState<string | null>(services.items[0]?.id || 'service-personal');
 
   const sectionRef = useRef<HTMLElement>(null);
-  const navigatorRef = useRef<HTMLDivElement>(null);
-  const detailPanelRef = useRef<HTMLDivElement>(null);
-  const panelContentRef = useRef<HTMLDivElement>(null);
-  const isInitialRender = useRef(true);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const railMarkerRef = useRef<HTMLDivElement>(null);
+  const prevIndexRef = useRef<number>(0);
+  const isInitialMount = useRef<boolean>(true);
 
-  const activeService = services.items.find((item) => item.id === activeId) || services.items[0];
+  const { isReducedMotion } = useScrollSmoother();
 
-  // Restrained content transition on tab selection change (Desktop)
-  useEffect(() => {
-    if (isInitialRender.current) {
-      isInitialRender.current = false;
-      return;
-    }
+  const activeIndex = services.items.findIndex((item) => item.id === activeId);
 
-    const contentEl = panelContentRef.current;
-    if (!contentEl) return;
+  // Position the rail marker on mount and handle resize
+  const updateRailMarker = useCallback((index: number, animate = true) => {
+    const tabs = tabRefs.current;
+    const marker = railMarkerRef.current;
+    if (!marker || !tabs[index]) return;
 
-    const isReduced = window.matchMedia(BREAKPOINTS.reduceMotion).matches;
-    if (isReduced) {
-      gsap.set(contentEl, { opacity: 1, y: 0, clearProps: 'transform' });
-      return;
-    }
+    const targetTab = tabs[index]!;
+    const targetY = targetTab.offsetTop;
+    const targetHeight = targetTab.offsetHeight || 72;
 
-    // Short visual transition: opacity + 12px translate (settles quickly, no bounce)
-    gsap.fromTo(
-      contentEl,
-      { opacity: 0, y: 12 },
-      {
-        opacity: 1,
-        y: 0,
+    if (!animate || isReducedMotion) {
+      gsap.set(marker, { y: targetY, height: targetHeight });
+    } else {
+      gsap.to(marker, {
+        y: targetY,
+        height: targetHeight,
         duration: 0.3,
         ease: 'power2.out',
-        clearProps: 'transform',
-      }
-    );
-  }, [activeId]);
+        overwrite: 'auto',
+      });
+    }
+  }, [isReducedMotion]);
 
-  // Desktop sticky pinning integration:
-  // Pure CSS `position: sticky; top: 112px;` handles standard document flow.
-  // When ScrollSmoother is active on desktop, ScrollTrigger pinning bridges the transform
-  // on #smooth-content, locking the navigator at top: 112px until the panel ends.
+  // Initial setup of cards and rail marker
   useEffect(() => {
-    const mm = gsap.matchMedia();
+    const cards = cardRefs.current.filter(Boolean) as HTMLDivElement[];
+    if (cards.length === 0) return;
 
-    mm.add(
-      {
-        isDesktop: BREAKPOINTS.desktop,
-        reduceMotion: BREAKPOINTS.reduceMotion,
-      },
-      (context) => {
-        const { isDesktop, reduceMotion } = context.conditions as {
-          isDesktop: boolean;
-          reduceMotion: boolean;
-        };
-
-        if (!isDesktop || reduceMotion) return;
-
-        const nav = navigatorRef.current;
-        const panel = detailPanelRef.current;
-        const section = sectionRef.current;
-        if (!nav || !panel || !section) return;
-
-        // Sticky boundary: Starts when navigator hits 112px below viewport top (80px header + 32px breathing room),
-        // stops when panel bottom reaches the bottom of the sticky navigator
-        const st = ScrollTrigger.create({
-          trigger: nav,
-          start: 'top top+=132',
-          endTrigger: panel,
-          end: () => `bottom top+=${132 + nav.offsetHeight}`,
-          pin: nav,
-          pinSpacing: false,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
+    // Set initial card states
+    cards.forEach((card, i) => {
+      if (i === activeIndex) {
+        gsap.set(card, {
+          opacity: 1,
+          x: 0,
+          visibility: 'visible',
+          pointerEvents: 'auto',
         });
-
-        return () => {
-          st.kill();
-        };
+      } else {
+        gsap.set(card, {
+          opacity: 0,
+          x: 28,
+          visibility: 'hidden',
+          pointerEvents: 'none',
+        });
       }
-    );
+    });
 
-    return () => mm.revert();
+    updateRailMarker(activeIndex, false);
+
+    // Window resize handler to keep rail marker accurately aligned with tab offsetTop
+    const handleResize = () => {
+      updateRailMarker(activeIndex, false);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Smooth Right-to-Left Editorial Transition on activeIndex change
+  useEffect(() => {
+    // Skip on very first mount (already configured by initialization effect)
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
+    const cards = cardRefs.current.filter(Boolean) as HTMLDivElement[];
+    if (cards.length === 0) return;
+
+    const prevIndex = prevIndexRef.current;
+    const newIndex = activeIndex;
+
+    // Always update rail marker position
+    updateRailMarker(newIndex, true);
+
+    if (prevIndex === newIndex) return;
+
+    // In reduced motion: instantaneous switch without translations
+    if (isReducedMotion) {
+      cards.forEach((card, i) => {
+        if (i === newIndex) {
+          gsap.set(card, {
+            opacity: 1,
+            x: 0,
+            visibility: 'visible',
+            pointerEvents: 'auto',
+          });
+        } else {
+          gsap.set(card, {
+            opacity: 0,
+            x: 0,
+            visibility: 'hidden',
+            pointerEvents: 'none',
+          });
+        }
+      });
+      prevIndexRef.current = newIndex;
+      return;
+    }
+
+    // Cancel any in-flight card animations to guarantee clean interruption
+    cards.forEach((card) => gsap.killTweensOf(card));
+
+    // Immediately park all other inactive cards safely out of view
+    cards.forEach((card, i) => {
+      if (i !== prevIndex && i !== newIndex) {
+        gsap.set(card, {
+          opacity: 0,
+          x: 28,
+          visibility: 'hidden',
+          pointerEvents: 'none',
+        });
+      }
+    });
+
+    const outgoingCard = cards[prevIndex];
+    const incomingCard = cards[newIndex];
+
+    // Outgoing content: smooth fade and calm leftward exit
+    if (outgoingCard) {
+      gsap.to(outgoingCard, {
+        opacity: 0,
+        x: -16,
+        duration: 0.22,
+        ease: 'power2.in',
+        pointerEvents: 'none',
+        onComplete: () => {
+          gsap.set(outgoingCard, { visibility: 'hidden' });
+        },
+      });
+    }
+
+    // Incoming content: enters smoothly from the right (+28px -> 0) and settles
+    if (incomingCard) {
+      gsap.fromTo(
+        incomingCard,
+        {
+          opacity: 0,
+          x: 28,
+          visibility: 'visible',
+        },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.35,
+          ease: 'power2.out',
+          pointerEvents: 'auto',
+        }
+      );
+    }
+
+    prevIndexRef.current = newIndex;
+  }, [activeIndex, updateRailMarker, isReducedMotion]);
+
+  // Expose lightweight debug helper for browser automation and verification
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      (window as any).__SERVICES_DEBUG__ = {
+        getActiveIndex: () => activeIndex,
+        getActiveId: () => activeId,
+        selectService: (idx: number) => handleSelectService(idx),
+        cards: cardRefs.current,
+        tabs: tabRefs.current,
+      };
+    }
+  }, [activeIndex, activeId]);
+
+  // Coordinated Selection (Spurious page scrolls completely eliminated)
+  const handleSelectService = (index: number) => {
+    const targetItem = services.items[index];
+    if (!targetItem) return;
+    if (targetItem.id === activeId) return;
+
+    // Pure React state update — NO window.scrollTo, NO smoother.scrollTo, NO page jumping
+    setActiveId(targetItem.id);
+  };
 
   const handleTabKeyDown = (e: React.KeyboardEvent, index: number) => {
     const itemsCount = services.items.length;
@@ -136,70 +236,19 @@ export const Services: React.FC = () => {
       e.preventDefault();
       nextIndex = itemsCount - 1;
     }
+
     if (nextIndex >= 0) {
-      const nextItem = services.items[nextIndex];
-      setActiveId(nextItem.id);
-      const nextTab = document.getElementById(`service-tab-${nextItem.id}`);
+      handleSelectService(nextIndex);
+      const nextTab = tabRefs.current[nextIndex];
       nextTab?.focus();
     }
-  };
-
-  // Hover Profile B: Component-scoped pointer-tracking 3D tilt (max ±2°, perspective 1000, y: -2px)
-  const handleTabPointerMove = (e: React.PointerEvent<HTMLButtonElement>) => {
-    if (
-      typeof window === 'undefined' ||
-      !window.matchMedia('(pointer: fine)').matches ||
-      window.matchMedia(BREAKPOINTS.reduceMotion).matches
-    ) {
-      return;
-    }
-
-    const target = e.currentTarget;
-    const rect = target.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-
-    const rotateX = -Number(((y / (rect.height / 2)) * 2).toFixed(2));
-    const rotateY = Number(((x / (rect.width / 2)) * 2).toFixed(2));
-
-    gsap.to(target, {
-      transformPerspective: 1000,
-      rotateX,
-      rotateY,
-      y: -2,
-      duration: 0.15,
-      ease: 'power1.out',
-      overwrite: 'auto',
-    });
-  };
-
-  const handleTabPointerLeave = (e: React.PointerEvent<HTMLButtonElement> | React.FocusEvent<HTMLButtonElement>) => {
-    if (
-      typeof window === 'undefined' ||
-      !window.matchMedia('(pointer: fine)').matches ||
-      window.matchMedia(BREAKPOINTS.reduceMotion).matches
-    ) {
-      return;
-    }
-
-    const target = e.currentTarget;
-    gsap.to(target, {
-      transformPerspective: 1000,
-      rotateX: 0,
-      rotateY: 0,
-      y: 0,
-      duration: 0.35,
-      ease: 'power2.out',
-      clearProps: 'transform',
-      overwrite: 'auto',
-    });
   };
 
   return (
     <section
       ref={sectionRef}
       id="services"
-      className="py-14 sm:py-16 lg:py-24 bg-canvas-alt border-t border-border-subtle/80 relative overflow-hidden"
+      className="py-16 sm:py-20 lg:py-24 bg-canvas-alt border-t border-border-subtle/80 relative overflow-hidden"
       aria-labelledby="services-heading"
     >
       <AnimatedGradient variant="services" />
@@ -220,197 +269,255 @@ export const Services: React.FC = () => {
           </p>
         </Reveal>
 
-        {/* Desktop Progressive Disclosure (>=1024px) */}
-        <Reveal variant="fade-up" delay={0.08} className="hidden lg:grid lg:grid-cols-12 lg:gap-8 items-stretch relative">
+        {/* Desktop Two-Column Editorial Stage (>=1024px) */}
+        <div className="hidden lg:grid lg:grid-cols-12 lg:gap-8 xl:gap-12 items-start relative">
           {/* Left Column: Situation Navigator Index */}
           <div className="lg:col-span-5 relative">
+            <div className="relative">
+              {/* Continuous Active Rail Marker */}
+              {!isReducedMotion && (
+                <div
+                  ref={railMarkerRef}
+                  className="absolute left-0 w-1 bg-action-primary rounded-full pointer-events-none z-10 transition-transform"
+                  style={{ height: '76px', top: 0 }}
+                  aria-hidden="true"
+                />
+              )}
+
+              <div
+                className="divide-y divide-border-subtle/80 border-y border-border-subtle/80"
+                role="tablist"
+                aria-orientation="vertical"
+                aria-label="Advisory service areas"
+              >
+                {services.items.map((item, index) => {
+                  const isSelected = activeId === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      ref={(el) => {
+                        tabRefs.current[index] = el;
+                      }}
+                      type="button"
+                      role="tab"
+                      id={`service-tab-${item.id}`}
+                      aria-selected={isSelected}
+                      aria-controls={`service-panel-${item.id}`}
+                      tabIndex={isSelected ? 0 : -1}
+                      onKeyDown={(e) => handleTabKeyDown(e, index)}
+                      onClick={() => handleSelectService(index)}
+                      className={`w-full text-left py-4 px-4 sm:px-5 transition-colors duration-200 flex items-center justify-between gap-4 group relative focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ${
+                        isSelected
+                          ? 'bg-surface/90 text-brand-primary'
+                          : 'bg-transparent hover:bg-surface/40 text-content-secondary hover:text-brand-primary'
+                      }`}
+                    >
+                      {/* In reduced motion: fallback static active bar */}
+                      {isReducedMotion && (
+                        <span
+                          className={`absolute left-0 top-0 bottom-0 w-1 ${
+                            isSelected ? 'bg-action-primary opacity-100' : 'bg-transparent opacity-0'
+                          }`}
+                          aria-hidden="true"
+                        />
+                      )}
+
+                      <div className="flex items-center gap-4 flex-1 min-w-0 pl-1">
+                        {/* Tabular Monospace Numeral */}
+                        <span
+                          className={`font-mono text-xs sm:text-sm font-semibold tabular-nums tracking-wider transition-colors shrink-0 ${
+                            isSelected
+                              ? 'text-action-primary font-bold'
+                              : 'text-content-muted group-hover:text-content-secondary'
+                          }`}
+                        >
+                          {item.number}
+                        </span>
+
+                        {/* Editorial Title & Subtitle */}
+                        <div className="flex flex-col min-w-0">
+                          <span
+                            className={`font-display text-base lg:text-[1.0625rem] leading-snug truncate transition-colors ${
+                              isSelected
+                                ? 'text-brand-primary font-semibold'
+                                : 'text-content-primary group-hover:text-brand-primary font-medium'
+                            }`}
+                          >
+                            {item.category}
+                          </span>
+                          <span
+                            className={`font-body text-xs truncate mt-0.5 transition-colors ${
+                              isSelected
+                                ? 'text-content-secondary'
+                                : 'text-content-muted group-hover:text-content-secondary'
+                            }`}
+                          >
+                            {item.shortLabel}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Directional Arrow */}
+                      <ArrowRight
+                        className={`w-4 h-4 shrink-0 transition-all duration-200 ${
+                          isSelected
+                            ? 'text-action-primary translate-x-1 opacity-100'
+                            : 'text-content-muted/40 group-hover:text-content-secondary group-hover:translate-x-1 opacity-40 group-hover:opacity-100'
+                        }`}
+                        aria-hidden="true"
+                      />
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Editorial Counter Indicator */}
             <div
-              ref={navigatorRef}
-              className="lg:sticky space-y-3"
-              role="tablist"
-              aria-orientation="vertical"
-              aria-label="Advisory service areas"
+              className="pt-4 px-1 flex items-center justify-between text-xs text-content-muted font-mono"
+              aria-hidden="true"
             >
+              <div className="flex items-center gap-3">
+                <span className="font-semibold text-brand-primary tabular-nums">
+                  0{activeIndex + 1} / 0{services.items.length}
+                </span>
+                {/* Slender indicator track */}
+                <div className="w-20 h-1 bg-border-subtle/60 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-action-primary rounded-full transition-all duration-300 ease-out"
+                    style={{ width: `${((activeIndex + 1) / services.items.length) * 100}%` }}
+                  />
+                </div>
+              </div>
+              <span className="font-body text-[11px] tracking-wider uppercase text-content-muted/80">
+                Select to explore
+              </span>
+            </div>
+          </div>
+
+          {/* Right Column: Dynamic Architectural Editorial Folio (Height-Stable CSS Grid Overlay) */}
+          <div className="lg:col-span-7 relative">
+            <div className="relative w-full grid grid-cols-1 grid-rows-1">
               {services.items.map((item, index) => {
                 const isSelected = activeId === item.id;
                 return (
-                  <button
+                  <div
                     key={item.id}
-                    type="button"
-                    role="tab"
-                    id={`service-tab-${item.id}`}
-                    aria-selected={isSelected}
-                    aria-controls={`service-panel-${item.id}`}
+                    ref={(el) => {
+                      cardRefs.current[index] = el;
+                    }}
+                    id={`service-panel-${item.id}`}
+                    role="tabpanel"
                     tabIndex={isSelected ? 0 : -1}
-                    onKeyDown={(e) => handleTabKeyDown(e, index)}
-                    onPointerMove={handleTabPointerMove}
-                    onPointerLeave={handleTabPointerLeave}
-                    onBlur={handleTabPointerLeave}
-                    onClick={() => setActiveId(item.id)}
-                    className={`w-full text-left p-5 rounded-xl transition-colors duration-200 border flex items-center justify-between gap-4 group relative overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ${
-                      isSelected
-                        ? 'bg-surface border-action-primary/60 shadow-card ring-1 ring-action-primary/20 text-brand-primary'
-                        : 'bg-surface/50 hover:bg-surface border-border-subtle hover:border-border-strong text-content-secondary hover:text-brand-primary'
-                    }`}
+                    aria-hidden={!isSelected}
+                    aria-labelledby={`service-tab-${item.id}`}
+                    className="col-start-1 row-start-1 w-full bg-surface border border-border-subtle/80 rounded-2xl p-6 sm:p-7 xl:p-8 shadow-[0_4px_24px_-4px_rgba(27,42,42,0.04)] focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+                    style={
+                      isReducedMotion
+                        ? {
+                            display: isSelected ? 'block' : 'none',
+                            opacity: 1,
+                            transform: 'none',
+                            pointerEvents: isSelected ? 'auto' : 'none',
+                          }
+                        : {
+                            opacity: index === 0 ? 1 : 0,
+                            transform: 'none',
+                            pointerEvents: index === 0 ? 'auto' : 'none',
+                          }
+                    }
                   >
-                    {/* Active vertical accent pill on left border */}
-                    <span
-                      className={`absolute left-0 top-3 bottom-3 w-1 rounded-r-full transition-all duration-200 ${
-                        isSelected ? 'bg-action-primary opacity-100' : 'bg-transparent opacity-0'
-                      }`}
-                      aria-hidden="true"
-                    />
-
-                    <div className="flex items-center gap-3.5 flex-1 min-w-0 pl-1">
-                      <span
-                        className={`font-body text-xs font-semibold px-2.5 py-1 rounded transition-colors shrink-0 ${
-                          isSelected
-                            ? 'bg-action-primary text-white'
-                            : 'bg-canvas-alt text-content-muted group-hover:text-content-secondary group-hover:bg-canvas-alt/80'
-                        }`}
-                      >
-                        {item.number}
-                      </span>
-                      <div className="flex flex-col min-w-0">
-                        <span
-                          className={`font-display text-base lg:text-lg leading-snug truncate transition-colors ${
-                            isSelected
-                              ? 'text-brand-primary font-semibold'
-                              : 'text-content-primary group-hover:text-brand-primary'
-                          }`}
-                        >
+                    {/* Architectural Eyebrow Header */}
+                    <div className="flex items-baseline justify-between gap-4 pb-3 border-b border-border-subtle/60">
+                      <div className="flex items-baseline gap-2">
+                        <span className="font-mono text-xs font-bold text-action-primary tracking-wider">
+                          {item.number}
+                        </span>
+                        <span className="text-border-subtle/80 font-light text-xs" aria-hidden="true">
+                          /
+                        </span>
+                        <span className="font-body text-xs text-content-muted uppercase tracking-wider font-semibold">
                           {item.category}
                         </span>
-                        <span className="font-body text-xs text-content-muted truncate mt-0.5">
-                          {item.shortLabel}
-                        </span>
                       </div>
+                      <span className="font-body text-[11px] text-content-muted/80 tracking-wide flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-advisory-accent" aria-hidden="true" />
+                        {item.verificationStatus || item.verificationNotice}
+                      </span>
                     </div>
 
-                    <ArrowRight
-                      className={`w-4 h-4 shrink-0 transition-all duration-200 ${
-                        isSelected
-                          ? 'text-action-primary translate-x-1'
-                          : 'text-content-muted group-hover:text-content-secondary group-hover:translate-x-1'
-                      }`}
-                      aria-hidden="true"
-                    />
-                  </button>
+                    {/* Primary Narrative (Title & Summary) */}
+                    <div className="mt-4 mb-4">
+                      <h3 className="font-display text-xl lg:text-[1.375rem] font-semibold text-brand-primary leading-snug mb-2">
+                        {item.title}
+                      </h3>
+                      <p className="font-body text-body-small text-content-secondary leading-relaxed">
+                        {item.description}
+                      </p>
+                    </div>
+
+                    {/* Typographic Grouping: Who This Guidance Is For */}
+                    <div className="pt-3 pb-2 border-t border-border-subtle/40">
+                      <h4 className="font-body text-[11px] font-semibold text-content-muted uppercase tracking-wider mb-1">
+                        Who This Guidance Is For
+                      </h4>
+                      <p className="font-body text-body-small text-content-secondary leading-relaxed">
+                        {item.audience}
+                      </p>
+                    </div>
+
+                    {/* What We Evaluate Together Checklist */}
+                    <div className="mt-3">
+                      <h4 className="font-body text-[11px] font-semibold text-content-muted uppercase tracking-wider mb-2">
+                        What We Evaluate Together
+                      </h4>
+                      <ul className="space-y-1.5">
+                        {item.advisoryScope.map((scopeItem, idx) => (
+                          <li key={idx} className="flex items-start gap-2.5">
+                            <Check
+                              className="w-3.5 h-3.5 text-action-primary mt-0.5 shrink-0 stroke-[2.25]"
+                              aria-hidden="true"
+                            />
+                            <span className="font-body text-body-small text-content-secondary leading-relaxed">
+                              {scopeItem}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Expected Outcome Editorial Pullout */}
+                    <div className="mt-4 pl-3.5 border-l-2 border-action-primary/50 py-1">
+                      <span className="font-body text-[11px] font-semibold text-action-primary uppercase tracking-wider block mb-0.5">
+                        Expected Outcome
+                      </span>
+                      <p className="font-body text-body-small text-brand-primary font-medium leading-relaxed">
+                        {item.expectedOutcome}
+                      </p>
+                    </div>
+
+                    {/* Consultation Action */}
+                    <div className="mt-6 pt-4 border-t border-border-subtle/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <Button
+                        href={services.cta.href}
+                        variant="primary"
+                        size="md"
+                        icon={<ArrowRight className="w-4 h-4" />}
+                        iconPosition="right"
+                        className="flex-shrink-0 whitespace-nowrap"
+                      >
+                        {services.cta.label}
+                      </Button>
+                      <p className="font-body text-small-meta text-content-muted">
+                        Zero sales obligation · Independent consultative evaluation
+                      </p>
+                    </div>
+                  </div>
                 );
               })}
             </div>
           </div>
-
-          {/* Right Column: Selected Detail Card */}
-          <div ref={detailPanelRef} className="lg:col-span-7">
-            {activeService && (
-              <div
-                id={`service-panel-${activeService.id}`}
-                role="tabpanel"
-                tabIndex={0}
-                aria-labelledby={`service-tab-${activeService.id}`}
-                className="bg-surface border border-border-subtle rounded-2xl p-8 lg:p-10 shadow-card focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
-              >
-                <div ref={panelContentRef}>
-                  {/* Panel Top Metadata */}
-                  <div className="flex items-center justify-between gap-4 flex-wrap pb-5 border-b border-border-subtle/80">
-                    <div className="flex items-center gap-2">
-                      <span className="font-body text-xs font-semibold px-2.5 py-1 rounded bg-action-primary/10 text-action-primary">
-                        {activeService.number}
-                      </span>
-                      <span className="font-body text-xs text-content-muted uppercase tracking-wider font-medium">
-                        {activeService.category}
-                      </span>
-                    </div>
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-body text-content-muted bg-canvas-alt border border-border-subtle">
-                      <FloatingAccent
-                        axis="y"
-                        distanceY={3}
-                        duration={5.2}
-                        delay={2.1}
-                        opacityMin={0.85}
-                        opacityMax={1.0}
-                        className="inline-flex flex-shrink-0"
-                      >
-                        <span className="w-1.5 h-1.5 rounded-full bg-advisory-accent block" aria-hidden="true" />
-                      </FloatingAccent>
-                      {activeService.verificationStatus || activeService.verificationNotice}
-                    </span>
-                  </div>
-
-                  {/* Service Heading & Summary */}
-                  <div className="mt-6 mb-8">
-                    <h3 className="font-display text-card-h2 text-brand-primary leading-tight mb-3">
-                      {activeService.title}
-                    </h3>
-                    <p className="font-body text-body-regular text-content-secondary leading-relaxed">
-                      {activeService.description}
-                    </p>
-                  </div>
-
-                  {/* Who This Is For Box */}
-                  <div className="p-5 rounded-xl bg-canvas-alt/70 border border-border-subtle/80 mb-6">
-                    <p className="font-body text-eyebrow font-semibold text-brand-primary uppercase tracking-wider mb-1.5">
-                      Who This Guidance Is For
-                    </p>
-                    <p className="font-body text-body-small text-content-secondary leading-relaxed">
-                      {activeService.audience}
-                    </p>
-                  </div>
-
-                  {/* Scope: What We Evaluate Together */}
-                  <div className="mb-6">
-                    <p className="font-body text-eyebrow font-semibold text-brand-primary uppercase tracking-wider mb-3">
-                      What We Evaluate Together
-                    </p>
-                    <ul className="space-y-2.5">
-                      {activeService.advisoryScope.map((scopeItem, idx) => (
-                        <li key={idx} className="flex items-start gap-3">
-                          <span
-                            className="mt-0.5 w-5 h-5 rounded-full bg-action-primary/10 text-action-primary flex items-center justify-center flex-shrink-0"
-                            aria-hidden="true"
-                          >
-                            <Check className="w-3 h-3 stroke-[2.5]" />
-                          </span>
-                          <span className="font-body text-body-small text-content-secondary leading-relaxed">
-                            {scopeItem}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Expected Outcome Reassurance Box */}
-                  <div className="p-5 rounded-xl bg-canvas border border-border-subtle mb-8">
-                    <p className="font-body text-eyebrow font-semibold text-action-primary uppercase tracking-wider mb-1">
-                      Expected Outcome
-                    </p>
-                    <p className="font-body text-body-small text-content-primary leading-relaxed font-medium">
-                      {activeService.expectedOutcome}
-                    </p>
-                  </div>
-
-                  {/* Detail Panel Footer & CTA */}
-                  <div className="pt-6 border-t border-border-subtle/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <Button
-                      href={services.cta.href}
-                      variant="primary"
-                      size="md"
-                      icon={<ArrowRight className="w-4 h-4" />}
-                      iconPosition="right"
-                      className="flex-shrink-0 whitespace-nowrap"
-                    >
-                      {services.cta.label}
-                    </Button>
-                    <p className="font-body text-small-meta text-content-muted">
-                      Zero sales obligation · Independent consultative evaluation
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </Reveal>
+        </div>
 
         {/* Mobile & Tablet Accessible Accordion (<1024px) */}
         <Reveal variant="fade-up" delay={0.08} className="lg:hidden block space-y-3.5">
@@ -449,9 +556,9 @@ export const Services: React.FC = () => {
                         </span>
                       </div>
                     </div>
-                    <ChevronDown
-                      className={`w-5 h-5 text-content-secondary transition-transform duration-200 flex-shrink-0 ${
-                        isOpen ? 'rotate-180 text-action-primary' : ''
+                    <ArrowRight
+                      className={`w-4 h-4 text-content-muted shrink-0 transition-transform duration-200 ${
+                        isOpen ? 'rotate-90 text-action-primary' : ''
                       }`}
                       aria-hidden="true"
                     />
@@ -463,24 +570,24 @@ export const Services: React.FC = () => {
                     id={`service-mobile-panel-${item.id}`}
                     role="region"
                     aria-labelledby={`service-mobile-header-${item.id}`}
-                    className="px-5 pb-6 pt-2 border-t border-border-subtle/80 space-y-5"
+                    className="px-5 pb-6 pt-2 border-t border-border-subtle/80 space-y-4"
                   >
                     {/* Verification Notice */}
-                    <div className="pt-2">
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-body text-content-muted bg-canvas-alt border border-border-subtle">
+                    <div className="pt-2 flex items-center justify-between gap-2">
+                      <span className="font-body text-[11px] text-content-muted/80 tracking-wide flex items-center gap-1.5">
                         <span className="w-1.5 h-1.5 rounded-full bg-advisory-accent" aria-hidden="true" />
                         {item.verificationStatus || item.verificationNotice}
                       </span>
                     </div>
 
-                    {/* Summary Description */}
+                    {/* Narrative */}
                     <p className="font-body text-body-small text-content-secondary leading-relaxed">
                       {item.description}
                     </p>
 
                     {/* Who This Is For */}
-                    <div className="p-4 rounded-lg bg-canvas-alt/70 border border-border-subtle/80">
-                      <p className="font-body text-eyebrow font-semibold text-brand-primary uppercase tracking-wider mb-1">
+                    <div className="pt-3 border-t border-border-subtle/40">
+                      <p className="font-body text-[11px] font-semibold text-content-muted uppercase tracking-wider mb-1">
                         Who This Is For
                       </p>
                       <p className="font-body text-body-small text-content-secondary leading-relaxed">
@@ -490,18 +597,16 @@ export const Services: React.FC = () => {
 
                     {/* What We Evaluate Together */}
                     <div>
-                      <p className="font-body text-eyebrow font-semibold text-brand-primary uppercase tracking-wider mb-2.5">
+                      <p className="font-body text-[11px] font-semibold text-content-muted uppercase tracking-wider mb-2">
                         What We Evaluate Together
                       </p>
                       <ul className="space-y-2">
                         {item.advisoryScope.map((scope, idx) => (
                           <li key={idx} className="flex items-start gap-2.5">
-                            <span
-                              className="mt-0.5 w-4 h-4 rounded-full bg-action-primary/10 text-action-primary flex items-center justify-center flex-shrink-0"
+                            <Check
+                              className="w-3.5 h-3.5 text-action-primary mt-0.5 shrink-0 stroke-[2.25]"
                               aria-hidden="true"
-                            >
-                              <Check className="w-2.5 h-2.5 stroke-[2.5]" />
-                            </span>
+                            />
                             <span className="font-body text-body-small text-content-secondary leading-relaxed">
                               {scope}
                             </span>
@@ -510,9 +615,9 @@ export const Services: React.FC = () => {
                       </ul>
                     </div>
 
-                    {/* Expected Outcome */}
-                    <div className="p-4 rounded-lg bg-canvas border border-border-subtle">
-                      <p className="font-body text-eyebrow font-semibold text-action-primary uppercase tracking-wider mb-1">
+                    {/* Expected Outcome Editorial Pullout */}
+                    <div className="pl-3.5 border-l-2 border-action-primary/40 py-0.5">
+                      <p className="font-body text-[11px] font-semibold text-action-primary uppercase tracking-wider mb-0.5">
                         Expected Outcome
                       </p>
                       <p className="font-body text-body-small text-content-primary leading-relaxed font-medium">
@@ -520,18 +625,21 @@ export const Services: React.FC = () => {
                       </p>
                     </div>
 
-                    {/* CTA Button */}
-                    <div className="pt-2">
+                    {/* Mobile Consultation CTA */}
+                    <div className="pt-4 border-t border-border-subtle/80 flex flex-col gap-3">
                       <Button
                         href={services.cta.href}
                         variant="primary"
                         size="md"
                         icon={<ArrowRight className="w-4 h-4" />}
                         iconPosition="right"
-                        className="w-full sm:w-auto justify-center whitespace-nowrap"
+                        className="w-full justify-center"
                       >
                         {services.cta.label}
                       </Button>
+                      <p className="font-body text-small-meta text-content-muted text-center">
+                        Zero sales obligation · Independent consultative evaluation
+                      </p>
                     </div>
                   </div>
                 )}

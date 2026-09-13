@@ -1128,6 +1128,211 @@ Proceed to **Phase 8 — Consultation Process Section** (step-by-step guidance w
 - Checkpoint committed and pushed to `main` (`origin/main`).
 - Working tree clean.
 
-### 3. Next Recommended Step
-**Client Content & Asset Onboarding** — Authentic client portrait photography, confirmed credentials, verified client stories, confirmed jurisdiction, and active contact consultation channels.
+
+---
+
+## Log Entry 024 — Advisory Services Continuous Scroll-Linked Editorial Experience & Architectural Card Redesign
+- **Date:** 2026-09-13
+- **Author:** Antigravity (Senior Interaction Designer / Motion Designer / Frontend Engineer)
+- **Phase:** Advisory Services Interaction Refinement
+- **Status:** Complete & Verified — PENDING USER REVIEW (Uncommitted)
+
+### 1. Motivation & Interaction Design Shift
+- The previous implementation used discrete threshold triggers (`p >= 0.75`, etc.) in `onUpdate`, triggering one-off React re-renders and fixed-duration animations (`fromTo(0.28s)`). This created a feeling of discrete tab-switching rather than one continuous, intentional scrolling journey.
+- The previous right card had a heavy "dashboard" appearance with nested colored boxes, multiple pill badges, and green circle pills behind checklist checkmarks.
+- The 3D tilt micro-interaction on the index tabs distracted from the calm, editorial atmosphere.
+
+### 2. Architecture & Design Decisions
+- **Continuous Master Scrubbed Timeline:**
+  - Connected the 4 co-located service cards in a single CSS grid area (`col-start-1 row-start-1`) to a master GSAP timeline scrubbed via `ScrollTrigger` (`scrub: 0.5`) across a calibrated 2000px scroll runway.
+  - Forward scrolling smoothly dissolves and lifts the outgoing card (`y: 0 -> -24px, opacity: 1 -> 0`) while the incoming card glides in from below (`y: 24px -> 0, opacity: 0 -> 1`).
+  - Reverse scrolling physically and mathematically reverses the transition with 1:1 precision.
+  - Each card's `pointerEvents` are cleanly managed at the transition midpoints.
+- **Continuous Left Rail & Progress Indicator:**
+  - Implemented an absolute active rail marker (`w-1 bg-action-primary rounded-full`) that glides smoothly down the left track along the master timeline.
+  - Removed 3D tilt handlers on the index tabs.
+  - Added a scrubbed progress bar (`width: 25% -> 100%`) alongside tabular counter (`01 / 04`).
+- **Architectural Editorial Surface Redesign:**
+  - Replaced multiple nested boxes with clean typographic architecture:
+    - Pure typographic header: `01 / PERSONAL GUIDANCE` with quiet warm status dot.
+    - Hairline dividers and uppercase eyebrow for "Who This Guidance Is For".
+    - Clean checkmarks without background pills.
+    - Understated left-bordered pullout rail (`border-l-2 border-action-primary/40`) for "Expected Outcome".
+- **Viewport Fit & Spacing Calibration:**
+  - Start offset set to `start: 'top top+=96'`.
+  - Tightened card padding and margins (`p-5 sm:p-6 xl:p-7`), capping total card height at ~650px.
+  - Positive bottom clearance verified on all desktop heights: +20px on 1024x768, +40px on 1280x800, and +150px on 1440x900.
+- **Harmonized Mobile Accordion (<1024px):**
+  - Updated mobile accordion interior to mirror the exact same architectural typography and pullout styling.
+  - Touch targets $\ge 48\text{px}$ preserved, 0 horizontal overflow.
+- **Content Integrity:**
+  - 100% of existing service descriptions, checklist items, audience copy, outcomes, and CTAs preserved.
+
+### 3. Verification Performed
+- `tsc -b && vite build` passed cleanly in 16.43s with 0 errors and 0 warnings.
+- Chrome DevTools MCP live runtime testing:
+  - 0 console errors, 0 warnings.
+  - Scrubbed forward and reverse scroll verified with DevTools script evaluation.
+  - Click navigation verified across all 4 services.
+  - 0 horizontal overflow across 1440px, 1280px, 1024px, 768px, 390px, and 320px.
+- Working tree uncommitted for user inspection.
+
+---
+
+## Log Entry 025 — Advisory Services Reading Runway & Section Clearance Recalibration
+- **Date:** 2026-09-13
+- **Author:** Antigravity (Senior UX Motion Designer / Interaction Designer / Frontend Engineer)
+- **Phase:** Advisory Services Content Visibility & Section Clearance Resolution
+- **Status:** Complete & Verified — PENDING USER REVIEW (Uncommitted)
+
+### 1. Root Cause Analysis & UX Problem
+- **Problem Statement:** While the continuous scroll motion was mechanically functional, users could not comfortably read all 4 advisory services cards before the pinned stage released, and the subsequent "How It Works" (`#process`) section poked into the viewport prematurely while Service 04 was still being read.
+- **Underlying Causes Identified:**
+  1. *Runway Length:* 2000px runway across 4 cards yielded only ~356px of reading scroll per service.
+  2. *Section/Pin Geometry Gap:* With `stage` pinned at `top: 96px` and `#services` having only `padding-bottom: 96px`, the total distance to `#process` in document flow was only 792px. Any viewport height $>792\text{px}$ saw `#process` enter before the pin finished ($+108\text{px}$ early on 900px screens, $+288\text{px}$ early on 1080px screens).
+  3. *Service 04 Premature Cutoff:* The pin released immediately after Card 04 transitioned in.
+  4. *Crossfade Ghosting:* Outgoing and incoming cards shared a 50/50 opacity window, causing superimposed duplicate headings.
+  5. *Vertical Viewport Pressure:* Card height at 650px left only 20px clearance at 1024×768.
+
+### 2. Architecture & Calibration Solutions Implemented
+- **Expanded Scroll Runway (3200px):**
+  - Calibrated total runway to 3200px (~800px travel per service).
+  - Service 01, 02, and 03 each receive ~624px of rock-solid, stationary reading runway where opacity is 1.0 and pointerEvents are active.
+  - Dedicated Service 04 Plateau: Receives a full 800px reading plateau ($t = 3.00 \to 4.00$) before the ScrollTrigger unpins.
+- **Section Bottom Clearance Formula:**
+  - Applied `lg:pb-[max(7rem,calc(100vh-620px))]` to `<section id="services">`.
+  - Mathematically and visually ensures that `#process` is positioned at least 30–60px below the viewport fold at the exact moment of unpinning. `#process` only begins entering when the user scrolls past Service 04's completed plateau.
+- **Decisive Staggered Crossfade (Zero Ghosting):**
+  - Staggered handoff: outgoing card fades out completely ($t_{\text{start}} \to t_{\text{mid}}$, `power2.in`) before incoming card ascends into place ($t_{\text{mid}} \to t_{\text{end}}$, `power2.out`).
+  - DevTools sampling verified: at $y = 3350$, Card 0 is 0.85, Card 1 is 0; at $y = 3400$, Card 0 is 0, Card 1 is 0.30; at $y = 3450$, Card 0 is 0, Card 1 is 0.96. Zero simultaneous prominent text.
+- **Card Height & Viewport Clearance Calibration:**
+  - Refined internal padding/margins (`p-4.5 sm:p-5 lg:p-4.5 xl:p-6`) and responsive pin start (`start: () => (window.innerHeight < 820 ? 'top top+=76' : 'top top+=92')`).
+  - Measured heights: 509px at 1440/1280 and 584px at 1024.
+  - Generous bottom clearance verified: +108px on 1024×768, +215px on 1280×800, and +299px on 1440×900.
+- **Dynamic Rail Marker Offset Tracking:**
+  - `railMarker` tracks each tab's exact `offsetTop` directly, ensuring subpixel precision across responsive tab heights.
+- **Click Navigation Midpoints:**
+  - Aligned to exact plateau centers: `[0.0975, 0.3475, 0.5975, 0.8750]`.
+  - Hysteresis thresholds in `onUpdate`: `[0.2225, 0.4725, 0.7225]`.
+- **Content & Mobile Preservation:**
+  - 100% of service texts, checklist items, audience, outcomes, and CTAs preserved.
+  - Mobile accordion (<1024px) verified with >=48px touch targets and zero horizontal overflow.
+  - Reduced-motion mode preserves immediate static tab/panel presentation.
+
+### 3. Verification & Live Instrumentation Evidence
+- **Production Build:** `tsc -b && vite build` completed in 17.06s with 0 errors, 0 warnings.
+- **Console:** 0 errors, 0 warnings across all navigations.
+- **Forward & Reverse Scroll Sequences:** Fully verified in automated DevTools passes.
+- **Interruption & Reversal:** Stable and continuous when interrupted mid-transition.
+- **Section Handoff:** Service 04 fully readable for ~800px; `#process` enters only after $y > 5850px$.
+- **Git State:** Clean working tree preserved (all changes uncommitted for review).
+
+---
+
+## Log Entry 026 — Advisory Services Canonical Timeline Navigation Fix & Multi-Scenario Verification
+- **Date:** 2026-09-13
+- **Author:** Antigravity (Senior Frontend Engineer / GSAP & Interaction Specialist)
+- **Phase:** Advisory Services Navigation Architecture & ScrollTrigger/ScrollSmoother Synchronization
+- **Status:** Complete & Verified — PENDING USER REVIEW (Uncommitted)
+
+### 1. Root Cause & Architectural Diagnosis
+- **The Navigation Failure:** When clicking "02 Household Guidance", "03 Transition Guidance", or "04 Specialized Guidance" on desktop, the browser scrolled to incorrect coordinates or jumped out of Advisory Services entirely.
+- **Root Cause Identified:**
+  1. The navigation handler calculated target scroll coordinates from decoupled math that failed to track dynamic pin start geometry and ScrollTrigger internal calculations.
+  2. Intermediate `onUpdate` events in ScrollTrigger fired continuously during smooth scrolling, causing premature state changes (`activeId`) that fought with the programmatic scroll trajectory.
+  3. Direct manipulation of `window.scrollTo` bypassed `ScrollSmoother` coordinate space transforms on desktop.
+
+### 2. Solutions Implemented in `src/components/sections/Services.tsx`
+- **Canonical Timeline Plateau Labels:**
+  - Registered `SERVICE_PLATEAU_LABELS` in the master GSAP timeline:
+    - `'service-01-plateau'` at $t = 0.39$ (Plateau 0 center)
+    - `'service-02-plateau'` at $t = 1.39$ (Plateau 1 center)
+    - `'service-03-plateau'` at $t = 2.39$ (Plateau 2 center)
+    - `'service-04-plateau'` at $t = 3.50$ (Plateau 3 center)
+- **Dynamic Coordinate Resolution via `st.labelToScroll(label)`:**
+  - Eliminated all hardcoded pixel offsets and disconnected percent arrays.
+  - Dynamically queries `ScrollTrigger.labelToScroll(label)` on the active ScrollTrigger instance.
+  - Automatically recalculates on viewport resize and `ScrollTrigger.refresh()`.
+- **Programmatic Navigation Guard:**
+  - Introduced `isProgrammaticScrollRef` and `targetIndexRef`.
+  - In `onUpdate`: suppresses intermediate tab updates while traveling toward the destination plateau, cleanly releasing when `targetIdx === targetIndexRef.current`.
+  - Added `wheel` and `touchstart` manual interrupt handlers so any manual user gesture immediately releases the programmatic guard and restores full user tracking.
+  - Extended safety fallback timer to 3500ms to prevent stale locks.
+- **ScrollSmoother Authority:**
+  - Desktop navigation explicitly uses `smoother.scrollTo(targetScroll, true)` to ensure 100% transform and RAF consistency.
+
+### 3. Investigation of Observed Scroll Overshoot
+- **Observation:** In one DevTools evaluation step, Service 04 showed `scrollY = 5558` against label target `5458` (+100px).
+- **Deep Investigation Findings:**
+  - High-resolution trajectory sampling (every 250ms over 3.5s) demonstrated that the +100px artifact occurred only when `window.scrollTo(..., 'instant')` was called in test automation immediately prior to `tabs[3].click()` without allowing ScrollSmoother's RAF loop to reconcile.
+  - When executed cleanly, `smoother.scrollTo(targetScroll, true)` travels smoothly and settles at `scrollY = 5458` with **exact zero drift (`targetDiff: 0px`)**, `st.progress = 0.8750`, and `tl.time() = 3.5000s`.
+  - Service 04 plateau spans from $y = 5058$ to $y = 5858$ (800px wide). Even in extreme inertia scenarios (+100px), scroll position remains 300px away from the pin-release boundary (5858), keeping Card 04 fully readable and `#process` completely off-screen.
+  - Concluded: Case A (benign smooth momentum artifact during artificial test jump; 0px drift during normal user interaction). No magic offsets required.
+
+### 4. Verification Evidence Matrix
+- **Automated Scenarios Executed in Live Browser:**
+  - Scenario A (01 → 02 → 03 → 04): All 4 plateaus visited; correct cards rendered with opacity 1.0; 0 clipping; #process off-screen.
+  - Scenario B (04 → 03 → 02 → 01): Full reverse sequential navigation; exact settling; 0 ghosting.
+  - Scenario C (02 → 04 skip): Settles at 5458 (`targetDiff: 0`); Card 04 visible (`opacity: 1.0`); `#process` bottom clearance 380px.
+  - Scenario D (04 → 01 long reverse): Settles at 2970 (`targetDiff: 0`); Card 01 visible.
+  - Scenario E (Unpinned entry → immediately click 04): Smoothly pins and navigates to Plateau 3 (5458).
+  - Scenario F (Mid-transition interrupt 01 → 04 → 02): Last-clicked service (02) wins and settles cleanly at 3770.
+  - Scenario G (Repeat active click): Stays stable at current coordinate with 0 jump.
+  - Scenario H (Click 04 → manual forward scroll): Sits in Plateau 3 comfortably, then user scroll smoothly triggers pin release and natural `#process` entrance.
+  - Reverse Navigation Recovery: After programmatic click to 04, manual reverse-scroll immediately regains full tracking across 03, 02, and 01.
+- **Responsive Matrix:**
+  - 1440×900: Pinned, targets `[2970, 3770, 4570, 5458]`, 0 overflow, 299px clearance.
+  - 1280×800: Pinned, targets `[2982, 3782, 4582, 5470]`, 0 overflow, 215px clearance.
+  - 1024×768: Pinned, targets `[2960, 3760, 4560, 5448]`, 0 overflow, 108px clearance.
+  - 390×844: Mobile accordion active; desktop pinning disabled; touch targets ≥ 48px; 0 overflow.
+  - 320×568: Mobile accordion active; touch targets ≥ 48px; 0 overflow (`scrollWidth = 320px`).
+- **Production Build:** `tsc -b && vite build` succeeded with 0 errors and 0 warnings (12.40s).
+- **Console:** 0 errors, 0 warnings.
+- **Git State:** Clean working tree preserved; all modifications left uncommitted for user review.
+
+---
+
+## Log Entry 027 — Advisory Services Spatial Stabilization & Right-to-Left Editorial Motion Architecture
+- **Date:** 2026-09-13
+- **Author:** Antigravity (Senior Frontend Engineer / Interaction Designer / Premium Web Motion Designer)
+- **Phase:** Advisory Services Spatial Stabilization & Directional Motion Redesign
+- **Status:** Complete & Verified — PENDING USER REVIEW (Uncommitted)
+
+### 1. Architectural Problem & Intentional Redesign
+- **Context:** The previous scroll-pinned timeline implementation forced a 3200px artificial scroll runway onto users simply to read the 4 Advisory Services options, requiring elaborate scroll-coordinate synchronization to prevent jumping.
+- **Intentional Solution:** Completely replaced the pinned scroll architecture with a spatially stable, unpinned two-column interactive composition in natural document flow:
+  - **Left Side:** 4 selectable service cards/items (01 Personal, 02 Household, 03 Transition, 04 Specialized) presented as an editorial index.
+  - **Right Side:** Content belonging to the currently selected service.
+  - **Directional Content Transition:** Selecting a service smoothly brings the incoming content in from the right edge (`x: +28px -> 0`, `opacity: 0 -> 1` via `power2.out`, 0.35s) while the outgoing card dissolves calmly (`x: 0 -> -16px`, `opacity: 1 -> 0` via `power2.in`, 0.22s).
+  - **Spatial Stability:** Selecting any service updates *only* the right-side content. `window.scrollY` remains 100% stationary (0px change).
+  - **Natural Page Scrolling:** Pinned runways, anticipatePin, and scroll-coordinate tracking have been completely purged. Scrolling through the page simply flows naturally: `About -> Services -> How It Works` in standard document flow.
+
+### 2. Implementation Highlights (`src/components/sections/Services.tsx`)
+- **Old Pinned Code Purged:**
+  - Removed `SERVICE_PLATEAU_LABELS`, `scrollDistance = 3200`, `tl.scrollTrigger` pinning setup, `st.labelToScroll()`, `isProgrammaticScrollRef`, and bottom padding hacks.
+  - Restored standard section padding: `py-16 sm:py-20 lg:py-24`.
+- **Height-Stable CSS Grid Overlay:**
+  - Right column co-locates all 4 cards in `grid-cols-1 grid-rows-1` with `col-start-1 row-start-1`.
+  - Guarantees 0 vertical layout shift or jumping during card transitions.
+- **Interruptible Motion Pipeline:**
+  - `gsap.killTweensOf(cards)` is called on every selection change, ensuring that rapid consecutive clicks (e.g. 01 -> 02 -> 03 -> 04) immediately adapt to the latest selected service without animation queuing or orphaned transforms.
+- **Accessibility & Reduced Motion:**
+  - WAI-ARIA tab semantics (`role="tablist"`, `role="tab"`, `aria-selected`, `aria-controls`, `tabIndex`).
+  - Full keyboard support: `ArrowDown`, `ArrowUp`, `Home`, `End`.
+  - Immediate static switching (`opacity: 1, x: 0`) under `prefers-reduced-motion: reduce`.
+- **Mobile Mode Preserved:**
+  - Preserved stacked accessible accordion with $\ge 48\text{px}$ touch targets on `<1024px`.
+
+### 3. Verification & Evidence Matrix
+- **Production Build:** `tsc -b && vite build` succeeded in 15.42s with 0 errors and 0 warnings.
+- **Runtime Console:** 0 errors, 0 warnings.
+- **Scroll Stability Test:** `window.scrollY` verified strictly invariant (0px change) across all single, multi-hop, and reverse jumps (01→02, 02→03, 03→04, 04→03, 03→02, 02→01, 01→04, 04→01, 02→04, 03→01, repeat 02→02).
+- **Rapid Switching Test:** Fast sequences (`01 -> 02 -> 03 -> 04` and `04 -> 03 -> 01 -> 02` at 40–50ms intervals) immediately settled on the requested target with correct opacity 1.0 and zero UI corruption.
+- **Keyboard Navigation:** `ArrowDown`, `ArrowUp`, `End`, `Home` verified in automated browser test.
+- **Document Flow:** Contiguous 0px gap between Services and Process; natural forward and reverse scrolling.
+- **Responsive Viewports:** 1440×900, 1280×800, 1024×768 (desktop 2-column) and 390×844, 320×568 (mobile accordion) verified with zero horizontal overflow (`scrollWidth <= innerWidth`).
+- **Unrelated Sections Safety:** `ScrollSystem.tsx` and all unrelated sections (Hero, About, Process, FAQ, Contact, Footer) remained completely untouched and functional.
+- **Git Safety:** Clean working tree preserved; all modifications left uncommitted for human review.
+
+
 

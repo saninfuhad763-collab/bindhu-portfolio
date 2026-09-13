@@ -1,21 +1,22 @@
 # Current State — Bindhu Portfolio
 
 ## 1. Snapshot Summary
-- **Current Phase:** Phase 25 — Final Responsive Motion System Baseline Checkpoint
-- **Project State:** FINAL MOTION SYSTEM CHECKPOINTED. The full motion and interaction architecture is verified and checkpointed. All motion subsystems (GSAP ScrollSmoother, responsive ScrollTrigger reveals, Hero entrance timeline, Services sticky composition, fine-pointer-gated hover interactions, selective floating accents, and calibrated atmospheric animated gradients) operate cohesively within the defined Responsive Motion Constitution and typography/spacing standards.
+- **Current Phase:** Phase 27 — Advisory Services Spatially Stable Two-Column Architecture Verified
+- **Project State:** ADVISORY SERVICES SPATIALLY STABLE TWO-COLUMN ARCHITECTURE VERIFIED. The previous scroll-pinned timeline and virtual 3200px runway have been completely decommissioned. Advisory Services now operates as a stable, unpinned two-part interactive composition: 4 selectable services remain on the left, while the selected service content transitions smoothly on the right with a calm, directional right-to-left editorial motion (`x: +28px -> 0, opacity: 0 -> 1` via `power2.out`, 0.35s). Service selection never moves the page (`window.scrollY` remains 100% stationary). Document flow between `About -> Services -> How It Works` is natural, predictable, and continuous.
 - **Executive Performance & Visual State:** Local preview clean, zero CLS (0.00), responsive 4:5 image ratio preserved across all 6 viewports (1440px to 320px). Live DevTools inspection clean (0 console errors, 0 warnings; 0 horizontal overflow with `scrollWidth <= innerWidth` across 1440, 1280, 1024, 768, 390, 320px).
-- **Executive Motion & Performance Verdict:** **`FINAL MOTION SYSTEM APPROVED & CHECKPOINTED`**
-  - *Status:* Final approved responsive motion baseline checkpointed. Complete transform ownership verified with zero competing transforms or duplicate RAF loops.
+- **Executive Motion & Navigation Verdict:** **`SPATIALLY STABLE ADVISORY SERVICES REDESIGN APPROVED & VERIFIED`**
+  - *Status:* Two-column stable layout verified. 0px scroll shift on card clicks, right-to-left directional transition, clean interruptibility, and seamless document flow confirmed.
   - *Verified Now:*
-    - Local production-preview build (`tsc -b && vite build` passing cleanly with 0 errors, 0 warnings).
-    - Local runtime behavior (clean modern sans-serif typography, iconless trust cards, 0 horizontal overflow, 0 console messages).
-    - Current bundle sizes (total 116.86 kB gzip JS, 7.08 kB CSS, 0.83 kB HTML).
+    - Local production-preview build (`tsc -b && vite build` passing cleanly with 0 errors, 0 warnings in 15.42s).
+    - Multi-scenario browser automation (01→02, 02→03, 03→04, 04→03, 03→02, 02→01, 01→04, 04→01, 02→04, 03→01, repeat 02→02, rapid switching, keyboard arrows/Home/End).
+    - Responsive viewports: 1440×900, 1280×800, 1024×768 (desktop 2-column) and 390×844, 320×568 (mobile accordion).
   - *Pending:*
     - Client Content & Asset Onboarding.
     - Real production-domain performance.
     - Real-user Core Web Vitals.
     - Final client portrait performance (WebP/AVIF <= 90 kB).
-- **Latest Stable State:** Verified production build passing cleanly (`tsc -b && vite build`). Baseline checkpoint `feat: align typography and spacing system` (`5062f5b`). Working tree clean.
+- **Latest Stable State:** Verified production build passing cleanly (`tsc -b && vite build`). All changes uncommitted in working tree for human review.
+
 
 ---
 
@@ -48,12 +49,19 @@
     - Pure editorial typography: NO white cards or repeated icon grids, ensuring distinct visual rhythm from Trust.
     - 3 Core Approach statements: "Listen first", "Explain clearly", "Guide thoughtfully" with eucalyptus bullet marks.
     - Strict zero unverified claims policy enforced: zero fake licenses, years of experience, awards, or carrier logos.
-  - **Phase 7 Advisory Services Implementation & Audit:**
-    - `src/components/sections/Services.tsx` created, audited, and verified.
-    - Progressive disclosure editorial navigator (Desktop: 5:7 split with WAI-ARIA arrow navigation; Mobile: accessible accordion).
-    - Soft Linen canvas (`bg-canvas-alt`, `#F4F3EE`).
+  - **Phase 7 Advisory Services Spatial Stabilization & Directional Motion (Decision 026):**
+    - `src/components/sections/Services.tsx` completely decoupled from page scrolling. Decommissioned the pinned ScrollTrigger runway, 3200px virtual height, anticipatePin, and scroll-coordinate navigation.
+    - Two-column spatially stable composition: 4 selectable service items on the left in a clean editorial index; selected service content on the right in a height-stable CSS grid overlay (`grid-cols-1 grid-rows-1`).
+    - Right-to-left editorial transition: Incoming content enters smoothly from the right (`x: +28px -> 0`, `opacity: 0 -> 1` via `power2.out`, 0.35s); outgoing content calmly dissolves (`x: 0 -> -16px`, `opacity: 1 -> 0` via `power2.in`, 0.22s).
+    - Spatial stability: `window.scrollY` remains 100% stationary (0px change) across all service clicks.
+    - Natural page scrolling: Seamless document flow (`About -> Services -> How It Works`) with normal section padding (`py-16 sm:py-20 lg:py-24`) and 0px gap.
+    - Interruptible animation: `gsap.killTweensOf()` called on every selection change, immediately settling on latest clicked tab without queued lag.
+    - WAI-ARIA tab semantics and full keyboard navigation (`ArrowDown`, `ArrowUp`, `Home`, `End`).
+    - Immediate static switching (`opacity: 1, x: 0`) under `prefers-reduced-motion: reduce`.
+    - Mobile/tablet accordion (<1024px) preserved with $\ge 48\text{px}$ touch targets and zero horizontal overflow.
     - 100% neutralized, market-agnostic categories: 01 Personal Coverage, 02 Family Coverage, 03 Life-Stage & Transition, 04 Specialized Coverage.
     - Embedded `[Detailed service scope — pending client confirmation]` into all scope lists.
+
   - **Phase 8 Consultation Process Implementation:**
     - `src/components/sections/Process.tsx` created.
     - Guided editorial timeline/journey answering *"What actually happens if I contact Bindhu?"* with calm clarity:
