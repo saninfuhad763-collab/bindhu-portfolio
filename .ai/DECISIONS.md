@@ -354,3 +354,23 @@ This document records established architectural, design, operational, and organi
   - Build passed: 0 TypeScript errors, 0 Vite warnings.
   - Bundle size: JS 350.65 kB (116.86 kB gzip), CSS 37.94 kB (7.08 kB gzip), HTML 2.08 kB (0.83 kB gzip).
   - Runtime verified via Chrome DevTools MCP: 0 console errors, 0 warnings across 1440, 1280, 1024, 768, 390, 320px with zero horizontal overflow.
+
+---
+
+## Decision 021 — Final Responsive Motion System Baseline & Checkpoint
+- **Status:** Approved / Checkpointed
+- **Date:** 2026-09-13
+- **Context:** Following the completion and checkpointing of global typography normalization (`feat: align typography and spacing system`), the responsive motion architecture was reviewed to establish the final baseline prior to client asset onboarding.
+- **Decision:**
+  - **Motion Baseline Locked:** Confirmed the unified motion system architecture across all five defined tiers without modifying existing animation behavior or adding third-party libraries:
+    1. **Desktop (>=1024px):** GSAP ScrollSmoother enabled (`smooth: 0.8`, `effects: true`), independent Hero page-load entrance timeline, pinned Advisory Services split-panel navigation, fine-pointer-gated hover interactions, and selective subtle floating accents (`y: 3px`).
+    2. **Tablet (768–1023px):** Simplified vertical scroll reveals (`y: 16px`), reduced stagger (`80ms`), disabled pin-scrolling in Services for natural scroll flow, and restrained floating motion.
+    3. **Mobile (<768px):** ScrollSmoother disabled (`smoothTouch: 0`), native momentum scrolling preserved, lateral animations converted to upward fades (`y: 14px`), reduced stagger (`70ms`), touch-friendly interactive states, and floating motion disabled.
+    4. **Narrow Mobile (<=360px):** Minimal displacement (`y: 10px`), zero lateral animation, reduced stagger (`50ms`), and decorative motion disabled to prevent viewport overflow or clipping.
+    5. **Reduced Motion (`prefers-reduced-motion: reduce`):** Complete bypass of animations, zero transforms applied, instantaneous component rendering, and native scrolling.
+  - **Atmospheric Gradients:** Selective multi-layer radial background gradients maintained in Hero, Services, and Contact with `aria-hidden="true"` and non-blocking background positioning.
+  - **Services Visual Language:** Retained pure typographic navigation with category numbers (`01`, `02`, `03`, `04`), title, subtitle, and directional indicators; no category pictograms.
+- **Verification:**
+  - Build passed: `tsc -b && vite build` completed cleanly with 0 TypeScript errors and 0 Vite warnings.
+  - Runtime verified: 0 console errors, 0 warnings across 1440, 1280, 1024, 768, 390, and 320px viewports with zero horizontal overflow (`scrollWidth <= innerWidth`).
+
