@@ -1389,3 +1389,87 @@ Chrome DevTools MCP evaluates scripts with severely throttled rAF (~2 fps vs. no
 - `src/config/motionConfig.ts` — untouched.
 - All other sections (Hero, About, Process, Education, SocialProof, FAQ, Contact, Footer) — untouched.
 - Git state: all changes uncommitted per project safety policy.
+
+---
+
+## Log Entry 030 — Phase 28: Advisory Services Compact Left Navigation Cards Refinement
+- **Date:** 2026-09-14
+- **Author:** Antigravity (Implementation Agent — Gemini 3.8 Flash High)
+- **Phase:** Phase 28 — Advisory Services Card Refinement
+
+### 1. Work Completed
+Applied focused, localized visual refinement strictly to the 4 left navigation cards in `src/components/sections/Services.tsx`:
+- **Compact Rectangular Modules:** Replaced the flat divide-y list structure with distinct, cleanly framed cards (`rounded-lg sm:rounded-xl`, subtle border `border-border-subtle/50`, disciplined `flex flex-col gap-2.5`).
+- **Eliminated Vertical Dead Space:** Tightened vertical padding from `py-4` (32px vertical pad) to `py-2.5 sm:py-3` (20–24px vertical pad), tightened title/subtitle line height and spacing (`mt-0.5`). Reduced card height to an elegant, compact, uniform 67px.
+- **Top-Aligned Numerical Composition:** Aligned tabular monospace numeral (`01`, `02`, `03`, `04`, width `w-6`) with the title cap-height using `items-start pt-0.5`, with subtitle indented directly below title, exactly matching the target architectural composition.
+- **Surface & Active Refinement:** Active card receives subtle white surface highlight (`bg-surface`, `border-border-subtle/90`, `shadow-xs`), while inactive cards remain visually quiet (`bg-surface/35`, `hover:bg-surface/75`).
+- **Eucalyptus Capsule Rail Marker:** Calibrated continuous GSAP `railMarkerRef` to glide smoothly between cards as an inset 44px rounded eucalyptus capsule (`y: targetTab.offsetTop + 6`, `height: targetTab.offsetHeight - 12`).
+- **Preserved System Stability:** Zero changes to right-side content structure, right-side AOS-style glide transition, mobile accordion, or global scroll/motion systems (`ScrollSystem.tsx` untouched).
+
+### 2. Verification Matrix
+- **Production Build:** `tsc -b && vite build` succeeded cleanly in 15.62s (0 TypeScript errors, 0 Vite warnings).
+- **Runtime Dimensions:** All 4 cards have identical 67px height, 432px width, and 77px vertical rhythm at 1440px.
+- **Vertical Alignment:** Left navigation center remains exactly aligned with right folio (delta = 0px).
+- **Scroll Stability:** `window.scrollY` verified strictly invariant (0px change) upon card click.
+- **Responsive Sanity:** 1440×900 desktop clean, 1024×768 desktop clean, 390×844 mobile accordion intact with 0 horizontal overflow.
+- **Browser Console:** 0 console messages/errors.
+- **Git State:** All modifications remain uncommitted in the working tree for review.
+
+---
+
+## Log Entry 031 — Phase 28: Dynamic 90% Height Relationship & Soft Editorial Fade-In Refinement
+- **Date:** 2026-09-14
+- **Author:** Antigravity (Implementation Agent — Gemini 3.8 Flash High)
+- **Phase:** Phase 28 — Advisory Services 90% Height & Soft Fade-In
+
+### 1. Work Completed
+Applied focused visual & motion refinement strictly to `src/components/sections/Services.tsx`:
+- **Dynamic 90% Height Derivation:** Implemented dynamic calculation deriving the 4-card navigation group's height from the rendered right content folio (`leftGroupHeight = Math.round(rightCardHeight * 0.90)`). Accounted for inter-card gaps (`interCardGap = 12px`, 3 gaps = 36px), uniformly sizing each of the 4 cards to `cardHeight = Math.round((leftGroupHeight - 36) / 4)`. Measured ratio: 90.15% at 1440×900 (545px / 604.56px), 90.02% at 1024×768 (612px / 679.8px).
+- **Vertical Centering & Balanced Margins:** Utilized parent grid's `items-center` alignment to vertically center the 90%-height navigation block against the right card. Top whitespace = 29.78px, bottom whitespace = 29.78px (0px vertical centering delta).
+- **Internal Card Content Centering:** Kept internal text structure compact (numeral, title, subtitle, arrow tightly paired without vertical spread) while using card's flex `items-center` to visually center the content grouping within each 127px tall card.
+- **Soft Ultra-Smooth Editorial Fade-In:** Replaced previous slide motion with soft editorial fade-in:
+  - Incoming: `autoAlpha: 0 -> 1`, subtle `x: +12px -> 0`, `duration: 0.60s`, `ease: 'power2.out'`.
+  - Outgoing: `autoAlpha: 1 -> 0`, gentle `x: 0 -> -4px`, `duration: 0.22s`, `ease: 'power1.in'`.
+  - Interruptibility: `gsap.killTweensOf(cards)` cancels in-flight tweens on rapid clicks.
+- **Rail Marker Synchronization:** Updated `railMarkerRef` to dynamically match the taller card height (`targetHeight = targetTab.offsetHeight - 20`, ~107px capsule with `rounded-full`) and track resize events.
+- **Strict Motion Safety:** `window.scrollY` invariant (0px delta), `ScrollSystem.tsx` untouched, all other sections untouched, mobile accordion intact (<1024px).
+
+### 2. Verification Matrix
+- **Production Build:** `tsc -b && vite build` succeeded in 6.88s (0 TypeScript errors, 0 Vite warnings).
+- **Runtime Measurements (1440×900):**
+  - `rightCardHeight`: 604.56px
+  - `leftGroupHeight`: 545px (ratio: 90.15%)
+  - Individual card height: 127px uniform (4 cards)
+  - Vertical centering delta: 0px (top whitespace 29.78px = bottom whitespace 29.78px)
+- **Runtime Measurements (1024×768):**
+  - `rightCardHeight`: 679.81px
+  - `leftGroupHeight`: 612px (ratio: 90.02%)
+  - Individual card height: 144px uniform (4 cards)
+  - Vertical centering delta: 0px (top whitespace 33.91px = bottom whitespace 33.91px)
+- **Scroll Stability:** `window.scrollY` invariant (0px displacement upon card clicks).
+- **Mobile Sanity (390×844):** Desktop grid hidden, mobile accordion intact, 0 horizontal overflow.
+- **Browser Console:** 0 errors, 0 warnings.
+- **Git State:** All changes uncommitted in working tree.
+
+---
+
+## Log Entry 032 — Phase 28: Advisory Services Ultra-Smooth Fade-In Motion Refinement
+- **Date:** 2026-09-14
+- **Author:** Antigravity (Implementation Agent — Gemini 3.8 Flash Medium)
+- **Phase:** Phase 28 — Advisory Services Motion Refinement
+
+### 1. Work Completed
+Applied focused motion-only refinement strictly to `src/components/sections/Services.tsx`:
+- **Fade-First Dominant Entrance:** Reduced incoming horizontal displacement from `+12px` down to microscopic `+6px` (`autoAlpha: 0 -> 1`, `x: +6px -> 0`). Calibrated transition duration to `0.70s` with gentle deceleration via `ease: 'power3.out'`. The user perceives content softly appearing and settling at natural resting position rather than sliding.
+- **Whisper-Quiet Outgoing Exit:** Outgoing card dissolves quietly (`autoAlpha: 1 -> 0`, `x: 0 -> -3px`, `duration: 0.22s`, `ease: 'power1.in'`) with zero visual competition against incoming content.
+- **Initial Park Calibration:** Parked inactive cards reset to `x: 6` (microscopic offset).
+- **Clean Interruptibility & Zero Double Animation:** `gsap.killTweensOf(cards)` remains active on each selection, instantly canceling running tweens upon rapid clicks without animation queues. Verified zero competing CSS transitions on panel wrappers.
+- **Preserved Architecture & Left Navigation:** Left 4-card heights, 90% vertical relationship, 0px vertical centering delta, card styling, and mobile accordion remained 100% untouched.
+
+### 2. Verification Matrix
+- **Production Build:** `tsc -b && vite build` succeeded in 4.62s (0 TypeScript errors, 0 Vite warnings).
+- **Motion Verification (1440×900):** Tested sequential transitions 01→02→03→04 and rapid interaction 01→03→04. Dominant fade confirmed with microscopic resting drift (+6px -> 0), no layout jumps, no flicker.
+- **Page Stability:** `window.scrollY` strictly invariant (0px displacement across all interactions).
+- **Mobile Sanity (390×844):** Desktop grid hidden, mobile accordion operational, 0 horizontal overflow.
+- **Browser Console:** 0 errors, 0 warnings.
+- **Git State:** Changes uncommitted in working tree.

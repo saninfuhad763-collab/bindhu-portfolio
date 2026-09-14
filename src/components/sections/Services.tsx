@@ -34,11 +34,14 @@ export const Services: React.FC = () => {
   const [mobileOpenId, setMobileOpenId] = useState<string | null>(services.items[0]?.id || 'service-personal');
 
   const sectionRef = useRef<HTMLElement>(null);
+  const rightFolioRef = useRef<HTMLDivElement>(null);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const railMarkerRef = useRef<HTMLDivElement>(null);
   const prevIndexRef = useRef<number>(0);
   const isInitialMount = useRef<boolean>(true);
+
+  const [rightCardHeight, setRightCardHeight] = useState<number>(600);
 
   const { isReducedMotion } = useScrollSmoother();
 
@@ -51,8 +54,9 @@ export const Services: React.FC = () => {
     if (!marker || !tabs[index]) return;
 
     const targetTab = tabs[index]!;
-    const targetY = targetTab.offsetTop;
-    const targetHeight = targetTab.offsetHeight || 72;
+    const inset = 10;
+    const targetY = targetTab.offsetTop + inset;
+    const targetHeight = Math.max((targetTab.offsetHeight || 120) - inset * 2, 24);
 
     if (!animate || isReducedMotion) {
       gsap.set(marker, { y: targetY, height: targetHeight });
@@ -60,12 +64,53 @@ export const Services: React.FC = () => {
       gsap.to(marker, {
         y: targetY,
         height: targetHeight,
-        duration: 0.3,
+        duration: 0.28,
         ease: 'power2.out',
         overwrite: 'auto',
       });
     }
   }, [isReducedMotion]);
+
+  // Dynamically measure right content height and derive left navigation group height (~90%)
+  useEffect(() => {
+    const el = rightFolioRef.current;
+    if (!el) return;
+
+    const measure = () => {
+      const activeCardEl = el.querySelector('[role="tabpanel"]:not([style*="display: none"])') as HTMLElement | null;
+      const h = activeCardEl?.offsetHeight || el.offsetHeight;
+      if (h > 0) {
+        setRightCardHeight(h);
+      }
+    };
+
+    measure();
+
+    let ro: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== 'undefined') {
+      ro = new ResizeObserver(() => {
+        measure();
+      });
+      ro.observe(el);
+    }
+
+    window.addEventListener('resize', measure);
+    return () => {
+      if (ro) ro.disconnect();
+      window.removeEventListener('resize', measure);
+    };
+  }, []);
+
+  // Dynamic 90% vertical relationship: leftGroupHeight = rightCardHeight * 0.90
+  const interCardGap = 12; // gap-3 in px
+  const leftGroupHeight = Math.round(rightCardHeight * 0.90);
+  const calculatedCardHeight = Math.round((leftGroupHeight - 3 * interCardGap) / 4);
+  const cardHeight = Math.min(Math.max(calculatedCardHeight, 80), 160);
+
+  // Keep rail marker accurately synchronized whenever dimensions or activeIndex update
+  useEffect(() => {
+    updateRailMarker(activeIndex, false);
+  }, [cardHeight, activeIndex, updateRailMarker]);
 
   // Initial setup of cards and rail marker
   useEffect(() => {
@@ -83,7 +128,7 @@ export const Services: React.FC = () => {
       } else {
         gsap.set(card, {
           autoAlpha: 0,
-          x: 30,
+          x: 6,
           pointerEvents: 'none',
         });
       }
@@ -147,7 +192,7 @@ export const Services: React.FC = () => {
       if (i !== prevIndex && i !== newIndex) {
         gsap.set(card, {
           autoAlpha: 0,
-          x: 30,
+          x: 6,
           pointerEvents: 'none',
         });
       }
@@ -156,30 +201,30 @@ export const Services: React.FC = () => {
     const outgoingCard = cards[prevIndex];
     const incomingCard = cards[newIndex];
 
-    // Outgoing content: subtle, quiet exit toward the left
+    // Outgoing content: extremely quiet exit (imperceptible dissolve)
     if (outgoingCard) {
       gsap.to(outgoingCard, {
         autoAlpha: 0,
-        x: -14,
-        duration: 0.2,
+        x: -3,
+        duration: 0.22,
         ease: 'power1.in',
         pointerEvents: 'none',
       });
     }
 
-    // Incoming content: smooth AOS-style right-to-left glide (+30px -> 0)
+    // Incoming content: ultra-smooth premium fade-in with microscopic drift (+6px -> 0, dominant fade)
     if (incomingCard) {
       gsap.fromTo(
         incomingCard,
         {
           autoAlpha: 0,
-          x: 30,
+          x: 6,
         },
         {
           autoAlpha: 1,
           x: 0,
-          duration: 0.38,
-          ease: 'power2.out',
+          duration: 0.7,
+          ease: 'power3.out',
           pointerEvents: 'auto',
         }
       );
@@ -269,17 +314,17 @@ export const Services: React.FC = () => {
               {!isReducedMotion && (
                 <div
                   ref={railMarkerRef}
-                  className="absolute left-0 w-1 bg-action-primary rounded-full pointer-events-none z-10 transition-transform"
-                  style={{ height: '76px', top: 0 }}
+                  className="absolute left-0 w-1 bg-action-primary rounded-full pointer-events-none z-10"
                   aria-hidden="true"
                 />
               )}
 
               <div
-                className="divide-y divide-border-subtle/80 border-y border-border-subtle/80"
+                className="flex flex-col gap-3 justify-between"
                 role="tablist"
                 aria-orientation="vertical"
                 aria-label="Advisory service areas"
+                style={{ height: `${leftGroupHeight}px` }}
               >
                 {services.items.map((item, index) => {
                   const isSelected = activeId === item.id;
@@ -297,26 +342,27 @@ export const Services: React.FC = () => {
                       tabIndex={isSelected ? 0 : -1}
                       onKeyDown={(e) => handleTabKeyDown(e, index)}
                       onClick={() => handleSelectService(index)}
-                      className={`w-full text-left py-4 px-4 sm:px-5 transition-colors duration-200 flex items-center justify-between gap-4 group relative focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ${
+                      style={{ height: `${cardHeight}px` }}
+                      className={`w-full text-left px-4 sm:px-5 rounded-xl border transition-all duration-200 flex items-center justify-between gap-4 group relative focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ${
                         isSelected
-                          ? 'bg-surface/90 text-brand-primary'
-                          : 'bg-transparent hover:bg-surface/40 text-content-secondary hover:text-brand-primary'
+                          ? 'bg-surface border-border-subtle/90 shadow-xs text-brand-primary'
+                          : 'bg-surface/35 hover:bg-surface/75 border-border-subtle/50 hover:border-border-subtle/80 text-content-secondary hover:text-brand-primary'
                       }`}
                     >
                       {/* In reduced motion: fallback static active bar */}
                       {isReducedMotion && (
                         <span
-                          className={`absolute left-0 top-0 bottom-0 w-1 ${
+                          className={`absolute left-0 top-3 bottom-3 w-1 rounded-r-full ${
                             isSelected ? 'bg-action-primary opacity-100' : 'bg-transparent opacity-0'
                           }`}
                           aria-hidden="true"
                         />
                       )}
 
-                      <div className="flex items-center gap-4 flex-1 min-w-0 pl-1">
+                      <div className="flex items-start gap-3.5 sm:gap-4 flex-1 min-w-0">
                         {/* Tabular Monospace Numeral */}
                         <span
-                          className={`font-mono text-xs sm:text-sm font-semibold tabular-nums tracking-wider transition-colors shrink-0 ${
+                          className={`font-mono text-xs sm:text-sm font-semibold tabular-nums tracking-wider shrink-0 w-6 pt-0.5 transition-colors ${
                             isSelected
                               ? 'text-action-primary font-bold'
                               : 'text-content-muted group-hover:text-content-secondary'
@@ -325,8 +371,8 @@ export const Services: React.FC = () => {
                           {item.number}
                         </span>
 
-                        {/* Editorial Title & Subtitle */}
-                        <div className="flex flex-col min-w-0">
+                        {/* Editorial Title & Subtitle - compact vertical grouping */}
+                        <div className="flex flex-col min-w-0 flex-1">
                           <span
                             className={`font-display text-base lg:text-[1.0625rem] leading-snug truncate transition-colors ${
                               isSelected
@@ -337,7 +383,7 @@ export const Services: React.FC = () => {
                             {item.category}
                           </span>
                           <span
-                            className={`font-body text-xs truncate mt-0.5 transition-colors ${
+                            className={`font-body text-xs sm:text-[13px] leading-tight truncate mt-1 transition-colors ${
                               isSelected
                                 ? 'text-content-secondary'
                                 : 'text-content-muted group-hover:text-content-secondary'
@@ -352,8 +398,8 @@ export const Services: React.FC = () => {
                       <ArrowRight
                         className={`w-4 h-4 shrink-0 transition-all duration-200 ${
                           isSelected
-                            ? 'text-action-primary translate-x-1 opacity-100'
-                            : 'text-content-muted/40 group-hover:text-content-secondary group-hover:translate-x-1 opacity-40 group-hover:opacity-100'
+                            ? 'text-action-primary translate-x-0.5 opacity-100'
+                            : 'text-content-muted/40 group-hover:text-content-secondary group-hover:translate-x-0.5 opacity-40 group-hover:opacity-100'
                         }`}
                         aria-hidden="true"
                       />
@@ -366,7 +412,7 @@ export const Services: React.FC = () => {
 
           {/* Right Column: Dynamic Architectural Editorial Folio (Height-Stable CSS Grid Overlay) */}
           <div className="lg:col-span-7 relative">
-            <div className="relative w-full grid grid-cols-1 grid-rows-1">
+            <div ref={rightFolioRef} className="relative w-full grid grid-cols-1 grid-rows-1">
               {services.items.map((item, index) => {
                 const isSelected = activeId === item.id;
                 return (

@@ -1,19 +1,17 @@
 # Current State — Bindhu Portfolio
 
 ## 1. Snapshot Summary
-- **Current Phase:** Phase 28 — Advisory Services Refined: Vertical Centering, Counter Removal, AOS-Style Transition
-- **Project State:** ADVISORY SERVICES PHASE 28 REFINEMENTS APPLIED AND VERIFIED. Phase 28 delivered three focused refinements to the Phase 26/27 spatially stable two-column architecture: (1) left navigation block is now vertically centered with the right content panel via `items-center` on the desktop grid container — achieving 0px center delta at all desktop breakpoints; (2) the `04 / 04` counter and `SELECT TO EXPLORE` instruction row have been completely removed from the DOM with no empty gap; (3) right-side card transitions use GSAP `autoAlpha` + `x: +30px → 0` (0.38s, `power2.out` incoming; `x: 0 → -14px`, 0.20s, `power1.in` outgoing). Service selection never moves the page (`window.scrollY` remains 100% stationary). Document flow between `About → Services → How It Works` is natural, predictable, and continuous. Zero ScrollTrigger instances active in or around the services section.
-- **Executive Performance & Visual State:** Production build clean: `tsc -b && vite build` passes in 10.79s with 0 TypeScript errors and 0 Vite warnings. Zero console errors in browser. Responsive verified at 1440×900, 1024×768 (desktop two-column) and 390×844 (mobile accordion). Zero horizontal overflow.
-- **Executive Motion & Navigation Verdict:** **`ADVISORY SERVICES PHASE 28 REFINEMENTS APPROVED & VERIFIED`**
-  - *Status:* items-center alignment confirmed (0px center delta). Counter fully removed. autoAlpha transition working correctly (settles to opacity:1, transform:matrix(1,0,0,1,0,0) after GSAP completes). Rapid click interruption confirmed (last-clicked tab wins; all others hidden). 0px scroll delta across all interactions.
+- **Current Phase:** Phase 28 — Advisory Services Refined: Ultra-Smooth Fade-In Transition (Microscopic Drift +6px -> 0, 0.70s, power3.out)
+- **Project State:** ADVISORY SERVICES ULTRA-SMOOTH FADE-IN MOTION REFINED & VERIFIED. The right-side service transition has been refined to an ultra-smooth premium fade-in where fade is the dominant visual experience with microscopic spatial movement (`autoAlpha: 0 -> 1`, `x: +6px -> 0`, `duration: 0.70s`, `ease: 'power3.out'`). Outgoing content dissolves quietly (`autoAlpha: 1 -> 0`, `x: 0 -> -3px`, `duration: 0.22s`, `ease: 'power1.in'`). Left navigation group height (~90% relationship, 545px at 1440px / 612px at 1024px), balanced vertical centering (0px delta), stationary page stability (`window.scrollY` invariant, 0px delta), and mobile accordion remain 100% preserved.
+- **Executive Performance & Visual State:** Production build clean: `tsc -b && vite build` passes in 4.62s with 0 TypeScript errors and 0 Vite warnings. Zero console errors in browser. Responsive verified at 1440×900, 1024×768 (desktop two-column) and 390×844 (mobile accordion). Zero horizontal overflow.
+- **Executive Motion & Navigation Verdict:** **`ADVISORY SERVICES ULTRA-SMOOTH FADE-IN APPROVED & VERIFIED`**
+  - *Status:* Fade-first motion verified (x drift reduced from +12px to +6px, duration 0.70s, power3.out). Outgoing exit quiet (-3px, 0.22s). Left 90% height structure and 0px centering delta preserved. 0px scroll delta on all clicks. Clean interruption on rapid clicks.
   - *Verified Now:*
-    - Production build `tsc -b && vite build`: 0 errors, 0 warnings, 10.79s.
-    - Browser automation: Tab 1→2→3→4 sequential (5s settle each), rapid 01→02→04, rapid 04→03→01→02. All settle correctly at opacity:1, x:0.
-    - 0 ScrollTrigger instances in services section. No pinned runways.
-    - Section gaps: About→Services=0px, Services→Process=-0.23px (flush).
-    - Left/right vertical centering: delta=0px at 1440×900 and 1024×768.
-    - Footer counter text completely absent from DOM and innerText.
-    - Mobile accordion visible and operational at 390×844.
+    - Production build `tsc -b && vite build`: 0 errors, 0 warnings, 4.62s.
+    - Browser inspection: 1440×900 desktop, 390×844 mobile accordion.
+    - Motion parameters: incoming +6px -> 0, 0.70s, power3.out; outgoing -3px, 0.22s, power1.in.
+    - Left/right vertical centering: delta = 0px at 1440×900 and 1024×768.
+    - Mobile accordion intact with zero horizontal overflow.
   - *Pending:*
     - Client Content & Asset Onboarding.
     - Real production-domain performance.
