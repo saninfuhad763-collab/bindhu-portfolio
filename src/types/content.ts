@@ -78,6 +78,23 @@ export interface AboutContent {
   credentialsPlaceholder?: string;
 }
 
+export interface CareerMilestone {
+  id: string;
+  period: string;
+  phase: string;
+  title: string;
+  focus: string;
+  description: string;
+}
+
+export interface CareerRoadmapContent {
+  eyebrow: string;
+  headline: string;
+  description: string;
+  disclaimer: string;
+  milestones: CareerMilestone[];
+}
+
 export interface ServiceItem {
   id: string;
   number: string;
@@ -255,6 +272,7 @@ export interface SiteContent {
   trustValue: TrustValueContent;
   trustPillars?: TrustPillar[];
   about: AboutContent;
+  careerRoadmap?: CareerRoadmapContent;
   services: ServicesContent;
   process: ProcessContent;
   education: EducationContent;

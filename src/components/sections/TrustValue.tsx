@@ -1,7 +1,15 @@
 import React from 'react';
+import { ShieldCheck, UserCheck, Route, MessageSquareText, type LucideIcon } from 'lucide-react';
 import { Container } from '../layout/Container';
 import { siteContent } from '../../content/siteContent';
 import { Reveal } from '../motion/Reveal';
+
+const PILLAR_ICONS: Record<string, LucideIcon> = {
+  compass: ShieldCheck,        // Clear Guidance → shield with check: trusted, protective
+  userRound: UserCheck,        // Personalized Support → person with checkmark: confirmed personal care
+  route: Route,                // Straightforward Process → route: straightforward path/process
+  messageCircle: MessageSquareText, // Plain-Language Explanations → message with text lines: clear dialogue
+};
 
 /**
  * Trust & Value Anchor Section — Bindhu Portfolio
@@ -60,13 +68,27 @@ export const TrustValue: React.FC = () => {
                   key={pillar.id}
                   className="trust-pillar p-6 sm:p-7 rounded-xl bg-surface border border-border-subtle shadow-card flex flex-col justify-start h-full"
                 >
+                  {/* Pillar Icon */}
+                  {(() => {
+                    const Icon = PILLAR_ICONS[pillar.iconName];
+                    return Icon ? (
+                      <Icon
+                        width={26}
+                        height={26}
+                        strokeWidth={2}
+                        className="text-action-primary mb-4 flex-shrink-0"
+                        aria-hidden="true"
+                      />
+                    ) : null;
+                  })()}
+
                   {/* Pillar Title (H3) */}
                   <h3 className="font-display text-h4 font-semibold text-brand-primary mb-2.5 tracking-tight">
                     {pillar.title}
                   </h3>
 
                   {/* Pillar Description */}
-                  <p className="font-body text-small-meta text-content-secondary leading-relaxed">
+                  <p className="font-body text-[13px] text-content-secondary leading-relaxed">
                     {pillar.description}
                   </p>
                 </div>

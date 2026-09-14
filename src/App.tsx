@@ -3,6 +3,7 @@ import { Header } from './components/layout/Header';
 import { Hero } from './components/sections/Hero';
 import { TrustValue } from './components/sections/TrustValue';
 import { About } from './components/sections/About';
+import { CareerRoadmap } from './components/sections/CareerRoadmap';
 import { Services } from './components/sections/Services';
 import { Process } from './components/sections/Process';
 import { Education } from './components/sections/Education';
@@ -39,6 +40,9 @@ export const App: React.FC = () => {
 
           {/* Production About Bindhu Section */}
           <About />
+
+          {/* Production Career Roadmap Section */}
+          <CareerRoadmap />
 
           {/* Production Advisory Services Section */}
           <Services />

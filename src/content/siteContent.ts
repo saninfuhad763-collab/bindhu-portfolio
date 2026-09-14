@@ -139,6 +139,53 @@ export const siteContent: SiteContent = {
     credentialsPlaceholder: 'Credentials to be listed upon client verification.',
   },
 
+  careerRoadmap: {
+    eyebrow: 'Career Roadmap',
+    headline: 'Experience shaped by patient guidance and client advocacy.',
+    description:
+      'A steady progression centered on objective policy evaluation, deep understanding of carrier options, and an ongoing commitment to clear, unbiased healthcare counsel.',
+    disclaimer:
+      '[ Professional milestones below illustrate the advisory progression structure. Verified career dates and credentials will be confirmed upon client onboarding. ]',
+    milestones: [
+      {
+        id: 'milestone-start',
+        phase: '01',
+        period: '[ Career Start ]',
+        title: '[ Role / Foundation Experience ]',
+        focus: '[ Healthcare Policy Fundamentals & Communication ]',
+        description:
+          '[ Initial professional foundation focused on understanding core healthcare policies, coverage terminology, and developing the client-first listening approach that defines current advisory work. ]',
+      },
+      {
+        id: 'milestone-milestone',
+        phase: '02',
+        period: '[ Professional Milestone ]',
+        title: '[ Role / Advisory Expansion ]',
+        focus: '[ Comparative Analysis & Plan Structure Evaluation ]',
+        description:
+          '[ Expansion into comprehensive comparative plan evaluations, helping clients untangle complex network tiers, deductible thresholds, and out-of-pocket exposure across major options. ]',
+      },
+      {
+        id: 'milestone-development',
+        phase: '03',
+        period: '[ Career Development ]',
+        title: '[ Role / Specialized Practice ]',
+        focus: '[ Life Transition Guidance & Household Coverage Planning ]',
+        description:
+          '[ Development of specialized consultation frameworks for families, individuals navigating career shifts, and clients requiring dedicated support through Medicare and individual marketplace choices. ]',
+      },
+      {
+        id: 'milestone-focus',
+        phase: '04',
+        period: '[ Current Professional Focus ]',
+        title: '[ Independent Health Insurance Consultant ]',
+        focus: '[ Dedicated Private Advisory & Unhurried Client Counsel ]',
+        description:
+          '[ Established independent advisory practice providing unbiased, patient guidance to clients seeking transparent health coverage decisions without sales pressure or carrier quotas. ]',
+      },
+    ],
+  },
+
   services: {
     eyebrow: 'Advisory Services',
     headline: 'Guidance built around your situation.',
