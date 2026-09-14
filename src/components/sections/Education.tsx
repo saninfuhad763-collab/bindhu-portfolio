@@ -29,7 +29,7 @@ export const Education: React.FC = () => {
   return (
     <section
       id="education"
-      className="py-14 sm:py-16 lg:py-24 bg-canvas-alt border-t border-border-subtle/80 relative"
+      className="py-14 sm:py-16 lg:py-24 bg-canvas-alt border-t border-border-subtle/80 relative z-20 shadow-[0_-8px_30px_rgba(0,0,0,0.03)]"
       aria-labelledby="education-heading"
     >
       <Container size="standard">

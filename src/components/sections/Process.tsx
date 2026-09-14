@@ -1,60 +1,249 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Container } from '../layout/Container';
 import { siteContent } from '../../content/siteContent';
 import { Reveal } from '../motion/Reveal';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useScrollSmoother } from '../motion/ScrollSystem';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 /**
  * Phase 8 — Consultation Process / How It Works
  *
  * Implements a calm, guided editorial timeline/journey:
- * - Desktop (>=1024px): Four horizontal steps distributed across a subtle hairline axis.
- * - Mobile (<1024px): Clean vertical timeline with left-anchored progression markers.
- * - Staged GSAP reveal sequence (01 -> 02 -> 03 -> 04).
- *
- * Adheres strictly to the locked design system:
- * - Alternating paper rhythm: Warm Ivory canvas (`bg-canvas`, #FBFBF9)
- * - Typography: Lora display + Plus Jakarta Sans interface
- * - Content Safety: Neutral 4-step progression (Start -> Clarify -> Explore -> Decide)
- *   with zero unverified operational, regulatory, or outcome guarantees.
+ * - Desktop (>=1024px): Four horizontal steps with scroll-driven pinned progression.
+ *   - Phase A: Steps 01 -> 02 -> 03 -> 04 reveal sequentially with active progress line.
+ *   - Phase B: Brief Step 04 hold/settling moment for full comprehension.
+ *   - Phase C: Next section (Education) begins rising from below and smoothly overlaps
+ *     the lower portion of How It Works.
+ *   - Phase D: How It Works pin releases naturally beneath the incoming next section;
+ *     normal page scrolling resumes with zero visual jump.
+ * - Mobile (<1024px): Clean vertical timeline with left-anchored progression markers
+ *   in natural document flow (no pinning).
+ * - Reduced Motion: Immediate static rendering with zero translation, pinning, or scrub delay.
  */
 export const Process: React.FC = () => {
   const { process } = siteContent;
 
+  const sectionRef = useRef<HTMLElement>(null);
+  const pinnedWrapperRef = useRef<HTMLDivElement>(null);
+  const stepRefs = useRef<(HTMLLIElement | null)[]>([]);
+  const progressBarRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const reassuranceRef = useRef<HTMLDivElement>(null);
+
+  const { isReducedMotion } = useScrollSmoother();
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    const pinnedWrapper = pinnedWrapperRef.current;
+    if (!section || !pinnedWrapper) return;
+
+    const mm = gsap.matchMedia();
+
+    mm.add(
+      {
+        isDesktop: '(min-width: 1024px)',
+        isMobile: '(max-width: 1023px)',
+        reduceMotion: '(prefers-reduced-motion: reduce)',
+      },
+      (context) => {
+        const { isDesktop, reduceMotion } = context.conditions as {
+          isDesktop: boolean;
+          reduceMotion: boolean;
+        };
+
+        const steps = stepRefs.current.filter(Boolean) as HTMLLIElement[];
+        const progressBar = progressBarRef.current;
+        const header = headerRef.current;
+        const reassurance = reassuranceRef.current;
+
+        // Reduced motion or mobile: immediate clean fallback without pinning
+        if (reduceMotion || isReducedMotion || !isDesktop) {
+          if (header) gsap.set(header, { opacity: 1, y: 0, clearProps: 'transform' });
+          if (steps.length > 0) gsap.set(steps, { opacity: 1, y: 0, clearProps: 'transform' });
+          if (progressBar) gsap.set(progressBar, { scaleX: 1 });
+          if (reassurance) gsap.set(reassurance, { opacity: 1, y: 0, clearProps: 'transform' });
+          return;
+        }
+
+        // --- DESKTOP PINNED SEQUENCE WITH OVERLAPPING NEXT SECTION ---
+        // Pre-pin baseline states
+        if (header) gsap.set(header, { opacity: 1, y: 0 });
+        if (steps.length > 0) {
+          steps.forEach((step, i) => {
+            gsap.set(step, {
+              opacity: i === 0 ? 0.35 : 0.15,
+              y: 18,
+            });
+          });
+        }
+        if (progressBar) gsap.set(progressBar, { scaleX: 0 });
+        if (reassurance) gsap.set(reassurance, { opacity: 0.2, y: 12 });
+
+        // Master Timeline attached to ScrollTrigger
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            pin: pinnedWrapper,
+            pinSpacing: false, // Allows natural page scroll to carry #education over pinnedWrapper
+            start: 'top top+=80', // Pins directly beneath fixed 80px header
+            end: 'bottom top+=80', // Pins until section bottom reaches header
+            scrub: 0.5,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        // ── PHASE A: Steps 01–04 reveal sequentially through scroll ──────
+        // Active connector line fills across the 4 steps
+        if (progressBar) {
+          tl.to(
+            progressBar,
+            {
+              scaleX: 1,
+              ease: 'none',
+              duration: 2.8,
+            },
+            0
+          );
+        }
+
+        // Step 01 illuminates and settles
+        if (steps[0]) {
+          tl.to(
+            steps[0],
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.7,
+              ease: 'power2.out',
+            },
+            0.1
+          );
+        }
+
+        // Step 02 illuminates and settles
+        if (steps[1]) {
+          tl.to(
+            steps[1],
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.7,
+              ease: 'power2.out',
+            },
+            0.8
+          );
+        }
+
+        // Step 03 illuminates and settles
+        if (steps[2]) {
+          tl.to(
+            steps[2],
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.7,
+              ease: 'power2.out',
+            },
+            1.5
+          );
+        }
+
+        // Step 04 illuminates and settles
+        if (steps[3]) {
+          tl.to(
+            steps[3],
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.7,
+              ease: 'power2.out',
+            },
+            2.2
+          );
+        }
+
+        // Reassurance text settles alongside Step 04
+        if (reassurance) {
+          tl.to(
+            reassurance,
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.6,
+              ease: 'power2.out',
+            },
+            2.4
+          );
+        }
+
+        // ── PHASE B: Brief Step 04 hold/settling moment ───────────────────
+        tl.to({}, { duration: 0.6 });
+
+        // ── PHASE C & D: Next section overlaps and pin releases ──────────
+        tl.to({}, { duration: 1.2 });
+      }
+    );
+
+    return () => {
+      mm.revert();
+    };
+  }, [isReducedMotion]);
+
   return (
     <section
       id="process"
-      className="py-14 sm:py-16 lg:py-24 bg-canvas border-t border-border-subtle/80 relative"
+      ref={sectionRef}
+      className="bg-canvas border-t border-border-subtle/80 relative z-10"
       aria-labelledby="process-heading"
     >
-      <Container size="standard">
-        {/* Section Intro Header */}
-        <Reveal variant="fade-up" className="max-w-3xl mb-10 sm:mb-12 lg:mb-16">
-          <span className="font-body text-eyebrow font-semibold text-action-primary uppercase tracking-wider block mb-3">
-            {process.eyebrow}
-          </span>
-          <h2
-            id="process-heading"
-            className="font-display text-section-h2 font-semibold text-brand-primary tracking-tight mb-4"
-          >
-            {process.headline}
-          </h2>
-          <p className="font-body text-body-large text-content-secondary leading-relaxed">
-            {process.description}
-          </p>
-        </Reveal>
+      {/* Pinned Viewport Stage for Desktop */}
+      <div ref={pinnedWrapperRef} className="w-full py-12 lg:py-16">
+        <Container size="standard">
+          {/* Section Intro Header */}
+          <div ref={headerRef} className="max-w-3xl mb-10 sm:mb-12 lg:mb-14">
+            <span className="font-body text-eyebrow font-semibold text-action-primary uppercase tracking-wider block mb-3">
+              {process.eyebrow}
+            </span>
+            <h2
+              id="process-heading"
+              className="font-display text-section-h2 font-semibold text-brand-primary tracking-tight mb-4"
+            >
+              {process.headline}
+            </h2>
+            <p className="font-body text-body-large text-content-secondary leading-relaxed">
+              {process.description}
+            </p>
+          </div>
 
-        {/* Desktop Horizontal Timeline (>=1024px) */}
-        <div className="hidden lg:block relative">
-          {/* Subtle Horizontal Connector Line */}
-          <div
-            className="absolute top-[18px] left-[18px] right-[18px] h-[1px] bg-border-subtle"
-            aria-hidden="true"
-          />
+          {/* Desktop Horizontal Timeline (>=1024px) */}
+          <div className="hidden lg:block relative">
+            {/* Subtle Baseline Connector Line */}
+            <div
+              className="absolute top-[18px] left-[18px] right-[18px] h-[1px] bg-border-subtle"
+              aria-hidden="true"
+            />
+            {/* Active Progression Fill Line */}
+            <div
+              ref={progressBarRef}
+              className="absolute top-[18px] left-[18px] right-[18px] h-[1.5px] bg-action-primary origin-left scale-x-0 pointer-events-none"
+              aria-hidden="true"
+            />
 
-          <Reveal variant="fade-up" delay={0.06} stagger={0.10} selector="li">
             <ol className="grid grid-cols-4 gap-8 relative list-none p-0 m-0">
-              {process.steps.map((step) => (
-                <li key={step.id} className="relative flex flex-col">
+              {process.steps.map((step, index) => (
+                <li
+                  key={step.id}
+                  ref={(el) => {
+                    stepRefs.current[index] = el;
+                  }}
+                  className="relative flex flex-col"
+                >
                   <div className="flex flex-col h-full">
                     {/* Step Marker & Short Label */}
                     <div className="flex items-center gap-3 mb-6 relative">
@@ -93,65 +282,71 @@ export const Process: React.FC = () => {
                 </li>
               ))}
             </ol>
-          </Reveal>
-        </div>
+          </div>
 
-        {/* Mobile Vertical Timeline (<1024px) */}
-        <div className="lg:hidden block">
-          <Reveal variant="fade-up" delay={0.06} stagger={0.07} selector="li">
-            <ol className="relative border-l border-border-subtle ml-4 sm:ml-5 space-y-9 sm:space-y-11 pl-6 sm:pl-8 list-none m-0">
-              {process.steps.map((step) => (
-                <li key={step.id} className="relative">
-                  <div>
-                    {/* Numbered Marker Anchored on Vertical Line */}
-                    <span
-                      className="absolute -left-[37px] sm:-left-[45px] top-0 w-8 h-8 rounded-full bg-canvas border border-border-subtle text-action-primary font-body text-xs font-semibold flex items-center justify-center shadow-xs ring-4 ring-canvas"
-                      aria-hidden="true"
-                    >
-                      {step.number}
-                    </span>
-
-                    {/* Micro Label */}
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <span className="font-body text-eyebrow font-semibold text-action-primary uppercase tracking-wider">
-                        {step.shortLabel}
+          {/* Mobile Vertical Timeline (<1024px) */}
+          <div className="lg:hidden block">
+            <Reveal variant="fade-up" delay={0.06} stagger={0.07} selector="li">
+              <ol className="relative border-l border-border-subtle ml-4 sm:ml-5 space-y-9 sm:space-y-11 pl-6 sm:pl-8 list-none m-0">
+                {process.steps.map((step) => (
+                  <li key={step.id} className="relative">
+                    <div>
+                      {/* Numbered Marker Anchored on Vertical Line */}
+                      <span
+                        className="absolute -left-[37px] sm:-left-[45px] top-0 w-8 h-8 rounded-full bg-canvas border border-border-subtle text-action-primary font-body text-xs font-semibold flex items-center justify-center shadow-xs ring-4 ring-canvas"
+                        aria-hidden="true"
+                      >
+                        {step.number}
                       </span>
+
+                      {/* Micro Label */}
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <span className="font-body text-eyebrow font-semibold text-action-primary uppercase tracking-wider">
+                          {step.shortLabel}
+                        </span>
+                      </div>
+
+                      {/* Step Title */}
+                      <h3 className="font-display text-card-h3 font-semibold text-brand-primary tracking-tight mb-2 leading-snug">
+                        <span className="sr-only">Step {step.number}: </span>
+                        {step.title}
+                      </h3>
+
+                      {/* Step Description */}
+                      <p className="font-body text-body-small text-content-secondary leading-relaxed mb-3.5">
+                        {step.description}
+                      </p>
+
+                      {/* Outcome Pill */}
+                      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-canvas-alt/70 border border-border-subtle/80">
+                        <span className="font-body text-xs text-content-muted">Outcome:</span>
+                        <span className="font-body text-xs font-medium text-brand-primary">
+                          {step.outcome}
+                        </span>
+                      </div>
                     </div>
+                  </li>
+                ))}
+              </ol>
+            </Reveal>
+          </div>
 
-                    {/* Step Title */}
-                    <h3 className="font-display text-card-h3 font-semibold text-brand-primary tracking-tight mb-2 leading-snug">
-                      <span className="sr-only">Step {step.number}: </span>
-                      {step.title}
-                    </h3>
+          {/* Reassurance Note */}
+          {process.reassuranceText && (
+            <div
+              ref={reassuranceRef}
+              className="mt-8 sm:mt-10 lg:mt-12 pt-6 border-t border-border-subtle/80 text-center"
+            >
+              <p className="font-body text-body-regular text-content-secondary max-w-reading mx-auto italic">
+                "{process.reassuranceText}"
+              </p>
+            </div>
+          )}
+        </Container>
+      </div>
 
-                    {/* Step Description */}
-                    <p className="font-body text-body-small text-content-secondary leading-relaxed mb-3.5">
-                      {step.description}
-                    </p>
-
-                    {/* Outcome Pill */}
-                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-canvas-alt/70 border border-border-subtle/80">
-                      <span className="font-body text-xs text-content-muted">Outcome:</span>
-                      <span className="font-body text-xs font-medium text-brand-primary">
-                        {step.outcome}
-                      </span>
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </Reveal>
-        </div>
-
-        {/* Reassurance Note */}
-        {process.reassuranceText && (
-          <Reveal variant="fade-up" delay={0.12} className="mt-10 sm:mt-14 lg:mt-20 pt-8 border-t border-border-subtle/80 text-center">
-            <p className="font-body text-body-regular text-content-secondary max-w-reading mx-auto italic">
-              "{process.reassuranceText}"
-            </p>
-          </Reveal>
-        )}
-      </Container>
+      {/* Dedicated Scroll Track for Desktop Pinning & Natural Overlap Handoff */}
+      <div className="hidden lg:block h-[1300px]" aria-hidden="true" />
     </section>
   );
 };
