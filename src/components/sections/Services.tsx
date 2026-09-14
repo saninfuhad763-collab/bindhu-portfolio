@@ -19,9 +19,10 @@ if (typeof window !== 'undefined') {
  * - Desktop (>=1024px): Two-column composition in normal, natural document flow.
  *   - Left Column: 4 selectable service items in a clean, minimal editorial index.
  *   - Right Column: Stable editorial folio displaying the full content of the selected service.
- *   - Selection Motion: When switching services, the incoming content enters smoothly
- *     from the right edge (x: +28px -> 0, opacity: 0 -> 1, power2.out, 0.35s) while the
- *     outgoing content cleanly dissolves (x: 0 -> -16px, opacity: 1 -> 0, power2.in, 0.22s).
+ *   - Selection Motion: AOS-style vertical fade-in / editorial crossfade.
+ *     - Outgoing content dissolves in place (x: 0, y: 0, autoAlpha: 1 -> 0, power1.out, 0.20s).
+ *     - Incoming content reveals with gentle upward settling (x: 0, y: 10px -> 0, autoAlpha: 0 -> 1, power2.out, 0.48s).
+ *     - Micro-choreography: Subtle internal stagger (y: 6px -> 0, opacity: 0 -> 1, power2.out, 0.42s, stagger: 0.05s).
  *   - Spatially Stable: Switching services NEVER scrolls the page, jumps coordinates,
  *     or interacts with other sections. Page scroll remains 100% normal and predictable.
  *   - Height Stable: CSS grid overlay (col-start-1 row-start-1) prevents layout shifts.
@@ -127,12 +128,15 @@ export const Services: React.FC = () => {
         gsap.set(card, {
           autoAlpha: 1,
           x: 0,
+          y: 0,
+          clearProps: 'transform',
           pointerEvents: 'auto',
         });
       } else {
         gsap.set(card, {
           autoAlpha: 0,
-          x: 6,
+          x: 0,
+          y: 10,
           pointerEvents: 'none',
         });
       }
@@ -306,7 +310,7 @@ export const Services: React.FC = () => {
     };
   }, [isReducedMotion]);
 
-  // Smooth Right-to-Left Editorial Transition on activeIndex change
+  // AOS-Style Vertical Fade-In & Editorial Crossfade Transition on activeIndex change
   useEffect(() => {
     // Skip on very first mount (already configured by initialization effect)
     if (isInitialMount.current) {
@@ -325,19 +329,28 @@ export const Services: React.FC = () => {
 
     if (prevIndex === newIndex) return;
 
-    // In reduced motion: instantaneous switch without translations
+    // In reduced motion: instantaneous switch without translations or delays
     if (isReducedMotion) {
       cards.forEach((card, i) => {
         if (i === newIndex) {
           gsap.set(card, {
             autoAlpha: 1,
             x: 0,
+            y: 0,
+            clearProps: 'transform',
             pointerEvents: 'auto',
+          });
+          gsap.set(card.children, {
+            opacity: 1,
+            y: 0,
+            clearProps: 'transform',
           });
         } else {
           gsap.set(card, {
             autoAlpha: 0,
             x: 0,
+            y: 0,
+            clearProps: 'transform',
             pointerEvents: 'none',
           });
         }
@@ -347,15 +360,25 @@ export const Services: React.FC = () => {
     }
 
     // Cancel any in-flight card animations to guarantee clean interruption
-    cards.forEach((card) => gsap.killTweensOf(card));
+    cards.forEach((card) => {
+      gsap.killTweensOf(card);
+      gsap.killTweensOf(card.children);
+    });
 
     // Immediately park all other inactive cards safely out of view
     cards.forEach((card, i) => {
       if (i !== prevIndex && i !== newIndex) {
         gsap.set(card, {
           autoAlpha: 0,
-          x: 6,
+          x: 0,
+          y: 10,
+          clearProps: 'transform',
           pointerEvents: 'none',
+        });
+        gsap.set(card.children, {
+          opacity: 1,
+          y: 0,
+          clearProps: 'transform',
         });
       }
     });
@@ -363,33 +386,68 @@ export const Services: React.FC = () => {
     const outgoingCard = cards[prevIndex];
     const incomingCard = cards[newIndex];
 
-    // Outgoing content: extremely quiet exit (imperceptible dissolve)
+    // Outgoing content: in-place dissolve (zero lateral or vertical displacement)
     if (outgoingCard) {
       gsap.to(outgoingCard, {
         autoAlpha: 0,
-        x: -3,
-        duration: 0.22,
-        ease: 'power1.in',
+        x: 0,
+        y: 0,
+        duration: 0.20,
+        ease: 'power1.out',
         pointerEvents: 'none',
+        onComplete: () => {
+          gsap.set(outgoingCard.children, {
+            opacity: 1,
+            y: 0,
+            clearProps: 'transform',
+          });
+        },
       });
     }
 
-    // Incoming content: ultra-smooth premium fade-in with microscopic drift (+6px -> 0, dominant fade)
+    // Incoming content: AOS-style vertical fade-in + gentle upward settling
     if (incomingCard) {
+      // 1. Panel container: gentle upward rise and opacity reveal
       gsap.fromTo(
         incomingCard,
         {
           autoAlpha: 0,
-          x: 6,
+          x: 0,
+          y: 10,
+          pointerEvents: 'none',
         },
         {
           autoAlpha: 1,
           x: 0,
-          duration: 0.7,
-          ease: 'power3.out',
+          y: 0,
+          duration: 0.48,
+          delay: 0.04,
+          ease: 'power2.out',
           pointerEvents: 'auto',
+          clearProps: 'transform',
         }
       );
+
+      // 2. Micro-choreography: subtle internal fade-up stagger across content groups
+      const incomingChildren = Array.from(incomingCard.children);
+      if (incomingChildren.length > 0) {
+        gsap.fromTo(
+          incomingChildren,
+          {
+            opacity: 0,
+            y: 6,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.42,
+            stagger: 0.05,
+            delay: 0.08,
+            ease: 'power2.out',
+            clearProps: 'transform',
+          }
+        );
+      }
     }
 
     prevIndexRef.current = newIndex;
