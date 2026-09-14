@@ -72,28 +72,31 @@ export const Process: React.FC = () => {
 
         // --- DESKTOP PINNED SEQUENCE WITH OVERLAPPING NEXT SECTION ---
         // Pre-pin baseline states
-        if (header) gsap.set(header, { opacity: 1, y: 0 });
+        if (header) gsap.set(header, { opacity: 1, y: 0, force3D: true });
         if (steps.length > 0) {
           steps.forEach((step, i) => {
             gsap.set(step, {
               opacity: i === 0 ? 0.35 : 0.15,
               y: 18,
+              force3D: true,
             });
           });
         }
-        if (progressBar) gsap.set(progressBar, { scaleX: 0 });
-        if (reassurance) gsap.set(reassurance, { opacity: 0.2, y: 12 });
+        if (progressBar) gsap.set(progressBar, { scaleX: 0, force3D: true });
+        if (reassurance) gsap.set(reassurance, { opacity: 0.2, y: 12, force3D: true });
 
         // Master Timeline attached to ScrollTrigger
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: section,
             pin: pinnedWrapper,
+            pinType: 'transform',
             pinSpacing: false, // Allows natural page scroll to carry #education over pinnedWrapper
-            start: 'top top+=80', // Pins directly beneath fixed 80px header
-            end: 'bottom top+=80', // Pins until section bottom reaches header
-            scrub: 0.5,
-            anticipatePin: 1,
+            start: 'top top+=64', // Pins directly beneath fixed header with refined compact offset
+            end: 'bottom top+=64', // Pins until section bottom reaches offset
+            scrub: true, // Clean 1:1 sync with ScrollSmoother eliminating double-easing micro-jitter
+            anticipatePin: 0, // Eliminates pre-pin shift/stutter
+            fastScrollEnd: true,
             invalidateOnRefresh: true,
           },
         });
@@ -107,6 +110,7 @@ export const Process: React.FC = () => {
               scaleX: 1,
               ease: 'none',
               duration: 2.8,
+              force3D: true,
             },
             0
           );
@@ -121,6 +125,7 @@ export const Process: React.FC = () => {
               y: 0,
               duration: 0.7,
               ease: 'power2.out',
+              force3D: true,
             },
             0.1
           );
@@ -135,6 +140,7 @@ export const Process: React.FC = () => {
               y: 0,
               duration: 0.7,
               ease: 'power2.out',
+              force3D: true,
             },
             0.8
           );
@@ -149,6 +155,7 @@ export const Process: React.FC = () => {
               y: 0,
               duration: 0.7,
               ease: 'power2.out',
+              force3D: true,
             },
             1.5
           );
@@ -163,6 +170,7 @@ export const Process: React.FC = () => {
               y: 0,
               duration: 0.7,
               ease: 'power2.out',
+              force3D: true,
             },
             2.2
           );
@@ -177,6 +185,7 @@ export const Process: React.FC = () => {
               y: 0,
               duration: 0.6,
               ease: 'power2.out',
+              force3D: true,
             },
             2.4
           );
@@ -203,7 +212,14 @@ export const Process: React.FC = () => {
       aria-labelledby="process-heading"
     >
       {/* Pinned Viewport Stage for Desktop */}
-      <div ref={pinnedWrapperRef} className="w-full py-12 lg:py-16">
+      <div
+        ref={pinnedWrapperRef}
+        className="w-full py-12 lg:py-16 will-change-transform"
+        style={{
+          backfaceVisibility: 'hidden',
+          WebkitBackfaceVisibility: 'hidden',
+        }}
+      >
         <Container size="standard">
           {/* Section Intro Header */}
           <div ref={headerRef} className="max-w-3xl mb-10 sm:mb-12 lg:mb-14">
@@ -223,15 +239,15 @@ export const Process: React.FC = () => {
 
           {/* Desktop Horizontal Timeline (>=1024px) */}
           <div className="hidden lg:block relative">
-            {/* Subtle Baseline Connector Line */}
+            {/* Inactive Baseline Connector Line (hidden by default) */}
             <div
-              className="absolute top-[18px] left-[18px] right-[18px] h-[1px] bg-border-subtle"
+              className="absolute top-0 left-[18px] right-[18px] h-[1px] bg-border-subtle opacity-0 pointer-events-none"
               aria-hidden="true"
             />
             {/* Active Progression Fill Line */}
             <div
               ref={progressBarRef}
-              className="absolute top-[18px] left-[18px] right-[18px] h-[1.5px] bg-action-primary origin-left scale-x-0 pointer-events-none"
+              className="absolute top-0 left-[18px] right-[18px] h-[1.5px] bg-action-primary origin-left scale-x-0 pointer-events-none"
               aria-hidden="true"
             />
 
@@ -246,9 +262,9 @@ export const Process: React.FC = () => {
                 >
                   <div className="flex flex-col h-full">
                     {/* Step Marker & Short Label */}
-                    <div className="flex items-center gap-3 mb-6 relative">
+                    <div className="inline-flex items-center gap-3 mb-6 relative z-10 bg-canvas pr-2.5">
                       <span
-                        className="w-9 h-9 rounded-full bg-canvas border border-border-subtle text-action-primary font-body text-xs font-semibold flex items-center justify-center shadow-xs z-10 ring-4 ring-canvas"
+                        className="w-9 h-9 rounded-full bg-canvas border border-border-subtle text-action-primary font-body text-xs font-semibold flex items-center justify-center shadow-xs ring-4 ring-canvas"
                         aria-hidden="true"
                       >
                         {step.number}
