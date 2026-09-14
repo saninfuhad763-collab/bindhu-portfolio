@@ -19,6 +19,8 @@ export interface ClientProfile {
   locationPlaceholder: string;
   licenseStatusPlaceholder: string;
   carrierNoticePlaceholder: string;
+  whatsappNumber?: string;
+  phoneNumber?: string;
 }
 
 export interface HeroContent {
@@ -249,6 +251,29 @@ export interface FooterContent {
     label: string;
     href: string;
   }>;
+  socialLinks?: {
+    instagram: string;
+    whatsapp: string;
+    facebook: string;
+    linkedin: string;
+  };
+}
+
+export interface ConnectMeChannel {
+  id: string;
+  label: string;
+  value: string;
+  note: string;
+}
+
+export interface ConnectMeContent {
+  eyebrow: string;
+  headline: string;
+  description: string;
+  privacyNotice: string;
+  whatsappNumber: string;
+  emailAddress: string;
+  channels: ConnectMeChannel[];
 }
 
 export interface NavItem {
@@ -280,5 +305,6 @@ export interface SiteContent {
   faq: FAQContent;
   faqs?: FAQItem[];
   contact: ContactContent;
+  connectMe?: ConnectMeContent;
   footer: FooterContent;
 }

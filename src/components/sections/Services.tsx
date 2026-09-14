@@ -3,10 +3,14 @@ import { Container } from '../layout/Container';
 import { Button } from '../ui/Button';
 import { siteContent } from '../../content/siteContent';
 import { Check, ArrowRight } from 'lucide-react';
-import { Reveal } from '../motion/Reveal';
 import { AnimatedGradient } from '../motion/AnimatedGradient';
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useScrollSmoother } from '../motion/ScrollSystem';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 /**
  * Advisory Services Section — Spatially Stable Two-Part Interactive Composition
@@ -143,6 +147,164 @@ export const Services: React.FC = () => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Coordinated GSAP AOS-style Entrance Reveal on initial scroll into viewport
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const mm = gsap.matchMedia();
+
+    mm.add(
+      {
+        isDesktop: '(min-width: 1024px)',
+        isMobile: '(max-width: 1023px)',
+        reduceMotion: '(prefers-reduced-motion: reduce)',
+      },
+      (context) => {
+        const { isDesktop, reduceMotion } = context.conditions as {
+          isDesktop: boolean;
+          reduceMotion: boolean;
+        };
+
+        const header = el.querySelector<HTMLElement>('.services-header');
+        const tabs = tabRefs.current.filter(Boolean) as HTMLButtonElement[];
+        const rightFolio = rightFolioRef.current;
+        const railMarker = railMarkerRef.current;
+        const accordions = el.querySelectorAll<HTMLElement>('.services-accordion-item');
+
+        // Accessibility: instantaneous visibility when reduced motion is preferred
+        if (reduceMotion || isReducedMotion) {
+          if (header) gsap.set(header, { opacity: 1, y: 0, clearProps: 'transform' });
+          if (tabs.length > 0) gsap.set(tabs, { opacity: 1, y: 0, clearProps: 'transform' });
+          if (rightFolio) gsap.set(rightFolio, { opacity: 1, y: 0, clearProps: 'transform' });
+          if (railMarker) gsap.set(railMarker, { opacity: 1 });
+          if (accordions.length > 0) gsap.set(accordions, { opacity: 1, y: 0, clearProps: 'transform' });
+          return;
+        }
+
+        if (isDesktop) {
+          // Initial entrance states for desktop elements
+          if (header) gsap.set(header, { opacity: 0, y: 24 });
+          if (tabs.length > 0) gsap.set(tabs, { opacity: 0, y: 22 });
+          if (rightFolio) gsap.set(rightFolio, { opacity: 0, y: 24 });
+          if (railMarker) gsap.set(railMarker, { opacity: 0 });
+
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 84%',
+              once: true,
+            },
+          });
+
+          // 1. Section Intro Header: opacity: 0 -> 1, y: 24 -> 0, duration: 0.75s, power3.out
+          if (header) {
+            tl.to(
+              header,
+              {
+                opacity: 1,
+                y: 0,
+                duration: 0.75,
+                ease: 'power3.out',
+                clearProps: 'transform',
+              },
+              0
+            );
+          }
+
+          // 2. Left Service Cards: opacity: 0 -> 1, y: 22 -> 0, stagger: 0.12s, duration: 0.75s, power3.out
+          if (tabs.length > 0) {
+            tl.to(
+              tabs,
+              {
+                opacity: 1,
+                y: 0,
+                duration: 0.75,
+                stagger: 0.12,
+                ease: 'power3.out',
+                clearProps: 'transform',
+              },
+              0.12
+            );
+          }
+
+          // Subtle rail marker fade-in alongside active tab
+          if (railMarker) {
+            tl.to(
+              railMarker,
+              {
+                opacity: 1,
+                duration: 0.5,
+                ease: 'power2.out',
+              },
+              0.24
+            );
+          }
+
+          // 3. Right Content Card: opacity: 0 -> 1, y: 24 -> 0, duration: 0.80s, power3.out (delayed ~0.14s after left cards start)
+          if (rightFolio) {
+            tl.to(
+              rightFolio,
+              {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: 'power3.out',
+                clearProps: 'transform',
+              },
+              0.26
+            );
+          }
+        } else {
+          // Mobile & Tablet (<1024px)
+          if (header) gsap.set(header, { opacity: 0, y: 20 });
+          if (accordions.length > 0) gsap.set(accordions, { opacity: 0, y: 20 });
+
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 85%',
+              once: true,
+            },
+          });
+
+          if (header) {
+            tl.to(
+              header,
+              {
+                opacity: 1,
+                y: 0,
+                duration: 0.75,
+                ease: 'power3.out',
+                clearProps: 'transform',
+              },
+              0
+            );
+          }
+
+          if (accordions.length > 0) {
+            tl.to(
+              accordions,
+              {
+                opacity: 1,
+                y: 0,
+                duration: 0.75,
+                stagger: 0.09,
+                ease: 'power3.out',
+                clearProps: 'transform',
+              },
+              0.15
+            );
+          }
+        }
+      }
+    );
+
+    return () => {
+      mm.revert();
+    };
+  }, [isReducedMotion]);
 
   // Smooth Right-to-Left Editorial Transition on activeIndex change
   useEffect(() => {
@@ -290,7 +452,7 @@ export const Services: React.FC = () => {
       <AnimatedGradient variant="services" />
       <Container size="standard" className="relative z-10">
         {/* Section Intro Header */}
-        <Reveal variant="fade-up" className="max-w-3xl mb-8 sm:mb-12 lg:mb-16">
+        <div className="services-header max-w-3xl mb-8 sm:mb-12 lg:mb-16">
           <span className="font-body text-eyebrow font-semibold text-action-primary uppercase tracking-wider block mb-3">
             {services.eyebrow}
           </span>
@@ -303,7 +465,7 @@ export const Services: React.FC = () => {
           <p className="font-body text-body-large text-content-secondary leading-relaxed">
             {services.description}
           </p>
-        </Reveal>
+        </div>
 
         {/* Desktop Two-Column Editorial Stage (>=1024px) */}
         <div className="hidden lg:grid lg:grid-cols-12 lg:gap-8 xl:gap-12 items-center relative">
@@ -343,7 +505,7 @@ export const Services: React.FC = () => {
                       onKeyDown={(e) => handleTabKeyDown(e, index)}
                       onClick={() => handleSelectService(index)}
                       style={{ height: `${cardHeight}px` }}
-                      className={`w-full text-left px-4 sm:px-5 rounded-xl border transition-all duration-200 flex items-center justify-between gap-4 group relative focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ${
+                      className={`services-nav-card w-full text-left px-4 sm:px-5 rounded-xl border transition-all duration-200 flex items-center justify-between gap-4 group relative focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ${
                         isSelected
                           ? 'bg-surface border-border-subtle/90 shadow-xs text-brand-primary'
                           : 'bg-surface/35 hover:bg-surface/75 border-border-subtle/50 hover:border-border-subtle/80 text-content-secondary hover:text-brand-primary'
@@ -535,13 +697,13 @@ export const Services: React.FC = () => {
         </div>
 
         {/* Mobile & Tablet Accessible Accordion (<1024px) */}
-        <Reveal variant="fade-up" delay={0.08} className="lg:hidden block space-y-3.5">
+        <div className="lg:hidden block space-y-3.5">
           {services.items.map((item) => {
             const isOpen = mobileOpenId === item.id;
             return (
               <div
                 key={item.id}
-                className="bg-surface border border-border-subtle rounded-xl overflow-hidden shadow-card transition-all"
+                className="services-accordion-item bg-surface border border-border-subtle rounded-xl overflow-hidden shadow-card transition-all"
               >
                 <h3>
                   <button
@@ -661,7 +823,7 @@ export const Services: React.FC = () => {
               </div>
             );
           })}
-        </Reveal>
+        </div>
       </Container>
     </section>
   );

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Container } from './Container';
 import { siteContent } from '../../content/siteContent';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Instagram, Facebook, Linkedin } from 'lucide-react';
+import { WhatsAppIcon } from '../ui/WhatsAppFloatingButton';
 
 /**
  * Phase 13 — Footer & Site Closing
@@ -47,6 +48,53 @@ export const Footer: React.FC = () => {
               <p className="font-body text-sm text-canvas-alt/80 max-w-sm mt-3.5 leading-relaxed">
                 {footer.positioning}
               </p>
+
+              {/* Social Media Links */}
+              {footer.socialLinks && (
+                <div className="mt-5">
+                  <span className="font-body text-xs font-semibold text-canvas-alt/60 uppercase tracking-wider block mb-3">
+                    Connect
+                  </span>
+                  <div className="flex items-center gap-2.5">
+                    <a
+                      href={footer.socialLinks.instagram}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Instagram profile [Placeholder]"
+                      className="w-9 h-9 rounded-full bg-brand-hover/70 border border-white/10 flex items-center justify-center text-canvas-alt/75 hover:text-white hover:border-white/30 hover:bg-brand-hover transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+                    >
+                      <Instagram className="w-[18px] h-[18px]" aria-hidden="true" />
+                    </a>
+                    <a
+                      href={footer.socialLinks.whatsapp}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="WhatsApp [Placeholder]"
+                      className="w-9 h-9 rounded-full bg-brand-hover/70 border border-white/10 flex items-center justify-center text-canvas-alt/75 hover:text-white hover:border-white/30 hover:bg-brand-hover transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+                    >
+                      <WhatsAppIcon className="w-[18px] h-[18px]" aria-hidden="true" />
+                    </a>
+                    <a
+                      href={footer.socialLinks.facebook}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Facebook profile [Placeholder]"
+                      className="w-9 h-9 rounded-full bg-brand-hover/70 border border-white/10 flex items-center justify-center text-canvas-alt/75 hover:text-white hover:border-white/30 hover:bg-brand-hover transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+                    >
+                      <Facebook className="w-[18px] h-[18px]" aria-hidden="true" />
+                    </a>
+                    <a
+                      href={footer.socialLinks.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="LinkedIn profile [Placeholder]"
+                      className="w-9 h-9 rounded-full bg-brand-hover/70 border border-white/10 flex items-center justify-center text-canvas-alt/75 hover:text-white hover:border-white/30 hover:bg-brand-hover transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+                    >
+                      <Linkedin className="w-[18px] h-[18px]" aria-hidden="true" />
+                    </a>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Column 2: Navigation Links */}

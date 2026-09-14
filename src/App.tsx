@@ -9,9 +9,10 @@ import { Process } from './components/sections/Process';
 import { Education } from './components/sections/Education';
 import { SocialProof } from './components/sections/SocialProof';
 import { FAQ } from './components/sections/FAQ';
-import { Contact } from './components/sections/Contact';
+import { ConnectMe } from './components/sections/ConnectMe';
 import { Footer } from './components/layout/Footer';
 import { ScrollSystem } from './components/motion/ScrollSystem';
+import { FloatingContactActions } from './components/ui/WhatsAppFloatingButton';
 
 /**
  * Main Application Shell with Header, Hero, TrustValue, About, Services, Process, Education, SocialProof, FAQ, Contact & Footer
@@ -59,13 +60,16 @@ export const App: React.FC = () => {
           {/* Production FAQ Section */}
           <FAQ />
 
-          {/* Production Consultation & Contact Section */}
-          <Contact />
+          {/* Production Connect Me Section */}
+          <ConnectMe />
         </main>
 
         {/* Production Global Footer */}
         <Footer />
       </ScrollSystem>
+
+      {/* Persistent Floating Contact Stack (Phone + WhatsApp) */}
+      <FloatingContactActions />
     </div>
   );
 };

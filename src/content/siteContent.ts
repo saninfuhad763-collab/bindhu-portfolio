@@ -25,6 +25,8 @@ export const siteContent: SiteContent = {
     locationPlaceholder: 'Office Location [Pending Client Confirmation]',
     licenseStatusPlaceholder: 'Professional License # [Pending Verification]',
     carrierNoticePlaceholder: 'Carrier details to be listed upon market verification.',
+    whatsappNumber: '[ WhatsApp Number ]',
+    phoneNumber: '[ Phone Number ]',
   },
 
   header: {
@@ -503,6 +505,31 @@ export const siteContent: SiteContent = {
       'Please do not include medical or other sensitive personal information.',
   },
 
+  connectMe: {
+    eyebrow: 'Connect With Me',
+    headline: 'Let’s discuss your health coverage with clarity and care.',
+    description:
+      'Whether you have questions about policy options, need assistance evaluating an existing plan, or want a calm second opinion—reach out for an unhurried, pressure-free conversation.',
+    privacyNotice:
+      'Privacy notice: Please do not include sensitive health records or medical history in initial messages.',
+    whatsappNumber: '[ WhatsApp Number ]',
+    emailAddress: '[ Email Address ]',
+    channels: [
+      {
+        id: 'channel-whatsapp',
+        label: 'WhatsApp Messaging',
+        value: '[ WhatsApp Number ]',
+        note: 'Direct messaging for quick questions & consultation scheduling',
+      },
+      {
+        id: 'channel-email',
+        label: 'Direct Email',
+        value: '[ Email Address ]',
+        note: 'Detailed policy inquiries & document review requests',
+      },
+    ],
+  },
+
   footer: {
     positioning: 'Clear guidance for important coverage decisions.',
     disclaimer:
@@ -523,5 +550,11 @@ export const siteContent: SiteContent = {
       { label: 'FAQ', href: '#faq' },
       { label: 'Consultation', href: '#contact' },
     ],
+    socialLinks: {
+      instagram: '[ Instagram URL ]',
+      whatsapp: '[ WhatsApp Number / URL ]',
+      facebook: '[ Facebook URL ]',
+      linkedin: '[ LinkedIn URL ]',
+    },
   },
 };
