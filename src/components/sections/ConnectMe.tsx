@@ -192,11 +192,11 @@ export const ConnectMe: React.FC = () => {
           {/* Right Column: Refined Action Pathway Cards */}
           <div className="lg:col-span-6 flex flex-col gap-5 sm:gap-6 w-full">
             {/* Primary Action Card: WhatsApp */}
-            <div className="connect-card p-6 sm:p-7 rounded-2xl bg-surface border border-border-subtle shadow-card hover:border-[#25D366]/50 hover:shadow-md transition-all duration-200 flex flex-col justify-between">
+            <div className="connect-card p-6 sm:p-7 rounded-2xl bg-surface border border-border-subtle shadow-card hover:border-action-primary/50 hover:shadow-md transition-all duration-200 flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between gap-4 mb-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-[#25D366]/10 flex items-center justify-center text-[#25D366]">
+                    <div className="w-10 h-10 rounded-xl bg-action-primary/10 flex items-center justify-center text-action-primary">
                       <WhatsAppIcon className="w-5 h-5" aria-hidden="true" />
                     </div>
                     <div>
@@ -224,7 +224,7 @@ export const ConnectMe: React.FC = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Chat on WhatsApp [Placeholder]"
-                className="inline-flex items-center justify-center gap-2 w-full py-3 px-5 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-body text-sm font-semibold shadow-xs hover:shadow transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2"
+                className="inline-flex items-center justify-center gap-2 w-full py-3 px-5 rounded-xl bg-action-primary hover:bg-action-hover text-white font-body text-sm font-semibold shadow-xs hover:shadow transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-action-primary focus-visible:ring-offset-2"
               >
                 <WhatsAppIcon className="w-4 h-4 text-white" aria-hidden="true" />
                 <span>Chat on WhatsApp</span>

@@ -173,13 +173,13 @@ export const FloatingContactActions: React.FC = () => {
         <span
           ref={waHaloRef}
           aria-hidden="true"
-          className="absolute -inset-1 sm:-inset-1.5 rounded-full bg-[#25D366] blur-[6px] opacity-0 pointer-events-none"
+          className="absolute -inset-1 sm:-inset-1.5 rounded-full bg-action-primary blur-[6px] opacity-0 pointer-events-none"
         />
         {/* Expanding pulse ring */}
         <span
           ref={waRingRef}
           aria-hidden="true"
-          className="absolute inset-0 rounded-full bg-[#25D366] opacity-0 pointer-events-none"
+          className="absolute inset-0 rounded-full bg-action-primary opacity-0 pointer-events-none"
         />
         {/* Breathing button container */}
         <div ref={waBreatheRef} className="relative z-10 flex items-center justify-center">
@@ -188,7 +188,7 @@ export const FloatingContactActions: React.FC = () => {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Chat on WhatsApp"
-            className={`${BTN_SHARED} bg-[#25D366] hover:bg-[#20bd5a] text-white focus-visible:ring-[#25D366]/40`}
+            className={`${BTN_SHARED} bg-action-primary hover:bg-action-hover text-white focus-visible:ring-action-primary/40`}
           >
             <WhatsAppIcon className="w-7 h-7 sm:w-8 sm:h-8 text-white" aria-hidden="true" />
             <span className="sr-only">Chat on WhatsApp</span>
@@ -216,7 +216,7 @@ export const FloatingContactActions: React.FC = () => {
             <a
               href={phoneHref}
               aria-label="Call by phone"
-              className={`${BTN_SHARED} bg-action-primary hover:bg-action-primary/90 text-white focus-visible:ring-action-primary/40`}
+              className={`${BTN_SHARED} bg-action-primary hover:bg-action-hover text-white focus-visible:ring-action-primary/40`}
             >
               <Phone className="w-[22px] h-[22px] sm:w-6 sm:h-6 text-white" strokeWidth={2} aria-hidden="true" />
               <span className="sr-only">Call by phone</span>

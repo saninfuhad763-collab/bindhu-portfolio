@@ -70,7 +70,7 @@ export const Footer: React.FC = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label="WhatsApp [Placeholder]"
-                      className="w-9 h-9 rounded-full bg-brand-hover/70 border border-white/10 flex items-center justify-center text-canvas-alt/75 hover:text-white hover:border-white/30 hover:bg-brand-hover transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+                      className="w-9 h-9 rounded-full bg-brand-hover/70 border border-white/10 flex items-center justify-center text-canvas-alt/75 hover:text-white hover:border-action-primary/50 hover:bg-action-primary transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-action-primary"
                     >
                       <WhatsAppIcon className="w-[18px] h-[18px]" aria-hidden="true" />
                     </a>
