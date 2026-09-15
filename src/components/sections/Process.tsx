@@ -1,7 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { Container } from '../layout/Container';
 import { siteContent } from '../../content/siteContent';
-import { Reveal } from '../motion/Reveal';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useScrollSmoother } from '../motion/ScrollSystem';
@@ -14,15 +13,15 @@ if (typeof window !== 'undefined') {
  * Phase 8 — Consultation Process / How It Works
  *
  * Implements a calm, guided editorial timeline/journey:
- * - Desktop (>=1024px): Four horizontal steps with scroll-driven pinned progression.
+ * - Desktop (>=1024px and >=800px height): Four horizontal steps with scroll-driven pinned progression.
  *   - Phase A: Steps 01 -> 02 -> 03 -> 04 reveal sequentially through scroll.
  *   - Phase B: Brief Step 04 hold/settling moment for full comprehension.
  *   - Phase C: Next section (Education) begins rising from below and smoothly overlaps
  *     the lower portion of How It Works.
  *   - Phase D: How It Works pin releases naturally beneath the incoming next section;
  *     normal page scrolling resumes with zero visual jump.
- * - Mobile (<1024px): Clean vertical timeline with left-anchored progression markers
- *   in natural document flow (no pinning).
+ * - Mobile / Tablet / Short Viewports: Clean natural document flow (no pinning) with
+ *   all steps fully visible and zero layout trap.
  * - Reduced Motion: Immediate static rendering with zero translation, pinning, or scrub delay.
  */
 export const Process: React.FC = () => {
@@ -31,8 +30,10 @@ export const Process: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const pinnedWrapperRef = useRef<HTMLDivElement>(null);
   const stepRefs = useRef<(HTMLLIElement | null)[]>([]);
+  const mobileStepRefs = useRef<(HTMLLIElement | null)[]>([]);
   const headerRef = useRef<HTMLDivElement>(null);
   const reassuranceRef = useRef<HTMLDivElement>(null);
+  const spacerRef = useRef<HTMLDivElement>(null);
 
   const { isReducedMotion } = useScrollSmoother();
 
@@ -45,8 +46,8 @@ export const Process: React.FC = () => {
 
     mm.add(
       {
-        isDesktop: '(min-width: 1024px)',
-        isMobile: '(max-width: 1023px)',
+        isDesktop: '(min-width: 1024px) and (min-height: 800px)',
+        isMobile: '(max-width: 1023px), (max-height: 799px)',
         reduceMotion: '(prefers-reduced-motion: reduce)',
       },
       (context) => {
@@ -56,18 +57,31 @@ export const Process: React.FC = () => {
         };
 
         const steps = stepRefs.current.filter(Boolean) as HTMLLIElement[];
+        const mobileSteps = mobileStepRefs.current.filter(Boolean) as HTMLLIElement[];
         const header = headerRef.current;
         const reassurance = reassuranceRef.current;
+        const spacer = spacerRef.current;
 
-        // Reduced motion or mobile: immediate clean fallback without pinning
+        // Reduced motion, mobile, or short viewport: clean natural flow without pinning
         if (reduceMotion || isReducedMotion || !isDesktop) {
-          if (header) gsap.set(header, { opacity: 1, y: 0, clearProps: 'transform' });
-          if (steps.length > 0) gsap.set(steps, { opacity: 1, y: 0, clearProps: 'transform' });
-          if (reassurance) gsap.set(reassurance, { opacity: 1, y: 0, clearProps: 'transform' });
-          return;
+          if (spacer) spacer.style.display = 'none';
+          if (pinnedWrapper) gsap.set(pinnedWrapper, { clearProps: 'transform' });
+          if (header) gsap.set(header, { opacity: 1, y: 0, clearProps: 'transform,opacity' });
+          if (steps.length > 0) gsap.set(steps, { opacity: 1, y: 0, clearProps: 'transform,opacity' });
+          if (mobileSteps.length > 0) gsap.set(mobileSteps, { opacity: 1, y: 0, clearProps: 'transform,opacity' });
+          if (reassurance) gsap.set(reassurance, { opacity: 1, y: 0, clearProps: 'transform,opacity' });
+
+          const frame = requestAnimationFrame(() => {
+            ScrollTrigger.refresh();
+          });
+          return () => {
+            cancelAnimationFrame(frame);
+          };
         }
 
         // --- DESKTOP PINNED SEQUENCE WITH OVERLAPPING NEXT SECTION ---
+        if (spacer) spacer.style.display = 'block';
+
         // Pre-pin baseline states
         if (header) gsap.set(header, { opacity: 1, y: 0, force3D: true });
         if (steps.length > 0) {
@@ -179,6 +193,13 @@ export const Process: React.FC = () => {
 
         // ── PHASE C & D: Next section overlaps and pin releases ──────────
         tl.to({}, { duration: 1.2 });
+
+        const frame = requestAnimationFrame(() => {
+          ScrollTrigger.refresh();
+        });
+        return () => {
+          cancelAnimationFrame(frame);
+        };
       }
     );
 
@@ -273,49 +294,53 @@ export const Process: React.FC = () => {
 
           {/* Mobile Vertical Timeline (<1024px) */}
           <div className="lg:hidden block">
-            <Reveal variant="fade-up" delay={0.06} stagger={0.07} selector="li">
-              <ol className="relative border-l border-border-subtle ml-4 sm:ml-5 space-y-9 sm:space-y-11 pl-6 sm:pl-8 list-none m-0">
-                {process.steps.map((step) => (
-                  <li key={step.id} className="relative">
-                    <div>
-                      {/* Numbered Marker Anchored on Vertical Line */}
-                      <span
-                        className="absolute -left-[37px] sm:-left-[45px] top-0 w-8 h-8 rounded-full bg-canvas border border-border-subtle text-action-primary font-body text-xs font-semibold flex items-center justify-center shadow-xs ring-4 ring-canvas"
-                        aria-hidden="true"
-                      >
-                        {step.number}
+            <ol className="relative border-l border-border-subtle ml-4 sm:ml-5 space-y-9 sm:space-y-11 pl-6 sm:pl-8 list-none m-0">
+              {process.steps.map((step, index) => (
+                <li
+                  key={step.id}
+                  ref={(el) => {
+                    mobileStepRefs.current[index] = el;
+                  }}
+                  className="relative"
+                >
+                  <div>
+                    {/* Numbered Marker Anchored on Vertical Line */}
+                    <span
+                      className="absolute -left-[37px] sm:-left-[45px] top-0 w-8 h-8 rounded-full bg-canvas border border-border-subtle text-action-primary font-body text-xs font-semibold flex items-center justify-center shadow-xs ring-4 ring-canvas"
+                      aria-hidden="true"
+                    >
+                      {step.number}
+                    </span>
+
+                    {/* Micro Label */}
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <span className="font-body text-eyebrow font-semibold text-action-primary uppercase tracking-wider">
+                        {step.shortLabel}
                       </span>
-
-                      {/* Micro Label */}
-                      <div className="flex items-center gap-2 mb-1.5">
-                        <span className="font-body text-eyebrow font-semibold text-action-primary uppercase tracking-wider">
-                          {step.shortLabel}
-                        </span>
-                      </div>
-
-                      {/* Step Title */}
-                      <h3 className="font-display text-card-h3 font-semibold text-brand-primary tracking-tight mb-2 leading-snug">
-                        <span className="sr-only">Step {step.number}: </span>
-                        {step.title}
-                      </h3>
-
-                      {/* Step Description */}
-                      <p className="font-body text-body-small text-content-secondary leading-relaxed mb-3.5">
-                        {step.description}
-                      </p>
-
-                      {/* Outcome Pill */}
-                      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-canvas-alt/70 border border-border-subtle/80">
-                        <span className="font-body text-xs text-content-muted">Outcome:</span>
-                        <span className="font-body text-xs font-medium text-brand-primary">
-                          {step.outcome}
-                        </span>
-                      </div>
                     </div>
-                  </li>
-                ))}
-              </ol>
-            </Reveal>
+
+                    {/* Step Title */}
+                    <h3 className="font-display text-card-h3 font-semibold text-brand-primary tracking-tight mb-2 leading-snug">
+                      <span className="sr-only">Step {step.number}: </span>
+                      {step.title}
+                    </h3>
+
+                    {/* Step Description */}
+                    <p className="font-body text-body-small text-content-secondary leading-relaxed mb-3.5">
+                      {step.description}
+                    </p>
+
+                    {/* Outcome Pill */}
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-canvas-alt/70 border border-border-subtle/80">
+                      <span className="font-body text-xs text-content-muted">Outcome:</span>
+                      <span className="font-body text-xs font-medium text-brand-primary">
+                        {step.outcome}
+                      </span>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ol>
           </div>
 
           {/* Reassurance Note */}
@@ -333,7 +358,11 @@ export const Process: React.FC = () => {
       </div>
 
       {/* Dedicated Scroll Track for Desktop Pinning & Natural Overlap Handoff */}
-      <div className="hidden lg:block h-[1300px]" aria-hidden="true" />
+      <div
+        ref={spacerRef}
+        className="hidden [@media(min-width:1024px)_and_(min-height:800px)]:block h-[1300px]"
+        aria-hidden="true"
+      />
     </section>
   );
 };
