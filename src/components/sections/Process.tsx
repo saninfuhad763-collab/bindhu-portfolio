@@ -15,7 +15,7 @@ if (typeof window !== 'undefined') {
  *
  * Implements a calm, guided editorial timeline/journey:
  * - Desktop (>=1024px): Four horizontal steps with scroll-driven pinned progression.
- *   - Phase A: Steps 01 -> 02 -> 03 -> 04 reveal sequentially with active progress line.
+ *   - Phase A: Steps 01 -> 02 -> 03 -> 04 reveal sequentially through scroll.
  *   - Phase B: Brief Step 04 hold/settling moment for full comprehension.
  *   - Phase C: Next section (Education) begins rising from below and smoothly overlaps
  *     the lower portion of How It Works.
@@ -31,7 +31,6 @@ export const Process: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const pinnedWrapperRef = useRef<HTMLDivElement>(null);
   const stepRefs = useRef<(HTMLLIElement | null)[]>([]);
-  const progressBarRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const reassuranceRef = useRef<HTMLDivElement>(null);
 
@@ -57,7 +56,6 @@ export const Process: React.FC = () => {
         };
 
         const steps = stepRefs.current.filter(Boolean) as HTMLLIElement[];
-        const progressBar = progressBarRef.current;
         const header = headerRef.current;
         const reassurance = reassuranceRef.current;
 
@@ -65,7 +63,6 @@ export const Process: React.FC = () => {
         if (reduceMotion || isReducedMotion || !isDesktop) {
           if (header) gsap.set(header, { opacity: 1, y: 0, clearProps: 'transform' });
           if (steps.length > 0) gsap.set(steps, { opacity: 1, y: 0, clearProps: 'transform' });
-          if (progressBar) gsap.set(progressBar, { scaleX: 1 });
           if (reassurance) gsap.set(reassurance, { opacity: 1, y: 0, clearProps: 'transform' });
           return;
         }
@@ -82,7 +79,6 @@ export const Process: React.FC = () => {
             });
           });
         }
-        if (progressBar) gsap.set(progressBar, { scaleX: 0, force3D: true });
         if (reassurance) gsap.set(reassurance, { opacity: 0.2, y: 12, force3D: true });
 
         // Master Timeline attached to ScrollTrigger
@@ -102,19 +98,6 @@ export const Process: React.FC = () => {
         });
 
         // ── PHASE A: Steps 01–04 reveal sequentially through scroll ──────
-        // Active connector line fills across the 4 steps
-        if (progressBar) {
-          tl.to(
-            progressBar,
-            {
-              scaleX: 1,
-              ease: 'none',
-              duration: 2.8,
-              force3D: true,
-            },
-            0
-          );
-        }
 
         // Step 01 illuminates and settles
         if (steps[0]) {
@@ -239,18 +222,6 @@ export const Process: React.FC = () => {
 
           {/* Desktop Horizontal Timeline (>=1024px) */}
           <div className="hidden lg:block relative">
-            {/* Inactive Baseline Connector Line (hidden by default) */}
-            <div
-              className="absolute top-0 left-[18px] right-[18px] h-[1px] bg-border-subtle opacity-0 pointer-events-none"
-              aria-hidden="true"
-            />
-            {/* Active Progression Fill Line */}
-            <div
-              ref={progressBarRef}
-              className="absolute top-0 left-[18px] right-[18px] h-[1.5px] bg-action-primary origin-left scale-x-0 pointer-events-none"
-              aria-hidden="true"
-            />
-
             <ol className="grid grid-cols-4 gap-8 relative list-none p-0 m-0">
               {process.steps.map((step, index) => (
                 <li
