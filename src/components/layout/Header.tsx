@@ -112,10 +112,10 @@ export const Header: React.FC = () => {
             className="flex flex-col group py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring rounded select-none"
             aria-label={`${header.brandName} — ${header.brandDescriptor}`}
           >
-            <span className="font-display text-2xl font-semibold text-brand-primary tracking-tight group-hover:text-action-primary transition-colors">
+            <span className="font-display text-[26px] sm:text-[28px] font-bold text-brand-primary tracking-tight leading-none group-hover:text-action-primary transition-colors">
               {header.brandName}
             </span>
-            <span className="font-body text-[11px] font-medium text-content-secondary tracking-wider uppercase">
+            <span className="font-body text-[10px] sm:text-[10.5px] font-semibold text-content-muted tracking-[0.14em] uppercase mt-1 sm:mt-1.5 leading-none">
               {header.brandDescriptor}
             </span>
           </a>
