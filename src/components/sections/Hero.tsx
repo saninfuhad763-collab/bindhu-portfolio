@@ -30,7 +30,6 @@ export const Hero: React.FC = () => {
 
   const sectionRef = useRef<HTMLElement>(null);
   const offerBannerRef = useRef<HTMLDivElement>(null);
-  const eyebrowRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const copyRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
@@ -62,7 +61,6 @@ export const Hero: React.FC = () => {
           gsap.set(
             [
               offerBannerRef.current,
-              eyebrowRef.current,
               headlineRef.current,
               copyRef.current,
               ctaRef.current,
@@ -87,7 +85,6 @@ export const Hero: React.FC = () => {
 
         // Element-group specific durations tuned for a cohesive ~1.0-1.1s total page-load choreography
         const durOffer = isNarrowMobile ? 0.30 : isMobile ? 0.36 : isTablet ? 0.40 : 0.44;
-        const durEyebrow = isNarrowMobile ? 0.28 : isMobile ? 0.34 : isTablet ? 0.38 : 0.42;
         const durHeadline = isNarrowMobile ? 0.36 : isMobile ? 0.42 : isTablet ? 0.48 : 0.52;
         const durCopy = isNarrowMobile ? 0.32 : isMobile ? 0.38 : isTablet ? 0.42 : 0.46;
         const durCta = isNarrowMobile ? 0.28 : isMobile ? 0.34 : isTablet ? 0.38 : 0.42;
@@ -106,19 +103,12 @@ export const Hero: React.FC = () => {
           { opacity: 0, y: Math.min(10, distY) },
           { opacity: 1, y: 0, duration: durOffer, delay: isNarrowMobile ? 0.02 : 0.04 }
         )
-          // Group A: Identity (Eyebrow)
-          .fromTo(
-            eyebrowRef.current,
-            { opacity: 0, y: Math.min(10, distY) },
-            { opacity: 1, y: 0, duration: durEyebrow },
-            isDesktop ? '-=0.28' : '-=0.22'
-          )
           // Group B: Primary Message (H1)
           .fromTo(
             headlineRef.current,
             { opacity: 0, y: distY },
             { opacity: 1, y: 0, duration: durHeadline },
-            isDesktop ? '-=0.32' : '-=0.24'
+            isDesktop ? '-=0.28' : '-=0.22'
           )
           // Group C: Supporting Message (Subheadline)
           .fromTo(
@@ -181,24 +171,6 @@ export const Hero: React.FC = () => {
             {/* Top-Left Promotional Offer Banner */}
             <div ref={offerBannerRef} className="w-full mb-6 sm:mb-8">
               <HeroOfferBanner />
-            </div>
-
-            {/* Eyebrow / Context Category */}
-            <div ref={eyebrowRef} className="inline-flex items-center gap-2.5 mb-4 sm:mb-5">
-              <FloatingAccent
-                axis="x"
-                distanceX={3.5}
-                duration={6.2}
-                delay={0.7}
-                opacityMin={0.8}
-                opacityMax={1.0}
-                className="inline-flex flex-shrink-0"
-              >
-                <span className="w-5 h-px bg-advisory-accent/60 block" aria-hidden="true" />
-              </FloatingAccent>
-              <span className="font-body text-eyebrow font-semibold uppercase text-advisory-accent tracking-wider">
-                {hero.eyebrow}
-              </span>
             </div>
 
             {/* Primary Headline (H1) */}

@@ -103,7 +103,7 @@ export const HeroOfferBanner: React.FC<HeroOfferBannerProps> = ({
           </div>
 
           {/* Main Promotional Card Panel */}
-          <div className="relative flex-1 min-w-0 overflow-hidden rounded-2xl sm:rounded-3xl border border-[#CCE0D1] bg-gradient-to-br from-[#EFF6F1] via-[#F6FAF7] to-[#EBF4EE] pl-6 sm:pl-8 md:pl-9 pr-3.5 sm:pr-4 py-3 sm:py-3.5 shadow-[0_4px_22px_-4px_rgba(36,88,76,0.08)] group-hover:shadow-[0_8px_30px_-4px_rgba(36,88,76,0.15)] group-hover:border-[#B5D4BD] transition-all duration-300">
+          <div className="relative flex-1 min-w-0 overflow-hidden rounded-2xl sm:rounded-3xl border border-canvas bg-gradient-to-br from-[#EFF6F1] via-[#F6FAF7] to-[#EBF4EE] pl-6 sm:pl-8 md:pl-9 pr-3.5 sm:pr-4 py-3 sm:py-3.5 shadow-[0_4px_22px_-4px_rgba(36,88,76,0.08)] group-hover:shadow-[0_8px_30px_-4px_rgba(36,88,76,0.15)] group-hover:border-canvas transition-all duration-300">
             {/* Subtle light sheen on top-right */}
             <div
               className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-white/70 to-transparent pointer-events-none rounded-tr-3xl"
