@@ -6,6 +6,7 @@ import { siteContent } from '../../content/siteContent';
 import { MOTION, BREAKPOINTS } from '../motion/motionConfig';
 import { FloatingAccent } from '../motion/FloatingAccent';
 import { AnimatedGradient } from '../motion/AnimatedGradient';
+import { HeroOfferBanner } from '../ui/HeroOfferBanner';
 
 /**
  * Hero Section Component — Bindhu Portfolio
@@ -28,6 +29,7 @@ export const Hero: React.FC = () => {
   const { hero, client } = siteContent;
 
   const sectionRef = useRef<HTMLElement>(null);
+  const offerBannerRef = useRef<HTMLDivElement>(null);
   const eyebrowRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const copyRef = useRef<HTMLParagraphElement>(null);
@@ -59,6 +61,7 @@ export const Hero: React.FC = () => {
         if (reduceMotion) {
           gsap.set(
             [
+              offerBannerRef.current,
               eyebrowRef.current,
               headlineRef.current,
               copyRef.current,
@@ -83,6 +86,7 @@ export const Hero: React.FC = () => {
         const distX = isDesktop ? MOTION.desktop.revealX : 0;
 
         // Element-group specific durations tuned for a cohesive ~1.0-1.1s total page-load choreography
+        const durOffer = isNarrowMobile ? 0.30 : isMobile ? 0.36 : isTablet ? 0.40 : 0.44;
         const durEyebrow = isNarrowMobile ? 0.28 : isMobile ? 0.34 : isTablet ? 0.38 : 0.42;
         const durHeadline = isNarrowMobile ? 0.36 : isMobile ? 0.42 : isTablet ? 0.48 : 0.52;
         const durCopy = isNarrowMobile ? 0.32 : isMobile ? 0.38 : isTablet ? 0.42 : 0.46;
@@ -96,12 +100,19 @@ export const Hero: React.FC = () => {
           },
         });
 
-        // Group A: Identity (Eyebrow)
+        // Group 0: Top-Left Promotional Offer Banner
         tl.fromTo(
-          eyebrowRef.current,
+          offerBannerRef.current,
           { opacity: 0, y: Math.min(10, distY) },
-          { opacity: 1, y: 0, duration: durEyebrow, delay: isNarrowMobile ? 0.04 : 0.06 }
+          { opacity: 1, y: 0, duration: durOffer, delay: isNarrowMobile ? 0.02 : 0.04 }
         )
+          // Group A: Identity (Eyebrow)
+          .fromTo(
+            eyebrowRef.current,
+            { opacity: 0, y: Math.min(10, distY) },
+            { opacity: 1, y: 0, duration: durEyebrow },
+            isDesktop ? '-=0.28' : '-=0.22'
+          )
           // Group B: Primary Message (H1)
           .fromTo(
             headlineRef.current,
@@ -167,6 +178,11 @@ export const Hero: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* Left Column: Editorial Value Proposition & CTAs */}
           <div className="lg:col-span-7 flex flex-col items-start">
+            {/* Top-Left Promotional Offer Banner */}
+            <div ref={offerBannerRef} className="w-full mb-6 sm:mb-8">
+              <HeroOfferBanner />
+            </div>
+
             {/* Eyebrow / Context Category */}
             <div ref={eyebrowRef} className="inline-flex items-center gap-2.5 mb-4 sm:mb-5">
               <FloatingAccent
