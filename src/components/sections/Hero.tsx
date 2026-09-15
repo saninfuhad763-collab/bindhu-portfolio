@@ -161,15 +161,15 @@ export const Hero: React.FC = () => {
     <section
       ref={sectionRef}
       aria-labelledby="hero-heading"
-      className="relative bg-canvas pt-10 pb-16 sm:pt-14 sm:pb-20 lg:pt-18 lg:pb-28 overflow-hidden"
+      className="relative bg-canvas pt-6 pb-12 sm:pt-8 sm:pb-16 lg:pt-8 lg:pb-20 overflow-hidden"
     >
       <AnimatedGradient variant="hero" />
       <Container size="standard" className="relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 xl:gap-16 items-center">
           {/* Left Column: Editorial Value Proposition & CTAs */}
           <div className="lg:col-span-7 flex flex-col items-start">
             {/* Top-Left Promotional Offer Banner */}
-            <div ref={offerBannerRef} className="w-full mb-6 sm:mb-8">
+            <div ref={offerBannerRef} className="w-full max-w-[540px] mb-4 sm:mb-5">
               <HeroOfferBanner />
             </div>
 
@@ -177,18 +177,18 @@ export const Hero: React.FC = () => {
             <h1
               ref={headlineRef}
               id="hero-heading"
-              className="font-display text-hero-h1 font-semibold text-brand-primary tracking-tight mb-5 sm:mb-6"
+              className="font-display text-[2rem] sm:text-4xl lg:text-[42px] xl:text-[44px] font-semibold text-brand-primary tracking-tight leading-[1.18] sm:leading-[1.16] mb-3.5 sm:mb-4"
             >
               {hero.headline}
             </h1>
 
             {/* Supporting Copy */}
-            <p ref={copyRef} className="font-body text-body-large text-content-secondary max-w-reading mb-8 sm:mb-10 leading-relaxed">
+            <p ref={copyRef} className="font-body text-base sm:text-lg lg:text-[1.125rem] text-content-secondary max-w-[48ch] mb-5 sm:mb-6 leading-relaxed">
               {hero.subheadline}
             </p>
 
             {/* Dual CTAs */}
-            <div ref={ctaRef} className="w-full sm:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4 mb-6 sm:mb-8">
+            <div ref={ctaRef} className="w-full sm:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4 mb-4 sm:mb-5">
               <Button
                 variant="primary"
                 size="md"
@@ -229,7 +229,7 @@ export const Hero: React.FC = () => {
 
           {/* Right Column: Portrait Composition & Visual Framing */}
           <div ref={portraitRef} className="lg:col-span-5 flex justify-center lg:justify-end w-full">
-            <div className="relative w-full max-w-[360px] sm:max-w-[400px] lg:max-w-none group">
+            <div className="relative w-full max-w-[360px] sm:max-w-[380px] lg:max-w-[380px] xl:max-w-[400px] group">
               {/* Subtle background decorative paper layer for editorial depth */}
               <div
                 className="absolute inset-0 translate-x-2.5 translate-y-2.5 sm:translate-x-3.5 sm:translate-y-3.5 bg-canvas-alt border border-border-subtle/80 rounded-xl transition-transform duration-500 ease-out group-hover:translate-x-3 sm:group-hover:translate-x-4 group-hover:translate-y-3 sm:group-hover:translate-y-4 motion-reduce:transform-none"

@@ -68,20 +68,20 @@ export const HeroOfferBanner: React.FC<HeroOfferBannerProps> = ({
   const renderIcon = (type: HeroOfferBenefit['icon']) => {
     switch (type) {
       case 'shield':
-        return <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#2E6F5E] flex-shrink-0" aria-hidden="true" />;
+        return <ShieldCheck className="w-3.5 h-3.5 text-[#2E6F5E] flex-shrink-0" aria-hidden="true" />;
       case 'users':
-        return <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#2E6F5E] flex-shrink-0" aria-hidden="true" />;
+        return <Users className="w-3.5 h-3.5 text-[#2E6F5E] flex-shrink-0" aria-hidden="true" />;
       case 'heart':
-        return <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#2E6F5E] flex-shrink-0 fill-[#2E6F5E]/20" aria-hidden="true" />;
+        return <Heart className="w-3.5 h-3.5 text-[#2E6F5E] flex-shrink-0 fill-[#2E6F5E]/20" aria-hidden="true" />;
       default:
-        return <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#2E6F5E] flex-shrink-0" aria-hidden="true" />;
+        return <ShieldCheck className="w-3.5 h-3.5 text-[#2E6F5E] flex-shrink-0" aria-hidden="true" />;
     }
   };
 
   return (
     <aside
       aria-label={offer.ariaLabel}
-      className={`relative w-full max-w-[590px] select-none ${className}`}
+      className={`relative w-full max-w-[540px] select-none ${className}`}
     >
       <a
         href={offer.linkHref || '#contact'}
@@ -103,7 +103,7 @@ export const HeroOfferBanner: React.FC<HeroOfferBannerProps> = ({
           </div>
 
           {/* Main Promotional Card Panel */}
-          <div className="relative flex-1 min-w-0 overflow-hidden rounded-2xl sm:rounded-3xl border border-canvas bg-gradient-to-br from-[#EFF6F1] via-[#F6FAF7] to-[#EBF4EE] pl-6 sm:pl-8 md:pl-9 pr-3.5 sm:pr-4 py-3 sm:py-3.5 shadow-[0_4px_22px_-4px_rgba(36,88,76,0.08)] group-hover:shadow-[0_8px_30px_-4px_rgba(36,88,76,0.15)] group-hover:border-canvas transition-all duration-300">
+          <div className="relative flex-1 min-w-0 overflow-hidden rounded-2xl sm:rounded-3xl border border-canvas bg-gradient-to-br from-[#EFF6F1] via-[#F6FAF7] to-[#EBF4EE] pl-6 sm:pl-[28px] md:pl-[30px] pr-2.5 sm:pr-[12px] py-3 sm:py-3.5 shadow-[0_4px_22px_-4px_rgba(36,88,76,0.08)] group-hover:shadow-[0_8px_30px_-4px_rgba(36,88,76,0.15)] group-hover:border-canvas transition-all duration-300">
             {/* Subtle light sheen on top-right */}
             <div
               className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-white/70 to-transparent pointer-events-none rounded-tr-3xl"
@@ -130,8 +130,8 @@ export const HeroOfferBanner: React.FC<HeroOfferBannerProps> = ({
             {/* Hairline Divider */}
             <div className="w-full h-px bg-[#D3E3D6] my-2 sm:my-2.5" aria-hidden="true" />
 
-            {/* Tri-benefit micro-row (single row with responsive scroll/wrap resilience) */}
-            <div className="flex flex-wrap sm:flex-nowrap items-center gap-x-1.5 sm:gap-x-2 gap-y-1 text-[9.5px] sm:text-[11px] font-medium text-[#263D34] leading-tight">
+            {/* Tri-benefit micro-row (single row on desktop/tablet, natural wrap on narrow mobile) */}
+            <div className="flex flex-wrap sm:flex-nowrap items-center gap-x-[5px] sm:gap-x-[6px] xl:gap-x-[8px] gap-y-1.5 text-[9.5px] sm:text-[10px] md:text-[10.5px] font-medium tracking-tight text-[#263D34] leading-tight">
               {offer.benefits.map((b, idx) => (
                 <React.Fragment key={b.label}>
                   <div className="inline-flex items-center gap-1 flex-shrink-0">
