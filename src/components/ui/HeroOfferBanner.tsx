@@ -25,25 +25,25 @@ export interface HeroOfferConfig {
 }
 
 export const DEFAULT_HERO_OFFER: HeroOfferConfig = {
-  tagline: 'Get Exclusive',
-  headline: '5% Discount',
-  renewalDiscountPrefix: '+ ',
-  renewalDiscountHighlight: 'Up to 30%',
-  renewalDiscountSuffix: ' Renewal Discount**',
+  tagline: '',
+  headline: '',
+  renewalDiscountPrefix: '',
+  renewalDiscountHighlight: '',
+  renewalDiscountSuffix: '',
   benefits: [
     { icon: 'shield', label: 'Trusted Guidance' },
     { icon: 'users', label: 'Personalized Support' },
     { icon: 'heart', label: 'Healthier Tomorrow' },
   ],
   subBanner: {
-    line1Prefix: 'Buy ',
-    line1Highlight: 'Health Insurance',
-    line1Suffix: ' Online',
-    line2Highlight: 'Save 18%',
-    line2Suffix: ' with Zero GST',
+    line1Prefix: '',
+    line1Highlight: '',
+    line1Suffix: '',
+    line2Highlight: '',
+    line2Suffix: '',
   },
   linkHref: '#contact',
-  ariaLabel: 'Exclusive health insurance promotional discount and renewal advisory offer',
+  ariaLabel: 'Health insurance guidance and support principles: Trusted Guidance, Personalized Support, and Healthier Tomorrow',
 };
 
 interface HeroOfferBannerProps {
@@ -58,10 +58,6 @@ export const HeroOfferBanner: React.FC<HeroOfferBannerProps> = ({
   const offer: HeroOfferConfig = {
     ...DEFAULT_HERO_OFFER,
     ...propOffer,
-    subBanner: {
-      ...DEFAULT_HERO_OFFER.subBanner,
-      ...(propOffer?.subBanner || {}),
-    },
     benefits: propOffer?.benefits || DEFAULT_HERO_OFFER.benefits,
   };
 
@@ -88,7 +84,7 @@ export const HeroOfferBanner: React.FC<HeroOfferBannerProps> = ({
         className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 rounded-2xl sm:rounded-3xl"
       >
         {/* Composition: Overlapping Shield + Mint Card */}
-        <div className="relative flex items-center pt-1 sm:pt-2">
+        <div className="relative flex items-center pt-1 sm:pt-1.5">
           {/* Left Shield Visual overlapping the card edge */}
           <div className="relative z-10 flex-shrink-0 -mr-5 sm:-mr-7 md:-mr-8 drop-shadow-[0_8px_20px_rgba(27,77,62,0.12)]">
             <img
@@ -102,65 +98,29 @@ export const HeroOfferBanner: React.FC<HeroOfferBannerProps> = ({
             />
           </div>
 
-          {/* Main Promotional Card Panel */}
-          <div className="relative flex-1 min-w-0 overflow-hidden rounded-2xl sm:rounded-3xl border border-canvas bg-gradient-to-br from-[#EFF6F1] via-[#F6FAF7] to-[#EBF4EE] pl-6 sm:pl-[28px] md:pl-[30px] pr-2.5 sm:pr-[12px] py-3 sm:py-3.5 shadow-[0_4px_22px_-4px_rgba(36,88,76,0.08)] group-hover:shadow-[0_8px_30px_-4px_rgba(36,88,76,0.15)] group-hover:border-canvas transition-all duration-300">
+          {/* Main Trust Card Panel */}
+          <div className="relative flex-1 min-w-0 overflow-hidden rounded-2xl sm:rounded-3xl border border-canvas bg-gradient-to-br from-[#EFF6F1] via-[#F6FAF7] to-[#EBF4EE] pl-6 sm:pl-[28px] md:pl-[30px] pr-4 sm:pr-6 py-3.5 sm:py-4 shadow-[0_4px_22px_-4px_rgba(36,88,76,0.08)] group-hover:shadow-[0_8px_30px_-4px_rgba(36,88,76,0.15)] group-hover:border-canvas transition-all duration-300">
             {/* Subtle light sheen on top-right */}
             <div
               className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-white/70 to-transparent pointer-events-none rounded-tr-3xl"
               aria-hidden="true"
             />
 
-            {/* Tagline / Category */}
-            <span className="block font-body text-xs sm:text-[13px] font-medium text-[#2E453D] tracking-normal leading-tight">
-              {offer.tagline}
-            </span>
-
-            {/* Primary Discount Headline */}
-            <div className="font-display text-2xl sm:text-3xl md:text-[34px] font-bold text-[#144A3A] tracking-tight leading-none my-1 sm:my-1.5">
-              {offer.headline}
-            </div>
-
-            {/* Renewal Discount Supporting Line */}
-            <p className="font-body text-xs sm:text-[13px] text-[#1B4D3E] tracking-tight leading-tight">
-              <span>{offer.renewalDiscountPrefix}</span>
-              <strong className="font-bold">{offer.renewalDiscountHighlight}</strong>
-              <span>{offer.renewalDiscountSuffix}</span>
-            </p>
-
-            {/* Hairline Divider */}
-            <div className="w-full h-px bg-[#D3E3D6] my-2 sm:my-2.5" aria-hidden="true" />
-
-            {/* Tri-benefit micro-row (single row on desktop/tablet, natural wrap on narrow mobile) */}
-            <div className="flex flex-wrap sm:flex-nowrap items-center gap-x-[5px] sm:gap-x-[6px] xl:gap-x-[8px] gap-y-1.5 text-[9.5px] sm:text-[10px] md:text-[10.5px] font-medium tracking-tight text-[#263D34] leading-tight">
-              {offer.benefits.map((b, idx) => (
-                <React.Fragment key={b.label}>
-                  <div className="inline-flex items-center gap-1 flex-shrink-0">
+            {/* Tri-benefit list (Intentional primary content of trust panel) */}
+            <div className="flex flex-col justify-center gap-1.5 sm:gap-2">
+              {offer.benefits.map((b) => (
+                <div
+                  key={b.label}
+                  className="inline-flex items-center gap-2 sm:gap-2.5 text-xs sm:text-[13px] font-semibold text-[#144A3A] tracking-tight leading-none"
+                >
+                  <div className="w-5 h-5 rounded-full bg-[#E0EFE6] border border-[#BCD8C7]/80 flex items-center justify-center flex-shrink-0">
                     {renderIcon(b.icon)}
-                    <span className="whitespace-nowrap">{b.label}</span>
                   </div>
-                  {idx < offer.benefits.length - 1 && (
-                    <span
-                      className="hidden sm:inline-block w-px h-2.5 bg-[#BCD3C3] flex-shrink-0"
-                      aria-hidden="true"
-                    />
-                  )}
-                </React.Fragment>
+                  <span className="whitespace-nowrap">{b.label}</span>
+                </div>
               ))}
             </div>
           </div>
-        </div>
-
-        {/* Sub-banner Reassurance Footnote (centered in reference composition) */}
-        <div className="mt-2.5 sm:mt-3 text-center">
-          <p className="font-display text-xs sm:text-[13.5px] text-[#243530] font-normal leading-tight tracking-tight">
-            <span>{offer.subBanner.line1Prefix}</span>
-            <strong className="font-bold text-[#144A3A]">{offer.subBanner.line1Highlight}</strong>
-            <span>{offer.subBanner.line1Suffix}</span>
-          </p>
-          <p className="font-display text-[11.5px] sm:text-[13px] text-[#243530] font-normal leading-tight tracking-tight mt-0.5">
-            <strong className="font-bold text-[#144A3A]">{offer.subBanner.line2Highlight}</strong>
-            <span>{offer.subBanner.line2Suffix}</span>
-          </p>
         </div>
       </a>
     </aside>

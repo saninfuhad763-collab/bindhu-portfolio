@@ -29,11 +29,12 @@ export const Hero: React.FC = () => {
   const { hero, client } = siteContent;
 
   const sectionRef = useRef<HTMLElement>(null);
-  const offerBannerRef = useRef<HTMLDivElement>(null);
+  const eyebrowRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const copyRef = useRef<HTMLParagraphElement>(null);
-  const ctaRef = useRef<HTMLDivElement>(null);
+  const offerBannerRef = useRef<HTMLDivElement>(null);
   const reassuranceRef = useRef<HTMLDivElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
   const portraitRef = useRef<HTMLDivElement>(null);
   const portraitLabelRef = useRef<HTMLDivElement>(null);
 
@@ -61,10 +62,11 @@ export const Hero: React.FC = () => {
         if (reduceMotion) {
           gsap.set(
             [
-              offerBannerRef.current,
-              reassuranceRef.current,
+              eyebrowRef.current,
               headlineRef.current,
               copyRef.current,
+              offerBannerRef.current,
+              reassuranceRef.current,
               ctaRef.current,
               portraitRef.current,
               portraitLabelRef.current,
@@ -86,10 +88,10 @@ export const Hero: React.FC = () => {
         const distX = isDesktop ? MOTION.desktop.revealX : 0;
 
         // Element-group specific durations tuned for a cohesive ~1.0-1.1s total page-load choreography
-        const durOffer = isNarrowMobile ? 0.30 : isMobile ? 0.36 : isTablet ? 0.40 : 0.44;
-        const durReassurance = isNarrowMobile ? 0.24 : isMobile ? 0.28 : isTablet ? 0.32 : 0.36;
         const durHeadline = isNarrowMobile ? 0.36 : isMobile ? 0.42 : isTablet ? 0.48 : 0.52;
         const durCopy = isNarrowMobile ? 0.32 : isMobile ? 0.38 : isTablet ? 0.42 : 0.46;
+        const durOffer = isNarrowMobile ? 0.30 : isMobile ? 0.36 : isTablet ? 0.40 : 0.44;
+        const durReassurance = isNarrowMobile ? 0.24 : isMobile ? 0.28 : isTablet ? 0.32 : 0.36;
         const durCta = isNarrowMobile ? 0.28 : isMobile ? 0.34 : isTablet ? 0.38 : 0.42;
         const durPortrait = isNarrowMobile ? 0.38 : isMobile ? 0.45 : isTablet ? 0.52 : 0.60;
 
@@ -99,25 +101,18 @@ export const Hero: React.FC = () => {
           },
         });
 
-        // Group 0: Top-Left Promotional Offer Banner
+        // Group A: Section Eyebrow
         tl.fromTo(
-          offerBannerRef.current,
-          { opacity: 0, y: Math.min(10, distY) },
-          { opacity: 1, y: 0, duration: durOffer, delay: isNarrowMobile ? 0.02 : 0.04 }
+          eyebrowRef.current,
+          { opacity: 0, y: Math.min(8, distY) },
+          { opacity: 1, y: 0, duration: 0.28, delay: isNarrowMobile ? 0.02 : 0.04 }
         )
-          // Group A2: Trust Bridge Reassurance Note
-          .fromTo(
-            reassuranceRef.current,
-            { opacity: 0, y: Math.min(8, distY) },
-            { opacity: 1, y: 0, duration: durReassurance },
-            isDesktop ? '-=0.28' : '-=0.22'
-          )
           // Group B: Primary Message (H1)
           .fromTo(
             headlineRef.current,
             { opacity: 0, y: distY },
             { opacity: 1, y: 0, duration: durHeadline },
-            isDesktop ? '-=0.28' : '-=0.22'
+            isDesktop ? '-=0.22' : '-=0.18'
           )
           // Group C: Supporting Message (Subheadline)
           .fromTo(
@@ -126,14 +121,28 @@ export const Hero: React.FC = () => {
             { opacity: 1, y: 0, duration: durCopy },
             isDesktop ? '-=0.36' : '-=0.28'
           )
-          // Group D: Actions (Dual CTAs)
+          // Group D: Trust / Benefits Banner
+          .fromTo(
+            offerBannerRef.current,
+            { opacity: 0, y: Math.min(10, distY) },
+            { opacity: 1, y: 0, duration: durOffer },
+            isDesktop ? '-=0.28' : '-=0.22'
+          )
+          // Group E: Reassurance Note
+          .fromTo(
+            reassuranceRef.current,
+            { opacity: 0, y: Math.min(8, distY) },
+            { opacity: 1, y: 0, duration: durReassurance },
+            isDesktop ? '-=0.28' : '-=0.22'
+          )
+          // Group F: Actions (Dual CTAs)
           .fromTo(
             ctaRef.current,
             { opacity: 0, y: Math.min(12, distY) },
             { opacity: 1, y: 0, duration: durCta },
             isDesktop ? '-=0.34' : '-=0.26'
           )
-          // Group E: Portrait Composition
+          // Group G: Portrait Composition
           .fromTo(
             portraitRef.current,
             {
@@ -152,7 +161,7 @@ export const Hero: React.FC = () => {
             },
             isDesktop ? '-=0.55' : isTablet ? '-=0.45' : '-=0.32'
           )
-          // Group F: Portrait Name Label
+          // Group H: Portrait Name Label
           .fromTo(
             portraitLabelRef.current,
             { opacity: 0, y: Math.min(8, distY) },
@@ -177,12 +186,34 @@ export const Hero: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 xl:gap-16 items-center">
           {/* Left Column: Editorial Value Proposition & CTAs */}
           <div className="lg:col-span-7 flex flex-col items-start">
-            {/* Top-Left Promotional Offer Banner */}
+            {/* 01. Section Eyebrow */}
+            <div ref={eyebrowRef} className="inline-flex items-center gap-2 mb-2 sm:mb-2.5">
+              <span className="w-5 h-px bg-advisory-accent/60" aria-hidden="true" />
+              <span className="font-body text-eyebrow font-semibold uppercase text-advisory-accent tracking-wider">
+                Guidance That Fits You
+              </span>
+            </div>
+
+            {/* 02. Primary Headline (H1) */}
+            <h1
+              ref={headlineRef}
+              id="hero-heading"
+              className="font-display text-[2rem] sm:text-4xl lg:text-[42px] xl:text-[44px] font-semibold text-brand-primary tracking-tight leading-[1.18] sm:leading-[1.16] mb-3.5 sm:mb-4"
+            >
+              {hero.headline}
+            </h1>
+
+            {/* 03. Supporting Copy */}
+            <p ref={copyRef} className="font-body text-base sm:text-lg lg:text-[1.125rem] text-content-secondary max-w-[48ch] mb-4 sm:mb-5 leading-relaxed">
+              {hero.subheadline}
+            </p>
+
+            {/* 04. Trust / Benefits Banner */}
             <div ref={offerBannerRef} className="w-full max-w-[540px] mb-2.5 sm:mb-3">
               <HeroOfferBanner />
             </div>
 
-            {/* Trust Bridge Reassurance Note */}
+            {/* 05. Reassurance Note */}
             <div ref={reassuranceRef} className="flex items-center gap-2 text-content-muted mb-3.5 sm:mb-4">
               <FloatingAccent
                 axis="y"
@@ -201,21 +232,7 @@ export const Hero: React.FC = () => {
               </p>
             </div>
 
-            {/* Primary Headline (H1) */}
-            <h1
-              ref={headlineRef}
-              id="hero-heading"
-              className="font-display text-[2rem] sm:text-4xl lg:text-[42px] xl:text-[44px] font-semibold text-brand-primary tracking-tight leading-[1.18] sm:leading-[1.16] mb-3.5 sm:mb-4"
-            >
-              {hero.headline}
-            </h1>
-
-            {/* Supporting Copy */}
-            <p ref={copyRef} className="font-body text-base sm:text-lg lg:text-[1.125rem] text-content-secondary max-w-[48ch] mb-5 sm:mb-6 leading-relaxed">
-              {hero.subheadline}
-            </p>
-
-            {/* Dual CTAs (Closing action of left column) */}
+            {/* 06. Dual CTAs (Closing action of left column) */}
             <div ref={ctaRef} className="w-full sm:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4">
               <Button
                 variant="primary"
@@ -309,19 +326,19 @@ export const Hero: React.FC = () => {
                 )}
               </div>
 
-              {/* Consultant Name & Title Label */}
-              <div
-                ref={portraitLabelRef}
-                className="absolute -bottom-3 sm:-bottom-3.5 left-1/2 -translate-x-1/2 z-20 w-auto max-w-[92%] pointer-events-none"
-              >
-                <div className="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-surface border border-border-subtle shadow-card text-center flex flex-col items-center">
+              {/* Consultant Name & Title Label (35% inside frame / 65% outside below frame) */}
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[65%] z-20 w-auto max-w-[92%] pointer-events-none">
+                <div
+                  ref={portraitLabelRef}
+                  className="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-surface border border-border-subtle shadow-card text-center flex flex-col items-center"
+                >
                   <span className="font-display text-xs sm:text-sm font-semibold text-brand-primary tracking-tight leading-tight">
                     {client.name}
                   </span>
                   <div className="inline-flex items-center gap-1.5 mt-0.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-action-primary flex-shrink-0" aria-hidden="true" />
-                    <span className="font-body text-[10px] sm:text-[11px] text-content-secondary font-medium tracking-normal leading-tight">
-                      {client.professionalTitle}
+                    <span className="font-body text-[10px] sm:text-[11px] text-content-secondary font-medium tracking-normal leading-tight whitespace-nowrap">
+                      Personalized Insurance Guidance
                     </span>
                   </div>
                 </div>
