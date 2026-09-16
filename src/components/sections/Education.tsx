@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Container } from '../layout/Container';
 import { siteContent } from '../../content/siteContent';
 import { ChevronDown } from 'lucide-react';
 import { Reveal } from '../motion/Reveal';
+import { useScrollSmoother } from '../motion/ScrollSystem';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 /**
  * Phase 9 — Insurance Education / Editorial Guidance
  *
  * Implements an editorial question index / expandable guide:
- * - Desktop (>=1024px): Two-column editorial composition (Left: Sticky section narrative;
- *   Right: Editorial question index with inline disclosure).
+ * - Desktop (>=1024px): Two-column editorial composition (Left: Section-local GSAP ScrollTrigger
+ *   pinned narrative; Right: Editorial question index with inline disclosure).
  * - Mobile (<1024px): Stacked single-column accessible accordion with >=48px touch targets.
  *
  * Adheres strictly to the locked design system:
@@ -21,9 +28,49 @@ import { Reveal } from '../motion/Reveal';
 export const Education: React.FC = () => {
   const { education } = siteContent;
   const [openId, setOpenId] = useState<string | null>(education.topics[0]?.id || 'edu-1');
+  const gridRef = useRef<HTMLDivElement>(null);
+  const leftColRef = useRef<HTMLDivElement>(null);
+  const { isReducedMotion } = useScrollSmoother();
+
+  useEffect(() => {
+    const grid = gridRef.current;
+    const leftCol = leftColRef.current;
+    if (!grid || !leftCol) return;
+
+    const mm = gsap.matchMedia();
+
+    mm.add(
+      {
+        isDesktop: '(min-width: 1024px)',
+        reduceMotion: '(prefers-reduced-motion: reduce)',
+      },
+      (context) => {
+        const { isDesktop, reduceMotion } = context.conditions as {
+          isDesktop: boolean;
+          reduceMotion: boolean;
+        };
+
+        if (isDesktop && !reduceMotion && !isReducedMotion) {
+          ScrollTrigger.create({
+            trigger: grid,
+            start: 'top top+=112',
+            end: () => `bottom top+=${leftCol.offsetHeight + 112}`,
+            pin: leftCol,
+            pinSpacing: false,
+            invalidateOnRefresh: true,
+          });
+        }
+      }
+    );
+
+    return () => mm.revert();
+  }, [isReducedMotion]);
 
   const toggleTopic = (id: string) => {
     setOpenId(openId === id ? null : id);
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+    });
   };
 
   return (
@@ -33,31 +80,33 @@ export const Education: React.FC = () => {
       aria-labelledby="education-heading"
     >
       <Container size="standard">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16 items-start">
-          {/* Left Column: Editorial Introduction (Sticky on desktop) */}
-          <div className="lg:col-span-5 lg:sticky lg:top-28">
-            <Reveal variant="fade-right">
-              <span className="font-body text-eyebrow font-semibold text-action-primary uppercase tracking-wider block mb-3">
-                {education.eyebrow}
-              </span>
-              <h2
-                id="education-heading"
-                className="font-display text-section-h2 font-semibold text-brand-primary tracking-tight mb-4"
-              >
-                {education.headline}
-              </h2>
-              <p className="font-body text-body-large text-content-secondary leading-relaxed mb-6">
-                {education.description}
-              </p>
-              <div className="p-4 rounded-xl bg-canvas border border-border-subtle/80">
-                <span className="font-body text-xs font-semibold text-action-primary uppercase tracking-wider block mb-1">
-                  Clarity Before Commitment
+        <div ref={gridRef} className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16 items-start">
+          {/* Left Column: Editorial Introduction (Sticky on desktop via ScrollTrigger) */}
+          <div className="lg:col-span-5 w-full">
+            <div ref={leftColRef} className="w-full">
+              <Reveal variant="fade-right">
+                <span className="font-body text-eyebrow font-semibold text-action-primary uppercase tracking-wider block mb-3">
+                  {education.eyebrow}
                 </span>
-                <p className="font-body text-body-small text-content-secondary leading-relaxed">
-                  Consultative guidance means asking the right questions first, so you make informed decisions on your own timeline.
+                <h2
+                  id="education-heading"
+                  className="font-display text-section-h2 font-semibold text-brand-primary tracking-tight mb-4"
+                >
+                  {education.headline}
+                </h2>
+                <p className="font-body text-body-large text-content-secondary leading-relaxed mb-6">
+                  {education.description}
                 </p>
-              </div>
-            </Reveal>
+                <div className="p-4 rounded-xl bg-canvas border border-border-subtle/80">
+                  <span className="font-body text-xs font-semibold text-action-primary uppercase tracking-wider block mb-1">
+                    Clarity Before Commitment
+                  </span>
+                  <p className="font-body text-body-small text-content-secondary leading-relaxed">
+                    Consultative guidance means asking the right questions first, so you make informed decisions on your own timeline.
+                  </p>
+                </div>
+              </Reveal>
+            </div>
           </div>
 
           {/* Right Column: Editorial Question Index */}

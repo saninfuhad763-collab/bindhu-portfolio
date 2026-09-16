@@ -23,18 +23,48 @@ if (typeof window !== 'undefined') {
 export const CareerRoadmap: React.FC = () => {
   const { careerRoadmap } = siteContent;
   const sectionRef = useRef<HTMLElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const leftColRef = useRef<HTMLDivElement>(null);
   const { isReducedMotion } = useScrollSmoother();
 
   useEffect(() => {
     const el = sectionRef.current;
     if (!el || !careerRoadmap) return;
 
-    const ctx = gsap.context(() => {
-      // Check reduced motion preference (via hook or system media query)
-      const prefersReduced =
-        typeof window !== 'undefined' &&
-        (window.matchMedia('(prefers-reduced-motion: reduce)').matches || isReducedMotion);
+    const prefersReduced =
+      typeof window !== 'undefined' &&
+      (window.matchMedia('(prefers-reduced-motion: reduce)').matches || isReducedMotion);
 
+    const mm = gsap.matchMedia();
+
+    mm.add(
+      {
+        isDesktop: '(min-width: 1024px)',
+        reduceMotion: '(prefers-reduced-motion: reduce)',
+      },
+      (context) => {
+        const { isDesktop, reduceMotion } = context.conditions as {
+          isDesktop: boolean;
+          reduceMotion: boolean;
+        };
+
+        const grid = gridRef.current;
+        const leftCol = leftColRef.current;
+
+        if (isDesktop && !reduceMotion && !prefersReduced && grid && leftCol) {
+          ScrollTrigger.create({
+            trigger: grid,
+            start: 'top top+=112',
+            end: () => `bottom top+=${leftCol.offsetHeight + 112}`,
+            pin: leftCol,
+            pinSpacing: false,
+            invalidateOnRefresh: true,
+          });
+        }
+      }
+    );
+
+    const ctx = gsap.context(() => {
       const milestoneElements = el.querySelectorAll<HTMLElement>('.roadmap-milestone');
       if (!milestoneElements || milestoneElements.length === 0) return;
 
@@ -91,6 +121,7 @@ export const CareerRoadmap: React.FC = () => {
     }, sectionRef);
 
     return () => {
+      mm.revert();
       ctx.revert();
     };
   }, [careerRoadmap, isReducedMotion]);
@@ -105,41 +136,43 @@ export const CareerRoadmap: React.FC = () => {
       className="bg-canvas py-14 sm:py-16 lg:py-24 border-b border-border-subtle/70 relative"
     >
       <Container size="standard">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-16 items-start">
+        <div ref={gridRef} className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-16 items-start">
           {/* Left Column: Section Introduction & Verification Notice (Sticky on Desktop) */}
-          <div className="lg:col-span-5 flex flex-col items-start lg:sticky lg:top-28">
-            <Reveal variant="fade-up">
-              {/* Eyebrow */}
-              <div className="inline-flex items-center gap-2 mb-3.5 sm:mb-4">
-                <span className="w-5 h-px bg-advisory-accent/60" aria-hidden="true" />
-                <span className="font-body text-eyebrow font-semibold uppercase text-advisory-accent tracking-wider">
-                  {careerRoadmap.eyebrow}
-                </span>
-              </div>
+          <div className="lg:col-span-5 flex flex-col items-start w-full">
+            <div ref={leftColRef} className="w-full">
+              <Reveal variant="fade-up">
+                {/* Eyebrow */}
+                <div className="inline-flex items-center gap-2 mb-3.5 sm:mb-4">
+                  <span className="w-5 h-px bg-advisory-accent/60" aria-hidden="true" />
+                  <span className="font-body text-eyebrow font-semibold uppercase text-advisory-accent tracking-wider">
+                    {careerRoadmap.eyebrow}
+                  </span>
+                </div>
 
-              {/* Section Heading (H2) */}
-              <h2
-                id="career-roadmap-heading"
-                className="font-display text-section-h2 font-semibold text-brand-primary tracking-tight mb-4 sm:mb-5"
-              >
-                {careerRoadmap.headline}
-              </h2>
+                {/* Section Heading (H2) */}
+                <h2
+                  id="career-roadmap-heading"
+                  className="font-display text-section-h2 font-semibold text-brand-primary tracking-tight mb-4 sm:mb-5"
+                >
+                  {careerRoadmap.headline}
+                </h2>
 
-              {/* Narrative Description */}
-              <p className="font-body text-body-regular text-content-secondary max-w-reading leading-relaxed mb-6 sm:mb-8">
-                {careerRoadmap.description}
-              </p>
-
-              {/* Editorial Client Notice Callout */}
-              <div className="p-4 sm:p-5 rounded-xl bg-surface border border-border-subtle shadow-xs max-w-reading">
-                <p className="font-mono text-[11px] uppercase tracking-wider text-action-primary font-semibold mb-1">
-                  Professional Notice
+                {/* Narrative Description */}
+                <p className="font-body text-body-regular text-content-secondary max-w-reading leading-relaxed mb-6 sm:mb-8">
+                  {careerRoadmap.description}
                 </p>
-                <p className="font-body text-xs text-content-muted leading-relaxed">
-                  {careerRoadmap.disclaimer}
-                </p>
-              </div>
-            </Reveal>
+
+                {/* Editorial Client Notice Callout */}
+                <div className="p-4 sm:p-5 rounded-xl bg-surface border border-border-subtle shadow-xs max-w-reading">
+                  <p className="font-mono text-[11px] uppercase tracking-wider text-action-primary font-semibold mb-1">
+                    Professional Notice
+                  </p>
+                  <p className="font-body text-xs text-content-muted leading-relaxed">
+                    {careerRoadmap.disclaimer}
+                  </p>
+                </div>
+              </Reveal>
+            </div>
           </div>
 
           {/* Right Column: Refined Vertical Progression Timeline with AOS-style GSAP Reveal */}

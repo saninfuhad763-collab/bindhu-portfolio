@@ -46,8 +46,8 @@ export const Process: React.FC = () => {
 
     mm.add(
       {
-        isDesktop: '(min-width: 1024px) and (min-height: 800px)',
-        isMobile: '(max-width: 1023px), (max-height: 799px)',
+        isDesktop: '(min-width: 1280px), ((min-width: 1024px) and (min-height: 800px))',
+        isMobile: '(max-width: 1023px), ((min-width: 1024px) and (max-width: 1279px) and (max-height: 799px))',
         reduceMotion: '(prefers-reduced-motion: reduce)',
       },
       (context) => {
@@ -360,7 +360,7 @@ export const Process: React.FC = () => {
       {/* Dedicated Scroll Track for Desktop Pinning & Natural Overlap Handoff */}
       <div
         ref={spacerRef}
-        className="hidden [@media(min-width:1024px)_and_(min-height:800px)]:block h-[1300px]"
+        className="hidden [@media(min-width:1280px)]:block [@media(min-width:1024px)_and_(min-height:800px)]:block h-[1300px]"
         aria-hidden="true"
       />
     </section>
