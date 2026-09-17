@@ -13,11 +13,13 @@ if (typeof window !== 'undefined') {
  * Phase 8 — Consultation Process / How It Works
  *
  * Implements a calm, guided editorial timeline/journey:
- * - Desktop (>=1024px and >=800px height): Four horizontal steps with scroll-driven pinned progression.
+ * - Desktop (>=1280px Large Desktop): Four horizontal steps with 1000px pin/end and 1000px runway;
+ *   shorter post-reveal settling/release phase for prompt transition to Education.
+ * - Desktop (>=1024px and >=800px height, <1280px): 1300px pin/end and 1300px runway.
  *   - Phase A: Steps 01 -> 02 -> 03 -> 04 reveal sequentially through scroll.
- *   - Phase B: Brief Step 04 hold/settling moment for full comprehension.
+ *   - Phase B: Brief Step 04 hold/settling moment for full comprehension (shortened to 0.35).
  *   - Phase C: Next section (Education) begins rising from below and smoothly overlaps
- *     the lower portion of How It Works.
+ *     the lower portion of How It Works (shortened to 0.65).
  *   - Phase D: How It Works pin releases naturally beneath the incoming next section;
  *     normal page scrolling resumes with zero visual jump.
  * - Mobile / Tablet / Short Viewports: Clean natural document flow (no pinning) with
@@ -47,12 +49,14 @@ export const Process: React.FC = () => {
     mm.add(
       {
         isDesktop: '(min-width: 1280px), ((min-width: 1024px) and (min-height: 800px))',
+        isLargeDesktop: '(min-width: 1280px)',
         isMobile: '(max-width: 1023px), ((min-width: 1024px) and (max-width: 1279px) and (max-height: 799px))',
         reduceMotion: '(prefers-reduced-motion: reduce)',
       },
       (context) => {
-        const { isDesktop, reduceMotion } = context.conditions as {
+        const { isDesktop, isLargeDesktop, reduceMotion } = context.conditions as {
           isDesktop: boolean;
+          isLargeDesktop: boolean;
           reduceMotion: boolean;
         };
 
@@ -70,18 +74,28 @@ export const Process: React.FC = () => {
           if (mobileSteps.length > 0) gsap.set(mobileSteps, { opacity: 1, y: 0, clearProps: 'transform,opacity' });
           if (reassurance) gsap.set(reassurance, { opacity: 1, y: 0, clearProps: 'transform,opacity' });
           // Collapse the runway — no document-flow height consumed in natural-flow mode
-          if (runway) runway.style.display = 'none';
+          if (runway) {
+            runway.style.display = 'none';
+            runway.style.height = '0px';
+          }
           return;
         }
 
         // --- DESKTOP PINNED SEQUENCE WITH OVERLAPPING NEXT SECTION ---
 
-        // Activate the scroll runway to reserve 1300px of document-flow height.
+        // Scroll travel distance & runway height:
+        // - 1280px+ (Large Desktop): 1000px pin travel and 1000px runway for a tighter,
+        //   faster transition into Education once steps are revealed.
+        // - 1024px tall desktop/tablet: 1300px pin travel and 1300px runway preserved.
+        const scrollDistance = isLargeDesktop ? 1000 : 1300;
+
+        // Activate the scroll runway to reserve document-flow height.
         // This is a sibling to pinnedWrapper (not inside it) so it does NOT affect
-        // the ScrollTrigger end calculation. The ScrollTrigger uses end:'+=1300'
+        // the ScrollTrigger end calculation. The ScrollTrigger uses end:`+=${scrollDistance}`
         // independently; the runway prevents Education from overlapping too early.
         if (runway) {
           runway.style.display = 'block';
+          runway.style.height = `${scrollDistance}px`;
         }
 
         // Pre-pin baseline states
@@ -101,8 +115,9 @@ export const Process: React.FC = () => {
         // pinSpacing: false — GSAP wraps pinnedWrapper in a zero-height spacer that reverts
         //   cleanly on mm.revert(). A height-based spacer (pinSpacing:true) caused nested
         //   pin-spacer accumulation on repeated desktop→tablet→desktop resize cycles.
-        // end: '+=1300' — 1300px of pinned scroll travel: matches the 4.8-unit timeline
-        //   at ~271px/unit. The section provides its own natural height via CSS; GSAP
+        // end: `+=${scrollDistance}` — 1000px (1280px+) or 1300px (1024px tall) of pinned scroll travel:
+        //   matches the 4.0-unit timeline (with shorter post-reveal settling/release phase).
+        //   The section provides its own natural height via CSS + runway; GSAP
         //   measures the pin travel distance from the start position.
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -111,7 +126,7 @@ export const Process: React.FC = () => {
             pinType: 'transform',
             pinSpacing: false,
             start: 'top top+=64',
-            end: '+=1300',
+            end: `+=${scrollDistance}`,
             scrub: true,
             anticipatePin: 0,
             fastScrollEnd: true,
@@ -196,11 +211,18 @@ export const Process: React.FC = () => {
           );
         }
 
-        // ── PHASE B: Brief Step 04 hold/settling moment ───────────────────
-        tl.to({}, { duration: 0.6 });
+        // ── PHASE B: Brief Step 04 hold/settling moment (shortened) ───────
+        tl.to({}, { duration: 0.35 });
 
-        // ── PHASE C & D: Next section overlaps and pin releases ──────────
-        tl.to({}, { duration: 1.2 });
+        // ── PHASE C & D: Next section overlaps and pin releases (shortened) ──
+        tl.to({}, { duration: 0.65 });
+
+        return () => {
+          if (runway) {
+            runway.style.display = 'none';
+            runway.style.height = '0px';
+          }
+        };
       }
     );
 
@@ -359,15 +381,15 @@ export const Process: React.FC = () => {
       </div>
 
       {/* Process Scroll Runway — Desktop Editorial Motion Only
-          Provides 1300px of document-flow height so Education does not rise
-          over the Process pin before the 4-step animation completes.
+          Provides document-flow height (1000px on >=1280px, 1300px on 1024px+ tall)
+          so Education does not rise over the Process pin before the 4-step animation completes.
           Hidden by default; activated/deactivated via JS in mm.add().
           NOT inside pinnedWrapper. Does NOT affect ScrollTrigger end.
-          ScrollTrigger: start='top top+=64', end='+=1300' (independent). */}
+          ScrollTrigger: start='top top+=64', end='+=1000' (or '+=1300') (independent). */}
       <div
         ref={runwayRef}
         aria-hidden="true"
-        style={{ display: 'none', height: '1300px', pointerEvents: 'none' }}
+        style={{ display: 'none', height: '1000px', pointerEvents: 'none' }}
       />
     </section>
   );
