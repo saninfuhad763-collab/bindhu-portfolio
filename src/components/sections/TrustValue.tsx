@@ -136,7 +136,7 @@ export const TrustValue: React.FC = () => {
                   </h3>
 
                   {/* Pillar Description */}
-                  <p className="font-body text-[13px] text-content-secondary leading-relaxed">
+                  <p className="font-body text-sm lg:text-[13px] text-content-secondary leading-relaxed">
                     {pillar.description}
                   </p>
                 </div>

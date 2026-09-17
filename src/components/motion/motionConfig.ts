@@ -18,9 +18,9 @@ export const BREAKPOINTS = {
 
   // Shared editorial-motion activation conditions — used by TrustValue, CareerRoadmap,
   // Process, and Education to ensure a single consistent responsive breakpoint policy.
-  // Activates pinning only when the viewport is both wide enough AND tall enough for
-  // the editorial scroll choreography to function safely.
-  desktopMotion: '(min-width: 1280px), ((min-width: 1024px) and (min-height: 800px))',
+  // Activates pinning only when the viewport has a fine pointer (desktop/laptop) and is both
+  // wide enough AND tall enough for the editorial scroll choreography to function safely.
+  desktopMotion: '((min-width: 1280px) and (pointer: fine)), ((min-width: 1024px) and (min-height: 800px) and (pointer: fine))',
   naturalFlow: '(max-width: 1023px), ((min-width: 1024px) and (max-width: 1279px) and (max-height: 799px))',
 } as const;
 

@@ -68,13 +68,13 @@ export const HeroOfferBanner: React.FC<HeroOfferBannerProps> = ({
   const renderIcon = (type: HeroOfferBenefit['icon']) => {
     switch (type) {
       case 'shield':
-        return <ShieldCheck className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#2E6F5E] flex-shrink-0" aria-hidden="true" />;
+        return <ShieldCheck className="w-3.5 h-3.5 text-[#2E6F5E] flex-shrink-0" aria-hidden="true" />;
       case 'users':
-        return <Users className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#2E6F5E] flex-shrink-0" aria-hidden="true" />;
+        return <Users className="w-3.5 h-3.5 text-[#2E6F5E] flex-shrink-0" aria-hidden="true" />;
       case 'heart':
-        return <Heart className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#2E6F5E] flex-shrink-0 fill-[#2E6F5E]/20" aria-hidden="true" />;
+        return <Heart className="w-3.5 h-3.5 text-[#2E6F5E] flex-shrink-0 fill-[#2E6F5E]/20" aria-hidden="true" />;
       default:
-        return <ShieldCheck className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#2E6F5E] flex-shrink-0" aria-hidden="true" />;
+        return <ShieldCheck className="w-3.5 h-3.5 text-[#2E6F5E] flex-shrink-0" aria-hidden="true" />;
     }
   };
 
@@ -110,12 +110,12 @@ export const HeroOfferBanner: React.FC<HeroOfferBannerProps> = ({
           {/* Right Text Block: Heading, Subtitle & Horizontal Benefits */}
           <div className="relative z-10 flex flex-col justify-center">
             {/* Bold Dominant Heading */}
-            <h3 className="font-display text-[12.5px] sm:text-[13.5px] md:text-[14.5px] lg:text-[15px] font-bold text-[#144A3A] tracking-tight leading-snug">
+            <h3 className="font-display text-[13.5px] sm:text-[14px] md:text-[14.5px] lg:text-[15px] font-bold text-[#144A3A] tracking-tight leading-snug">
               {offer.headline}
             </h3>
 
             {/* Smaller Subordinate Supporting Copy */}
-            <p className="font-body text-[10.5px] sm:text-[11px] md:text-[12px] lg:text-[12.5px] text-[#2E453D]/85 font-normal leading-normal sm:leading-relaxed mt-0.5 sm:mt-1">
+            <p className="font-body text-[12px] sm:text-[12px] md:text-[12px] lg:text-[12.5px] text-[#2E453D]/85 font-normal leading-normal sm:leading-relaxed mt-0.5 sm:mt-1">
               {offer.supportingText}
             </p>
 
@@ -127,7 +127,7 @@ export const HeroOfferBanner: React.FC<HeroOfferBannerProps> = ({
                   className="inline-flex items-center gap-1 sm:gap-1.5 flex-shrink-0"
                 >
                   {renderIcon(b.icon)}
-                  <span className="font-body text-[9.5px] sm:text-[10px] md:text-[11px] lg:text-[11.5px] font-medium text-[#1E3E34] tracking-tight leading-none whitespace-nowrap">
+                  <span className="font-body text-[11.5px] sm:text-[11.5px] md:text-[11.5px] lg:text-[11.5px] font-medium text-[#1E3E34] tracking-tight leading-none whitespace-nowrap">
                     {b.label}
                   </span>
                 </div>

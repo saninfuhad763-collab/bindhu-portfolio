@@ -4,6 +4,7 @@ import { siteContent } from '../../content/siteContent';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useScrollSmoother } from '../motion/ScrollSystem';
+import { BREAKPOINTS } from '../motion/motionConfig';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -48,10 +49,10 @@ export const Process: React.FC = () => {
 
     mm.add(
       {
-        isDesktop: '(min-width: 1280px), ((min-width: 1024px) and (min-height: 800px))',
-        isLargeDesktop: '(min-width: 1280px)',
-        isMobile: '(max-width: 1023px), ((min-width: 1024px) and (max-width: 1279px) and (max-height: 799px))',
-        reduceMotion: '(prefers-reduced-motion: reduce)',
+        isDesktop: BREAKPOINTS.desktopMotion,
+        isLargeDesktop: '((min-width: 1280px) and (pointer: fine))',
+        isMobile: BREAKPOINTS.naturalFlow,
+        reduceMotion: BREAKPOINTS.reduceMotion,
       },
       (context) => {
         const { isDesktop, isLargeDesktop, reduceMotion } = context.conditions as {

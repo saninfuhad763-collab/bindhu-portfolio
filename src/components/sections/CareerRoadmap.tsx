@@ -160,7 +160,7 @@ export const CareerRoadmap: React.FC = () => {
 
                 {/* Editorial Client Notice Callout */}
                 <div className="p-4 sm:p-5 rounded-xl bg-surface border border-border-subtle shadow-xs max-w-reading">
-                  <p className="font-mono text-[11px] uppercase tracking-wider text-action-primary font-semibold mb-1">
+                  <p className="font-mono text-xs lg:text-[11px] uppercase tracking-wider text-action-primary font-semibold mb-1">
                     Professional Notice
                   </p>
                   <p className="font-body text-xs text-content-muted leading-relaxed">

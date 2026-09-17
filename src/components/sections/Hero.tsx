@@ -183,11 +183,11 @@ export const Hero: React.FC = () => {
     >
       <AnimatedGradient variant="hero" />
       <Container size="standard" className="relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 xl:gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-0 gap-x-10 lg:gap-x-12 xl:gap-x-16 items-center">
           {/* Left Column: Editorial Value Proposition & CTAs */}
-          <div className="lg:col-span-7 flex flex-col items-start">
+          <div className="contents lg:flex lg:flex-col lg:col-span-7 lg:items-start">
             {/* 01. Section Eyebrow */}
-            <div ref={eyebrowRef} className="inline-flex items-center gap-2 mb-2 sm:mb-2.5">
+            <div ref={eyebrowRef} className="order-1 lg:order-none inline-flex items-center gap-2 mb-2 sm:mb-2.5">
               <span className="w-5 h-px bg-advisory-accent/60" aria-hidden="true" />
               <span className="font-body text-eyebrow font-semibold uppercase text-advisory-accent tracking-wider">
                 Guidance That Fits You
@@ -198,25 +198,25 @@ export const Hero: React.FC = () => {
             <h1
               ref={headlineRef}
               id="hero-heading"
-              className="font-display text-[2rem] sm:text-4xl lg:text-[42px] xl:text-[44px] font-semibold text-brand-primary tracking-tight leading-[1.18] sm:leading-[1.16] mb-3.5 sm:mb-4"
+              className="order-2 lg:order-none font-display text-[2rem] sm:text-4xl lg:text-[42px] xl:text-[44px] font-semibold text-brand-primary tracking-tight leading-[1.18] sm:leading-[1.16] mb-3 sm:mb-3.5 lg:mb-4"
             >
               {hero.headline}
             </h1>
 
             {/* 03. Supporting Copy */}
-            <p ref={copyRef} className="font-body text-base sm:text-lg lg:text-[1.125rem] text-content-secondary max-w-[48ch] mb-4 sm:mb-5 leading-relaxed">
+            <p ref={copyRef} className="order-3 lg:order-none font-body text-base sm:text-lg lg:text-[1.125rem] text-content-secondary max-w-[48ch] mb-5 sm:mb-6 lg:mb-5 leading-relaxed">
               {hero.subheadline}
             </p>
 
             {/* 04. Trust / Benefits Banner */}
-            <div ref={offerBannerRef} className="w-fit max-w-full mb-2.5 sm:mb-3">
+            <div ref={offerBannerRef} className="order-4 lg:order-none w-fit max-w-full mb-2.5 sm:mb-3">
               <HeroOfferBanner />
             </div>
 
             {/* 05 & 06. Reassurance Note & Actions Group */}
-            <div className="w-full flex flex-col items-start translate-y-0 md:translate-y-5 lg:translate-y-8">
+            <div className="contents lg:flex lg:flex-col lg:items-start lg:w-full lg:translate-y-8">
               {/* 05. Reassurance Note */}
-              <div ref={reassuranceRef} className="flex items-center gap-2 text-content-muted mb-3.5 sm:mb-4">
+              <div ref={reassuranceRef} className="order-5 lg:order-none flex items-center gap-2 text-content-muted mb-6 sm:mb-8 lg:mb-4">
                 <FloatingAccent
                   axis="y"
                   distanceY={3}
@@ -229,13 +229,13 @@ export const Hero: React.FC = () => {
                     aria-hidden="true"
                   />
                 </FloatingAccent>
-                <p className="font-body text-xs sm:text-small-meta text-content-muted">
+                <p className="font-body text-[13px] sm:text-small-meta text-content-muted">
                   {hero.reassuranceNote}
                 </p>
               </div>
 
               {/* 06. Dual CTAs (Closing action of left column) */}
-              <div ref={ctaRef} className="w-full sm:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4">
+              <div ref={ctaRef} className="order-7 lg:order-none w-full sm:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4">
                 <Button
                   variant="primary"
                   size="md"
@@ -257,7 +257,7 @@ export const Hero: React.FC = () => {
           </div>
 
           {/* Right Column: Portrait Composition & Visual Framing */}
-          <div ref={portraitRef} className="lg:col-span-5 flex justify-center lg:justify-end w-full">
+          <div ref={portraitRef} className="order-6 lg:order-none lg:col-span-5 flex justify-center lg:justify-end w-full mb-12 sm:mb-14 lg:mb-0">
             <div className="relative w-full max-w-[360px] sm:max-w-[380px] lg:max-w-[380px] xl:max-w-[400px] group">
               {/* Subtle background decorative paper layer for editorial depth */}
               <div
@@ -340,7 +340,7 @@ export const Hero: React.FC = () => {
                   </span>
                   <div className="inline-flex items-center gap-1.5 mt-0.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-action-primary flex-shrink-0" aria-hidden="true" />
-                    <span className="font-body text-[10px] sm:text-[11px] text-content-secondary font-medium tracking-normal leading-tight whitespace-nowrap">
+                    <span className="font-body text-[11.5px] sm:text-[11.5px] lg:text-[11px] text-content-secondary font-medium tracking-normal leading-tight whitespace-nowrap">
                       Personalized Insurance Guidance
                     </span>
                   </div>
