@@ -209,47 +209,50 @@ export const Hero: React.FC = () => {
             </p>
 
             {/* 04. Trust / Benefits Banner */}
-            <div ref={offerBannerRef} className="w-full max-w-[540px] mb-2.5 sm:mb-3">
+            <div ref={offerBannerRef} className="w-fit max-w-full mb-2.5 sm:mb-3">
               <HeroOfferBanner />
             </div>
 
-            {/* 05. Reassurance Note */}
-            <div ref={reassuranceRef} className="flex items-center gap-2 text-content-muted mb-3.5 sm:mb-4">
-              <FloatingAccent
-                axis="y"
-                distanceY={3}
-                duration={4.8}
-                delay={0}
-                className="flex-shrink-0"
-              >
-                <span
-                  className="w-1.5 h-1.5 rounded-full bg-action-primary block"
-                  aria-hidden="true"
-                />
-              </FloatingAccent>
-              <p className="font-body text-xs sm:text-small-meta text-content-muted">
-                {hero.reassuranceNote}
-              </p>
-            </div>
+            {/* 05 & 06. Reassurance Note & Actions Group */}
+            <div className="w-full flex flex-col items-start translate-y-0 md:translate-y-5 lg:translate-y-8">
+              {/* 05. Reassurance Note */}
+              <div ref={reassuranceRef} className="flex items-center gap-2 text-content-muted mb-3.5 sm:mb-4">
+                <FloatingAccent
+                  axis="y"
+                  distanceY={3}
+                  duration={4.8}
+                  delay={0}
+                  className="flex-shrink-0"
+                >
+                  <span
+                    className="w-1.5 h-1.5 rounded-full bg-action-primary block"
+                    aria-hidden="true"
+                  />
+                </FloatingAccent>
+                <p className="font-body text-xs sm:text-small-meta text-content-muted">
+                  {hero.reassuranceNote}
+                </p>
+              </div>
 
-            {/* 06. Dual CTAs (Closing action of left column) */}
-            <div ref={ctaRef} className="w-full sm:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4">
-              <Button
-                variant="primary"
-                size="md"
-                href={hero.primaryCta.href}
-                className="w-full sm:w-auto"
-              >
-                {hero.primaryCta.label}
-              </Button>
-              <Button
-                variant="secondary"
-                size="md"
-                href={hero.secondaryCta.href}
-                className="w-full sm:w-auto"
-              >
-                {hero.secondaryCta.label}
-              </Button>
+              {/* 06. Dual CTAs (Closing action of left column) */}
+              <div ref={ctaRef} className="w-full sm:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4">
+                <Button
+                  variant="primary"
+                  size="md"
+                  href={hero.primaryCta.href}
+                  className="w-full sm:w-auto"
+                >
+                  {hero.primaryCta.label}
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="md"
+                  href={hero.secondaryCta.href}
+                  className="w-full sm:w-auto"
+                >
+                  {hero.secondaryCta.label}
+                </Button>
+              </div>
             </div>
           </div>
 
@@ -330,7 +333,7 @@ export const Hero: React.FC = () => {
               <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[65%] z-20 w-auto max-w-[92%] pointer-events-none">
                 <div
                   ref={portraitLabelRef}
-                  className="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-surface border border-border-subtle shadow-card text-center flex flex-col items-center"
+                  className="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-surface border border-border-subtle shadow-[0_5px_14px_rgba(15,23,42,0.11),0_2px_5px_rgba(20,74,58,0.05)] sm:shadow-[0_7px_18px_rgba(15,23,42,0.13),0_2px_6px_rgba(20,74,58,0.06)] text-center flex flex-col items-center"
                 >
                   <span className="font-display text-xs sm:text-sm font-semibold text-brand-primary tracking-tight leading-tight">
                     {client.name}
