@@ -6,6 +6,7 @@ import { siteContent } from '../../content/siteContent';
 import { ChevronDown } from 'lucide-react';
 import { Reveal } from '../motion/Reveal';
 import { useScrollSmoother } from '../motion/ScrollSystem';
+import { BREAKPOINTS } from '../motion/motionConfig';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -41,8 +42,8 @@ export const Education: React.FC = () => {
 
     mm.add(
       {
-        isDesktop: '(min-width: 1024px)',
-        reduceMotion: '(prefers-reduced-motion: reduce)',
+        isDesktop: BREAKPOINTS.desktopMotion,
+        reduceMotion: BREAKPOINTS.reduceMotion,
       },
       (context) => {
         const { isDesktop, reduceMotion } = context.conditions as {
@@ -68,9 +69,6 @@ export const Education: React.FC = () => {
 
   const toggleTopic = (id: string) => {
     setOpenId(openId === id ? null : id);
-    requestAnimationFrame(() => {
-      ScrollTrigger.refresh();
-    });
   };
 
   return (

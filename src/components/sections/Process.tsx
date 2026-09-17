@@ -29,11 +29,11 @@ export const Process: React.FC = () => {
 
   const sectionRef = useRef<HTMLElement>(null);
   const pinnedWrapperRef = useRef<HTMLDivElement>(null);
+  const runwayRef = useRef<HTMLDivElement>(null);
   const stepRefs = useRef<(HTMLLIElement | null)[]>([]);
   const mobileStepRefs = useRef<(HTMLLIElement | null)[]>([]);
   const headerRef = useRef<HTMLDivElement>(null);
   const reassuranceRef = useRef<HTMLDivElement>(null);
-  const spacerRef = useRef<HTMLDivElement>(null);
 
   const { isReducedMotion } = useScrollSmoother();
 
@@ -60,27 +60,29 @@ export const Process: React.FC = () => {
         const mobileSteps = mobileStepRefs.current.filter(Boolean) as HTMLLIElement[];
         const header = headerRef.current;
         const reassurance = reassuranceRef.current;
-        const spacer = spacerRef.current;
+        const runway = runwayRef.current;
 
         // Reduced motion, mobile, or short viewport: clean natural flow without pinning
         if (reduceMotion || isReducedMotion || !isDesktop) {
-          if (spacer) spacer.style.display = 'none';
           if (pinnedWrapper) gsap.set(pinnedWrapper, { clearProps: 'transform' });
           if (header) gsap.set(header, { opacity: 1, y: 0, clearProps: 'transform,opacity' });
           if (steps.length > 0) gsap.set(steps, { opacity: 1, y: 0, clearProps: 'transform,opacity' });
           if (mobileSteps.length > 0) gsap.set(mobileSteps, { opacity: 1, y: 0, clearProps: 'transform,opacity' });
           if (reassurance) gsap.set(reassurance, { opacity: 1, y: 0, clearProps: 'transform,opacity' });
-
-          const frame = requestAnimationFrame(() => {
-            ScrollTrigger.refresh();
-          });
-          return () => {
-            cancelAnimationFrame(frame);
-          };
+          // Collapse the runway — no document-flow height consumed in natural-flow mode
+          if (runway) runway.style.display = 'none';
+          return;
         }
 
         // --- DESKTOP PINNED SEQUENCE WITH OVERLAPPING NEXT SECTION ---
-        if (spacer) spacer.style.display = 'block';
+
+        // Activate the scroll runway to reserve 1300px of document-flow height.
+        // This is a sibling to pinnedWrapper (not inside it) so it does NOT affect
+        // the ScrollTrigger end calculation. The ScrollTrigger uses end:'+=1300'
+        // independently; the runway prevents Education from overlapping too early.
+        if (runway) {
+          runway.style.display = 'block';
+        }
 
         // Pre-pin baseline states
         if (header) gsap.set(header, { opacity: 1, y: 0, force3D: true });
@@ -95,17 +97,23 @@ export const Process: React.FC = () => {
         }
         if (reassurance) gsap.set(reassurance, { opacity: 0.2, y: 12, force3D: true });
 
-        // Master Timeline attached to ScrollTrigger
+        // Master Timeline attached to ScrollTrigger.
+        // pinSpacing: false — GSAP wraps pinnedWrapper in a zero-height spacer that reverts
+        //   cleanly on mm.revert(). A height-based spacer (pinSpacing:true) caused nested
+        //   pin-spacer accumulation on repeated desktop→tablet→desktop resize cycles.
+        // end: '+=1300' — 1300px of pinned scroll travel: matches the 4.8-unit timeline
+        //   at ~271px/unit. The section provides its own natural height via CSS; GSAP
+        //   measures the pin travel distance from the start position.
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: section,
             pin: pinnedWrapper,
             pinType: 'transform',
-            pinSpacing: false, // Allows natural page scroll to carry #education over pinnedWrapper
-            start: 'top top+=64', // Pins directly beneath fixed header with refined compact offset
-            end: 'bottom top+=64', // Pins until section bottom reaches offset
-            scrub: true, // Clean 1:1 sync with ScrollSmoother eliminating double-easing micro-jitter
-            anticipatePin: 0, // Eliminates pre-pin shift/stutter
+            pinSpacing: false,
+            start: 'top top+=64',
+            end: '+=1300',
+            scrub: true,
+            anticipatePin: 0,
             fastScrollEnd: true,
             invalidateOnRefresh: true,
           },
@@ -193,13 +201,6 @@ export const Process: React.FC = () => {
 
         // ── PHASE C & D: Next section overlaps and pin releases ──────────
         tl.to({}, { duration: 1.2 });
-
-        const frame = requestAnimationFrame(() => {
-          ScrollTrigger.refresh();
-        });
-        return () => {
-          cancelAnimationFrame(frame);
-        };
       }
     );
 
@@ -357,11 +358,16 @@ export const Process: React.FC = () => {
         </Container>
       </div>
 
-      {/* Dedicated Scroll Track for Desktop Pinning & Natural Overlap Handoff */}
+      {/* Process Scroll Runway — Desktop Editorial Motion Only
+          Provides 1300px of document-flow height so Education does not rise
+          over the Process pin before the 4-step animation completes.
+          Hidden by default; activated/deactivated via JS in mm.add().
+          NOT inside pinnedWrapper. Does NOT affect ScrollTrigger end.
+          ScrollTrigger: start='top top+=64', end='+=1300' (independent). */}
       <div
-        ref={spacerRef}
-        className="hidden [@media(min-width:1280px)]:block [@media(min-width:1024px)_and_(min-height:800px)]:block h-[1300px]"
+        ref={runwayRef}
         aria-hidden="true"
+        style={{ display: 'none', height: '1300px', pointerEvents: 'none' }}
       />
     </section>
   );

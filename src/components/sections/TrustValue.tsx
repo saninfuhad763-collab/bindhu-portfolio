@@ -6,6 +6,7 @@ import { Container } from '../layout/Container';
 import { siteContent } from '../../content/siteContent';
 import { Reveal } from '../motion/Reveal';
 import { useScrollSmoother } from '../motion/ScrollSystem';
+import { BREAKPOINTS } from '../motion/motionConfig';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -46,8 +47,8 @@ export const TrustValue: React.FC = () => {
 
     mm.add(
       {
-        isDesktop: '(min-width: 1024px)',
-        reduceMotion: '(prefers-reduced-motion: reduce)',
+        isDesktop: BREAKPOINTS.desktopMotion,
+        reduceMotion: BREAKPOINTS.reduceMotion,
       },
       (context) => {
         const { isDesktop, reduceMotion } = context.conditions as {

@@ -5,6 +5,7 @@ import { Container } from '../layout/Container';
 import { siteContent } from '../../content/siteContent';
 import { Reveal } from '../motion/Reveal';
 import { useScrollSmoother } from '../motion/ScrollSystem';
+import { BREAKPOINTS } from '../motion/motionConfig';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -31,16 +32,12 @@ export const CareerRoadmap: React.FC = () => {
     const el = sectionRef.current;
     if (!el || !careerRoadmap) return;
 
-    const prefersReduced =
-      typeof window !== 'undefined' &&
-      (window.matchMedia('(prefers-reduced-motion: reduce)').matches || isReducedMotion);
-
     const mm = gsap.matchMedia();
 
     mm.add(
       {
-        isDesktop: '(min-width: 1024px)',
-        reduceMotion: '(prefers-reduced-motion: reduce)',
+        isDesktop: BREAKPOINTS.desktopMotion,
+        reduceMotion: BREAKPOINTS.reduceMotion,
       },
       (context) => {
         const { isDesktop, reduceMotion } = context.conditions as {
@@ -48,10 +45,13 @@ export const CareerRoadmap: React.FC = () => {
           reduceMotion: boolean;
         };
 
+        const prefersReduced = reduceMotion || isReducedMotion;
+
         const grid = gridRef.current;
         const leftCol = leftColRef.current;
 
-        if (isDesktop && !reduceMotion && !prefersReduced && grid && leftCol) {
+        // ── Left-column sticky pin (desktop-motion viewports only) ──────────
+        if (isDesktop && !prefersReduced && grid && leftCol) {
           ScrollTrigger.create({
             trigger: grid,
             start: 'top top+=112',
@@ -61,68 +61,64 @@ export const CareerRoadmap: React.FC = () => {
             invalidateOnRefresh: true,
           });
         }
-      }
-    );
 
-    const ctx = gsap.context(() => {
-      const milestoneElements = el.querySelectorAll<HTMLElement>('.roadmap-milestone');
-      if (!milestoneElements || milestoneElements.length === 0) return;
+        // ── Milestone reveal animations (all breakpoints) ──────────────────
+        // Kept inside mm.add so it reverts and re-creates cleanly on resize.
+        const milestoneElements = el.querySelectorAll<HTMLElement>('.roadmap-milestone');
+        if (!milestoneElements || milestoneElements.length === 0) return;
 
-      if (prefersReduced) {
-        // Immediate display without motion for accessibility
+        if (prefersReduced) {
+          milestoneElements.forEach((item) => {
+            const content = item.querySelector('.milestone-content');
+            const node = item.querySelector('.milestone-node');
+            if (content) gsap.set(content, { opacity: 1, y: 0, clearProps: 'transform' });
+            if (node) gsap.set(node, { opacity: 1 });
+          });
+          return;
+        }
+
         milestoneElements.forEach((item) => {
           const content = item.querySelector('.milestone-content');
           const node = item.querySelector('.milestone-node');
-          if (content) gsap.set(content, { opacity: 1, y: 0, clearProps: 'transform' });
-          if (node) gsap.set(node, { opacity: 1 });
+          if (content) gsap.set(content, { opacity: 0, y: 28 });
+          if (node) gsap.set(node, { opacity: 0 });
         });
-        return;
+
+        ScrollTrigger.batch(milestoneElements, {
+          start: 'top 85%',
+          once: true,
+          onEnter: (batch) => {
+            batch.forEach((item, index) => {
+              const content = item.querySelector('.milestone-content');
+              const node = item.querySelector('.milestone-node');
+
+              if (content) {
+                gsap.to(content, {
+                  opacity: 1,
+                  y: 0,
+                  duration: 0.85,
+                  delay: index * 0.12,
+                  ease: 'power3.out',
+                  clearProps: 'transform',
+                });
+              }
+
+              if (node) {
+                gsap.to(node, {
+                  opacity: 1,
+                  duration: 0.6,
+                  delay: index * 0.12,
+                  ease: 'power2.out',
+                });
+              }
+            });
+          },
+        });
       }
-
-      // Initial state: opacity: 0, y: 28px for content blocks; soft opacity: 0 for node anchors
-      milestoneElements.forEach((item) => {
-        const content = item.querySelector('.milestone-content');
-        const node = item.querySelector('.milestone-node');
-        if (content) gsap.set(content, { opacity: 0, y: 28 });
-        if (node) gsap.set(node, { opacity: 0 });
-      });
-
-      // AOS-style viewport-triggered reveal with ScrollTrigger.batch for natural sequencing
-      ScrollTrigger.batch(milestoneElements, {
-        start: 'top 85%',
-        once: true,
-        onEnter: (batch) => {
-          batch.forEach((item, index) => {
-            const content = item.querySelector('.milestone-content');
-            const node = item.querySelector('.milestone-node');
-
-            if (content) {
-              gsap.to(content, {
-                opacity: 1,
-                y: 0,
-                duration: 0.85,
-                delay: index * 0.12,
-                ease: 'power3.out',
-                clearProps: 'transform',
-              });
-            }
-
-            if (node) {
-              gsap.to(node, {
-                opacity: 1,
-                duration: 0.6,
-                delay: index * 0.12,
-                ease: 'power2.out',
-              });
-            }
-          });
-        },
-      });
-    }, sectionRef);
+    );
 
     return () => {
       mm.revert();
-      ctx.revert();
     };
   }, [careerRoadmap, isReducedMotion]);
 
